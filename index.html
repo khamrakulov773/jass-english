@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JASS-ENGLISH — Все уровни английского</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═════════════ AUTH SCREEN ═════════════ -->
+<div id="auth-screen">
+  <div class="brand">JASS<span>-ENGLISH</span></div>
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('login')">Вход</button>
+      <button class="auth-tab" onclick="switchAuthTab('register')">Регистрация</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form" class="auth-form">
+      <input type="email" id="login-email" placeholder="Email">
+      <input type="password" id="login-password" placeholder="Пароль">
+      <div id="login-message" class="auth-message"></div>
+      <button class="btn" onclick="handleLogin()">Войти</button>
+    </div>
+
+    <!-- Registration Form -->
+    <div id="register-form" class="auth-form hidden">
+      <div style="text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
+        <div class="user-avatar" id="register-avatar-preview" style="margin: 0 auto; cursor: pointer; width: 100px; height: 100px; font-size: 40px; border: 3px solid var(--accent);" onclick="document.getElementById('register-avatar').click()">👤</div>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 12px; flex-wrap: wrap;">
+          <label for="register-avatar" class="upload-btn gallery-btn" style="padding: 12px 24px; border-radius: 16px; background: linear-gradient(135deg, #4facfe, #00f2fe); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+            <img src="icon/free-icon-photo-1.png" alt="Галерея" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
+            Из галереи
+          </label>
+          <button class="upload-btn camera-btn" style="background: linear-gradient(135deg, #fa709a, #fee140); padding: 12px 24px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" onclick="startCamera()">
+            <img src="icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
+            Сделать фото
+          </button>
+        </div>
+        <input type="file" id="register-avatar" accept="image/*" style="display: none;">
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Имя</label>
+        <input type="text" id="register-name" placeholder="Ваше имя" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Никнейм</label>
+        <div class="nickname-input-wrapper" style="display: flex; align-items: center; background: var(--bg3); border: 2px solid var(--border); border-radius: 12px; overflow: hidden;">
+          <span class="nickname-prefix" style="padding: 14px 12px 14px 18px; color: var(--accent); font-size: 18px; font-weight: 700; background: rgba(91, 141, 238, 0.1);">@</span>
+          <input type="text" id="register-nickname" placeholder="username" style="flex: 1; border: none; background: transparent; padding: 14px 18px; color: var(--text); font-size: 16px;">
+        </div>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
+        <input type="email" id="register-email" placeholder="your@email.com" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Пароль</label>
+        <input type="password" id="register-password" placeholder="••••••••" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Подтвердите пароль</label>
+        <input type="password" id="register-confirm" placeholder="••••••••" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
+      </div>
+      
+      <div id="register-message" class="auth-message"></div>
+      <button class="btn" onclick="handleRegister()" style="width: 100%; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 12px;">Зарегистрироваться</button>
+    </div>
+  </div>
+</div>
+
+<!-- Image Editor Modal -->
+<div id="image-editor-modal" class="modal hidden">
+  <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-header">
+      <h3>Редактировать фото</h3>
+      <button class="close-btn" onclick="closeImageEditor()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="editor-container">
+        <video id="camera-video" class="hidden" autoplay playsinline></video>
+        <canvas id="editor-canvas"></canvas>
+      </div>
+      <div class="editor-controls">
+        <button class="editor-btn capture-btn" id="camera-capture-btn" onclick="captureFromCamera()" style="display: none;">
+          <img src="icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
+          Сделать фото
+        </button>
+        <button class="editor-btn" onclick="rotateImage(-90)">↺ Поворот</button>
+        <button class="editor-btn" onclick="rotateImage(90)">↻ Поворот</button>
+        <button class="editor-btn save-btn" onclick="saveEditedImage()">✅ Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<!-- ═════════════ LANDING ═════════════ -->
+<div id="landing" class="hidden">
+  <div class="brand">JASS<span>-ENGLISH</span></div>
+  <div class="brand-sub">Полный курс английского языка · Все уровни</div>
+  <div class="user-info" id="user-info">
+    <div class="user-avatar" id="landing-user-avatar">👤</div>
+    <span id="user-name"></span>
+    <button class="btn" style="background: var(--accent);" onclick="openEditProfile()">Редактировать</button>
+    <button class="btn" style="background:var(--text2);" onclick="logoutUser()">Выйти</button>
+  </div>
+  <div class="level-grid">
+    <div class="level-card lc-a1" onclick="openLevel('A1')">
+      <div class="lc-badge" style="color:#22d37a">A1</div>
+      <div class="lc-name">Beginner</div>
+      <div class="lc-desc">Начинающий. Базовые слова, приветствия, числа, семья</div>
+      <div class="lc-words">250+ слов</div>
+    </div>
+    <div class="level-card lc-a2" onclick="openLevel('A2')">
+      <div class="lc-badge" style="color:#22d3c8">A2</div>
+      <div class="lc-name">Elementary</div>
+      <div class="lc-desc">Элементарный. Прошедшее время, быт, покупки, путешествия</div>
+      <div class="lc-words">350+ слов</div>
+    </div>
+    <div class="level-card lc-b1" onclick="openLevel('B1')">
+      <div class="lc-badge" style="color:#5b8dee">B1</div>
+      <div class="lc-name">Intermediate</div>
+      <div class="lc-desc">Средний. Разговорная речь, работа, мнения, будущее время</div>
+      <div class="lc-words">500+ слов</div>
+    </div>
+    <div class="level-card lc-b2" onclick="openLevel('B2')">
+      <div class="lc-badge" style="color:#9d6ef5">B2</div>
+      <div class="lc-name">Upper-Intermediate</div>
+      <div class="lc-desc">Выше среднего. Условные предложения, пассив, сложные темы</div>
+      <div class="lc-words">700+ слов</div>
+    </div>
+    <div class="level-card lc-c1" onclick="openLevel('C1')">
+      <div class="lc-badge" style="color:#f0b429">C1</div>
+      <div class="lc-name">Advanced</div>
+      <div class="lc-desc">Продвинутый. Идиомы, академический язык, сложные структуры</div>
+      <div class="lc-words">900+ слов</div>
+    </div>
+    <div class="level-card lc-c2" onclick="openLevel('C2')">
+      <div class="lc-badge" style="color:#f05252">C2</div>
+      <div class="lc-name">Mastery</div>
+      <div class="lc-desc">Мастерство. Носитель языка. Фразеологизмы, нюансы</div>
+      <div class="lc-words">1000+ слов</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════ APP ═════════════ -->
+<div id="app" class="hidden">
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top" onclick="backToLanding()">
+        <div class="user-avatar" id="sidebar-user-avatar" style="width: 40px; height: 40px; font-size: 20px;">👤</div>
+        <div class="sidebar-user-name" id="sidebar-user-name" style="color: var(--text); font-weight: 600; flex: 1; text-align: left; padding-left: 10px;">Пользователь</div>
+        <div class="sidebar-logo">JASS<span>-ENG</span></div>
+        <div class="level-badge-sm" id="sb-badge">A1</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Разделы</div>
+        <button class="nav-btn active" onclick="goto('vocab')"><span class="ni">📖</span> Словарь</button>
+        <button class="nav-btn" onclick="goto('verbs')"><span class="ni">⚡</span> Глаголы</button>
+        <button class="nav-btn" onclick="goto('grammar')"><span class="ni">📝</span> Грамматика</button>
+        <button class="nav-btn" onclick="goto('pronunciation')"><span class="ni">🔊</span> Произношение</button>
+        <button class="nav-btn" onclick="goto('practice')"><span class="ni">✍️</span> Практика</button>
+        <button class="nav-btn" onclick="goto('schedule')"><span class="ni">📅</span> Расписание</button>
+        <button class="nav-btn" onclick="goto('quiz')"><span class="ni">🎯</span> Тест</button>
+      </div>
+      <div class="stats-box">
+        <div class="stats-title">Прогресс</div>
+        <div class="stat-row"><span class="stat-name">Уровень</span><span class="stat-val" id="s-lvl" style="color:var(--accent)">A1</span></div>
+        <div class="stat-row"><span class="stat-name">Изучено</span><span class="stat-val" id="s-known" style="color:var(--green)">0</span></div>
+        <div class="stat-row"><span class="stat-name">Всего слов</span><span class="stat-val" id="s-total" style="color:var(--text2)">0</span></div>
+        <div class="stat-row"><span class="stat-name">Тестов</span><span class="stat-val" id="s-tests" style="color:var(--yellow)">0</span></div>
+      </div>
+      <div style="padding: 0 10px 16px;">
+        <button class="btn" style="width: 100%; background: var(--text2);" onclick="logoutToLanding()">↩️ На выбор уровней</button>
+        <button class="btn" style="width: 100%; margin-top: 8px; background: #dc2626;" onclick="logoutUser()">🚪 Выйти из аккаунта</button>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="page active" id="page-vocab">
+        <div class="page-header"><div class="page-title" id="vt-title">📖 Словарь</div><div class="page-sub">Нажми карточку — отметь выученным. 🔊 — произношение</div></div>
+        <div class="search-wrap"><span class="si">🔍</span><input type="text" id="vocabSearch" placeholder="Поиск..." oninput="filterVocab()"></div>
+        <div class="pills" id="topicPills"></div>
+        <div class="prog-area">
+          <div class="prog-top"><span id="progText">0 / 0</span><span id="progPct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+        </div>
+        <div class="word-grid" id="wordGrid"></div>
+      </div>
+      <div class="page" id="page-verbs">
+        <div class="page-header"><div class="page-title" id="verb-title">⚡ Глаголы</div><div class="page-sub">Ключевые глаголы уровня с примерами</div></div>
+        <div class="search-wrap"><span class="si">🔍</span><input type="text" id="verbSearch" placeholder="Поиск..." oninput="filterVerbs()"></div>
+        <div class="tbl-wrap"><table class="vtbl"><thead><tr><th>Глагол</th><th>Перевод</th><th>Транскрипция</th><th>Пример</th><th>🔊</th></tr></thead><tbody id="verbBody"></tbody></table></div>
+      </div>
+      <div class="page" id="page-grammar">
+        <div class="page-header"><div class="page-title" id="gram-title">📝 Грамматика</div><div class="page-sub">Правила и примеры по уровню</div></div>
+        <div id="gramContent"></div>
+      </div>
+      <div class="page" id="page-pronunciation">
+        <div class="page-header"><div class="page-title">🔊 Произношение</div><div class="page-sub">Звуки, фонетика и правила чтения</div></div>
+        <div id="phonContent"></div>
+      </div>
+      <div class="page" id="page-practice">
+        <div class="page-header"><div class="page-title" id="prac-title">✍️ Практика</div><div class="page-sub">Диалоги, упражнения, соединение слов</div></div>
+        <div class="ptabs">
+          <button class="ptab active" onclick="switchPTab('dialogues')">💬 Диалоги</button>
+          <button class="ptab" onclick="switchPTab('fill')">✏️ Пробел</button>
+          <button class="ptab" onclick="switchPTab('match')">🔗 Соединить</button>
+        </div>
+        <div class="psec active" id="ps-dialogues"></div>
+        <div class="psec" id="ps-fill"></div>
+        <div class="psec" id="ps-match"></div>
+      </div>
+      <div class="page" id="page-schedule">
+        <div class="page-header"><div class="page-title" id="sched-title">📅 Расписание</div><div class="page-sub">7-дневный план занятий</div></div>
+        <div class="week-grid" id="weekGrid"></div>
+      </div>
+      <div class="page" id="page-quiz">
+        <div class="page-header"><div class="page-title" id="quiz-title">🎯 Тест</div><div class="page-sub">Проверь знания слов и глаголов</div></div>
+        <div class="quiz-wrap" id="quizWrap"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div id="edit-profile-modal" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Редактировать профиль</h3>
+      <button class="close-btn" onclick="closeEditProfile()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="profile-editor-avatar-section">
+        <div class="user-avatar" id="edit-avatar-preview" onclick="document.getElementById('edit-avatar').click()">👤</div>
+        <div class="profile-editor-avatar-buttons">
+          <label for="edit-avatar" class="upload-btn gallery-btn">
+            <img src="icon/free-icon-photo-1.png" alt="Галерея">
+            Из галереи
+          </label>
+          <button class="upload-btn camera-btn" onclick="startEditCamera()">
+            <img src="icon/free-icon-take-a-picture-2.png" alt="Камера">
+            Сделать фото
+          </button>
+        </div>
+        <input type="file" id="edit-avatar" accept="image/*" style="display: none;">
+      </div>
+      <div class="profile-editor-fields">
+        <div class="profile-editor-field">
+          <label>Имя</label>
+          <input type="text" id="edit-name" placeholder="Ваше имя">
+        </div>
+        <div class="profile-editor-field">
+          <label>Никнейм</label>
+          <div class="nickname-input-wrapper">
+            <span class="nickname-prefix">@</span>
+            <input type="text" id="edit-nickname" placeholder="username">
+          </div>
+        </div>
+      </div>
+      <div class="profile-editor-actions">
+        <button class="btn cancel-btn" onclick="closeEditProfile()">Отмена</button>
+        <button class="btn save-btn" onclick="saveProfile()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
+<button class="menu-toggle" id="menu-toggle-btn" onclick="toggleMenu()">
+  <span class="burger-bar"></span>
+  <span class="burger-bar"></span>
+  <span class="burger-bar"></span>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="email.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
