@@ -1606,6 +1606,11 @@ function openLevel(level) {
   document.documentElement.style.setProperty('--accent', LEVELS[level].color);
   document.getElementById('sb-badge').textContent = level;
   updateAvatarDisplay(); // Update sidebar avatar
+
+  // Written translation task is only available on A1 level
+  const trBtn = document.getElementById('nav-translate-btn');
+  if (trBtn) trBtn.style.display = (level === 'A1') ? '' : 'none';
+
   goto('vocab');
   updateStats();
 }
@@ -1640,6 +1645,10 @@ function goto(section) {
     case 'practice': renderPractice(); break;
     case 'schedule': renderSchedule(); break;
     case 'quiz': startQuiz(); break;
+    case 'translate':
+      if (currentLevel !== 'A1') { goto('vocab'); break; }
+      renderTranslateBlock();
+      break;
   }
 }
 
@@ -2371,3 +2380,122 @@ renderQuiz = function() {
   }
   originalRenderQuiz();
 };
+// ═════════════ WRITTEN TRANSLATION TASK (RU → EN) ═════════════
+const TRANSLATE_TEXTS = [
+  {
+    ru: "Образование важно для всех. Оно помогает людям читать, писать и мыслить. В школе учащиеся изучают такие предметы, как математика, естествознание и история. Учителя направляют учеников в изучении новых навыков. Образование также готовит учащихся к будущей работе. Оно даёт знания и учит дисциплине. Хорошее образование помогает людям осуществлять свои мечты.",
+    en: "Education is important for everyone. It helps people read, write, and think. In school, students study subjects like math, science, and history. Teachers guide students to learn new skills. Education also prepares students for jobs in the future. It gives knowledge and teaches discipline. Good education helps people achieve their dreams."
+  },
+  {
+    ru: "Здоровье очень важно. Чтобы оставаться здоровым, люди должны правильно питаться, заниматься спортом и хорошо высыпаться. Фрукты и овощи дают витамины, а физические упражнения укрепляют тело. Питьё воды также полезно для здоровья. Врачи помогают больным людям чувствовать себя лучше. Хорошее здоровье позволяет людям работать, играть и наслаждаться жизнью.",
+    en: "Health is very important. To stay healthy, people should eat good food, exercise, and sleep well. Fruits and vegetables give vitamins, and exercise makes the body strong. Drinking water is also good for health. Doctors help sick people feel better. Good health allows people to work, play, and enjoy life."
+  },
+  {
+    ru: "Технологии делают жизнь проще. Мы каждый день пользуемся телефонами, компьютерами и интернетом. Телефоны помогают нам разговаривать с друзьями, а компьютеры используются для работы и учёбы. Интернет быстро даёт нам информацию. Технологии также применяются в медицине, образовании и на транспорте. Они меняют мир и помогают людям жить лучше.",
+    en: "Technology makes life easier. We use phones, computers, and the internet every day. Phones help us talk to friends, and computers are used for work and study. The internet gives us information quickly. Technology is also used in medicine, education, and transportation. It changes the world and helps people live better lives."
+  },
+  {
+    ru: "Работа — важная часть жизни. Люди выбирают такие профессии, как учитель, врач и инженер. Хорошая карьера помогает людям зарабатывать деньги и получать удовольствие от своей работы. Чтобы построить карьеру, люди учатся и приобретают навыки. Упорный труд и терпение — ключ к успеху. Выбор правильной профессии важен для счастливого будущего.",
+    en: "Work is an important part of life. People choose careers like teachers, doctors, and engineers. A good career helps people earn money and enjoy their jobs. To build a career, people study and gain skills. Hard work and patience are key to success. Choosing the right career is important for a happy future."
+  },
+  {
+    ru: "Медиа делятся новостями, развлечениями и идеями. Они включают телевидение, радио, газеты и интернет. Реклама показывает людям товары через медиа. Компании используют рекламу, чтобы продавать такие товары, как одежда и телефоны. Некоторые объявления размещаются на сайтах, а другие — на рекламных щитах. Медиа и реклама помогают людям узнавать о новом и делать выбор.",
+    en: "Media shares news, entertainment, and ideas. It includes TV, radio, newspapers, and the internet. Advertising shows products to people through media. Companies use ads to sell items like clothes and phones. Some ads are on websites, and others are on billboards. Media and advertising help people learn about new things and make choices."
+  },
+  {
+    ru: "Преступление означает нарушение закона. Некоторые преступления — это воровство, ложь или причинение вреда другим. Полиция работает, чтобы останавливать преступления и обеспечивать безопасность людей. Важно соблюдать правила и уважать других. Хорошие граждане помогают сделать мир лучше, будучи добрыми и честными.",
+    en: "Crime means breaking the law. Some crimes are stealing, lying, or hurting others. Police work to stop crimes and keep people safe. It is important to follow rules and respect others. Good citizens help make the world a better place by being kind and honest."
+  },
+  {
+    ru: "Освоение космоса означает изучение космоса. Космонавты летают на ракетах, чтобы изучать планеты и звёзды. Спутники делают снимки космоса и отправляют их на Землю. Освоение космоса помогает нам понять вселенную. Оно также помогает создавать новые технологии, такие как более совершенные телефоны и компьютеры.",
+    en: "Space exploration means studying space. Astronauts travel in rockets to learn about planets and stars. Satellites take pictures of space and send them to Earth. Space exploration helps us understand the universe. It also helps make new technology, like better phones and computers."
+  },
+  {
+    ru: "Окружающая среда включает воздух, воду, растения и животных. Это то место, где мы живём. Чистый воздух и чистая вода важны для здоровья. Деревья дают нам кислород, а животные — часть природы. Загрязнение вредит окружающей среде и делает её грязной. Чтобы защитить окружающую среду, нам следует сажать деревья, беречь воду и перерабатывать отходы.",
+    en: "The environment includes air, water, plants, and animals. It is where we live. Clean air and water are important for health. Trees give us oxygen, and animals are part of nature. Pollution harms the environment and makes it dirty. To protect the environment, we should plant trees, save water, and recycle waste."
+  }
+];
+
+let currentTranslateIdx = 0;
+
+function renderTranslateBlock() {
+  const picker = document.getElementById('trPicker');
+  if (!picker) return;
+
+  picker.innerHTML = TRANSLATE_TEXTS.map((item, idx) => `
+    <button class="tr-pick-btn ${idx === currentTranslateIdx ? 'active' : ''}" onclick="selectTranslateText(${idx})">Текст ${idx + 1}</button>
+  `).join('');
+
+  renderTranslateItem(currentTranslateIdx);
+}
+
+function selectTranslateText(idx) {
+  currentTranslateIdx = idx;
+  document.querySelectorAll('.tr-pick-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  renderTranslateItem(idx);
+}
+
+function renderTranslateItem(idx) {
+  const container = document.getElementById('translateWrap');
+  if (!container) return;
+  const item = TRANSLATE_TEXTS[idx];
+
+  container.innerHTML = `
+    <div class="tr-card">
+      <div class="tr-num">Текст ${idx + 1} из ${TRANSLATE_TEXTS.length}</div>
+      <div class="tr-src">${item.ru}</div>
+      <textarea class="tr-input" id="tr-input-${idx}" placeholder="Напиши здесь свой перевод на английский..."></textarea>
+      <div class="tr-actions">
+        <button class="btn" onclick="checkTranslate(${idx})">Проверить</button>
+        <button class="btn" style="background:var(--text2);" onclick="resetTranslate(${idx})">Очистить</button>
+      </div>
+      <div class="tr-result" id="tr-res-${idx}" style="display:none;"></div>
+    </div>
+  `;
+}
+
+function normalizeWords(str) {
+  return str
+    .toLowerCase()
+    .replace(/[.,!?;:"'()]/g, '')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function checkTranslate(idx) {
+  const item = TRANSLATE_TEXTS[idx];
+  const input = document.getElementById(`tr-input-${idx}`);
+  const res = document.getElementById(`tr-res-${idx}`);
+  const userText = input.value.trim();
+
+  if (!userText) {
+    res.style.display = 'block';
+    res.innerHTML = `<div class="tr-score incorrect">✏️ Сначала напиши свой перевод.</div>`;
+    return;
+  }
+
+  const userWords = normalizeWords(userText);
+  const origWords = normalizeWords(item.en);
+  const origSet = new Set(origWords);
+  let matched = 0;
+  userWords.forEach(w => { if (origSet.has(w)) matched++; });
+  const score = Math.round((matched / origWords.length) * 100);
+
+  let scoreClass = 'incorrect';
+  let scoreLabel = '❌ Есть над чем поработать';
+  if (score >= 70) { scoreClass = 'correct'; scoreLabel = '✅ Отлично, очень близко к оригиналу!'; }
+  else if (score >= 40) { scoreClass = ''; scoreLabel = '🟡 Неплохо, но есть неточности'; }
+
+  res.style.display = 'block';
+  res.innerHTML = `
+    <div class="tr-score ${scoreClass}">${scoreLabel} · совпадение с оригиналом: ${score}%</div>
+    <div class="tr-orig"><b>Оригинал:</b> ${item.en}</div>
+  `;
+}
+
+function resetTranslate(idx) {
+  const input = document.getElementById(`tr-input-${idx}`);
+  const res = document.getElementById(`tr-res-${idx}`);
+  if (input) input.value = '';
+  if (res) { res.style.display = 'none'; res.innerHTML = ''; }
+}

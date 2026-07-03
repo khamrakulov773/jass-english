@@ -604,3 +604,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .quiz-prog-bar { height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-bottom:6px; }
 .quiz-prog-fill { height:100%;background:var(--accent);border-radius:99px;transition:width 0.3s; }
 .quiz-prog-text { font-size:12px;color:var(--text2);text-align:right; }
+/* --- Written translation task --- */
+.tr-card{max-width:640px;margin:0 auto 24px;padding:18px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--card)}
+.tr-num{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.tr-src{font-size:15px;line-height:1.55;margin-bottom:14px}
+.tr-input{width:100%;min-height:110px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:14px;padding:12px;outline:none;resize:vertical;font-family:'Inter',sans-serif;transition:border 0.15s;box-sizing:border-box}
+.tr-input:focus{border-color:var(--accent)}
+.tr-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.tr-result{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border2)}
+.tr-score{font-weight:700;margin-bottom:8px}
+.tr-orig{font-size:14px;line-height:1.5;color:var(--text2);background:var(--bg3);border-radius:8px;padding:10px 12px}
+.tr-orig b{color:var(--text)}
+
+/* --- Translation text picker --- */
+.tr-picker{display:flex;flex-wrap:wrap;gap:8px;max-width:640px;margin:0 auto 20px}
+.tr-pick-btn{padding:8px 16px;border:1px solid var(--border2);border-radius:99px;background:var(--bg3);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s}
+.tr-pick-btn:hover{border-color:var(--accent);color:var(--text)}
+.tr-pick-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}

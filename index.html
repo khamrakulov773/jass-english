@@ -170,6 +170,7 @@
         <button class="nav-btn" onclick="goto('practice')"><span class="ni">✍️</span> Практика</button>
         <button class="nav-btn" onclick="goto('schedule')"><span class="ni">📅</span> Расписание</button>
         <button class="nav-btn" onclick="goto('quiz')"><span class="ni">🎯</span> Тест</button>
+        <button class="nav-btn" id="nav-translate-btn" onclick="goto('translate')"><span class="ni">📝</span> Письменный перевод</button>
       </div>
       <div class="stats-box">
         <div class="stats-title">Прогресс</div>
@@ -225,6 +226,14 @@
       <div class="page" id="page-quiz">
         <div class="page-header"><div class="page-title" id="quiz-title">🎯 Тест</div><div class="page-sub">Проверь знания слов и глаголов</div></div>
         <div class="quiz-wrap" id="quizWrap"></div>
+      </div>
+      <div class="page" id="page-translate">
+        <div class="page-header">
+          <div class="page-title">📝 Письменный перевод</div>
+          <div class="page-sub">Выбери текст, переведи его с русского на английский и сравни с оригиналом</div>
+        </div>
+        <div class="tr-picker" id="trPicker"></div>
+        <div class="quiz-wrap" id="translateWrap"></div>
       </div>
     </main>
   </div>
