@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JASS-ENGLISH — Все уровни английского</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/icon/faviction/favicon-32.png" type="image/png">
+  <link rel="shortcut icon" href="assets/icon/faviction/favicon-32.png" type="image/png">
 </head>
 <body>
 
 <!-- ═════════════ AUTH SCREEN ═════════════ -->
 <div id="auth-screen">
-  <div class="brand">JASS<span>-ENGLISH</span></div>
+  <div class="brand"><img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 300px; height: auto;"></div>
   <div class="auth-card">
     <div class="auth-tabs">
       <button class="auth-tab active" onclick="switchAuthTab('login')">Вход</button>
@@ -19,7 +21,7 @@
 
     <!-- Login Form -->
     <div id="login-form" class="auth-form">
-      <input type="email" id="login-email" placeholder="Email">
+      <input type="text" id="login-email" placeholder="Email или никнейм">
       <input type="password" id="login-password" placeholder="Пароль">
       <div id="login-message" class="auth-message"></div>
       <button class="btn" onclick="handleLogin()">Войти</button>
@@ -27,49 +29,26 @@
 
     <!-- Registration Form -->
     <div id="register-form" class="auth-form hidden">
-      <div style="text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);">
-        <div class="user-avatar" id="register-avatar-preview" style="margin: 0 auto; cursor: pointer; width: 100px; height: 100px; font-size: 40px; border: 3px solid var(--accent);" onclick="document.getElementById('register-avatar').click()">👤</div>
-        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 12px; flex-wrap: wrap;">
-          <label for="register-avatar" class="upload-btn gallery-btn" style="padding: 12px 24px; border-radius: 16px; background: linear-gradient(135deg, #4facfe, #00f2fe); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
-            <img src="icon/free-icon-photo-1.png" alt="Галерея" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
-            Из галереи
-          </label>
-          <button class="upload-btn camera-btn" style="background: linear-gradient(135deg, #fa709a, #fee140); padding: 12px 24px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" onclick="startCamera()">
-            <img src="icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
-            Сделать фото
-          </button>
-        </div>
-        <input type="file" id="register-avatar" accept="image/*" style="display: none;">
-      </div>
-      
       <div style="margin-bottom: 20px;">
         <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Имя</label>
         <input type="text" id="register-name" placeholder="Ваше имя" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
       </div>
-      
       <div style="margin-bottom: 20px;">
-        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Никнейм</label>
-        <div class="nickname-input-wrapper" style="display: flex; align-items: center; background: var(--bg3); border: 2px solid var(--border); border-radius: 12px; overflow: hidden;">
-          <span class="nickname-prefix" style="padding: 14px 12px 14px 18px; color: var(--accent); font-size: 18px; font-weight: 700; background: rgba(91, 141, 238, 0.1);">@</span>
-          <input type="text" id="register-nickname" placeholder="username" style="flex: 1; border: none; background: transparent; padding: 14px 18px; color: var(--text); font-size: 16px;">
-        </div>
+        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Фамилия</label>
+        <input type="text" id="register-lastname" placeholder="Ваша фамилия" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
       </div>
-      
       <div style="margin-bottom: 20px;">
         <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
         <input type="email" id="register-email" placeholder="your@email.com" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
       </div>
-      
       <div style="margin-bottom: 20px;">
         <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Пароль</label>
         <input type="password" id="register-password" placeholder="••••••••" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
       </div>
-      
       <div style="margin-bottom: 20px;">
         <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Подтвердите пароль</label>
         <input type="password" id="register-confirm" placeholder="••••••••" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
       </div>
-      
       <div id="register-message" class="auth-message"></div>
       <button class="btn" onclick="handleRegister()" style="width: 100%; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 12px;">Зарегистрироваться</button>
     </div>
@@ -90,7 +69,7 @@
       </div>
       <div class="editor-controls">
         <button class="editor-btn capture-btn" id="camera-capture-btn" onclick="captureFromCamera()" style="display: none;">
-          <img src="icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
+          <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
           Сделать фото
         </button>
         <button class="editor-btn" onclick="rotateImage(-90)">↺ Поворот</button>
@@ -103,7 +82,7 @@
     
 <!-- ═════════════ LANDING ═════════════ -->
 <div id="landing" class="hidden">
-  <div class="brand">JASS<span>-ENGLISH</span></div>
+  <div class="brand"><img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 300px; height: auto;"></div>
   <div class="brand-sub">Полный курс английского языка · Все уровни</div>
   <div class="user-info" id="user-info">
     <div class="user-avatar" id="landing-user-avatar">👤</div>
@@ -155,22 +134,50 @@
 <div id="app" class="hidden">
   <div class="layout">
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-top" onclick="backToLanding()">
-        <div class="user-avatar" id="sidebar-user-avatar" style="width: 40px; height: 40px; font-size: 20px;">👤</div>
-        <div class="sidebar-user-name" id="sidebar-user-name" style="color: var(--text); font-weight: 600; flex: 1; text-align: left; padding-left: 10px;">Пользователь</div>
-        <div class="sidebar-logo">JASS<span>-ENG</span></div>
-        <div class="level-badge-sm" id="sb-badge">A1</div>
+      <div class="sidebar-top" id="sidebar-top">
+        <div class="sidebar-logo-section" style="display: flex; align-items: center; gap: 8px; padding: 8px 10px;">
+          <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 120px; height: auto;">
+          <div class="level-badge-sm" id="sb-badge">A1</div>
+        </div>
+        <div class="sidebar-user-section" style="display: flex; align-items: center; gap: 10px; padding: 0 10px 8px;">
+          <div class="user-avatar" id="sidebar-user-avatar" style="width: 40px; height: 40px; font-size: 20px; cursor: pointer;" onclick="openEditProfile()">👤</div>
+          <div class="sidebar-user-name" id="sidebar-user-name" style="color: var(--text); font-weight: 600; flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Пользователь</div>
+        </div>
       </div>
       <div class="nav-section">
         <div class="nav-label">Разделы</div>
-        <button class="nav-btn active" onclick="goto('vocab')"><span class="ni">📖</span> Словарь</button>
-        <button class="nav-btn" onclick="goto('verbs')"><span class="ni">⚡</span> Глаголы</button>
-        <button class="nav-btn" onclick="goto('grammar')"><span class="ni">📝</span> Грамматика</button>
-        <button class="nav-btn" onclick="goto('pronunciation')"><span class="ni">🔊</span> Произношение</button>
-        <button class="nav-btn" onclick="goto('practice')"><span class="ni">✍️</span> Практика</button>
-        <button class="nav-btn" onclick="goto('schedule')"><span class="ni">📅</span> Расписание</button>
-        <button class="nav-btn" onclick="goto('quiz')"><span class="ni">🎯</span> Тест</button>
-        <button class="nav-btn" id="nav-translate-btn" onclick="goto('translate')"><span class="ni">📝</span> Письменный перевод</button>
+        <button class="nav-btn active" onclick="goto('vocab')">
+          <img src="assets/icon/free-icon-dictionary.png" alt="Словарь" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Словарь
+        </button>
+        <button class="nav-btn" onclick="goto('verbs')">
+          <img src="assets/icon/free-icon-verb.png" alt="Глаголы" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Глаголы
+        </button>
+        <button class="nav-btn" onclick="goto('grammar')">
+          <img src="assets/icon/free-icon-brain.png" alt="Грамматика" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Грамматика
+        </button>
+        <button class="nav-btn" onclick="goto('pronunciation')">
+          <img src="assets/icon/free-icon-pronunciation.png" alt="Произношение" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Произношение
+        </button>
+        <button class="nav-btn" onclick="goto('practice')">
+          <img src="assets/icon/free-icon-english.png" alt="Практика" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Практика
+        </button>
+        <button class="nav-btn" onclick="goto('schedule')">
+          <img src="assets/icon/free-icon-schedule.png" alt="Расписание" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Расписание
+        </button>
+        <button class="nav-btn" onclick="goto('quiz')">
+          <img src="assets/icon/free-icon-online-test.png" alt="Тест" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Тест
+        </button>
+        <button class="nav-btn" id="nav-translate-btn" onclick="goto('translate')">
+          <img src="assets/icon/free-icon-english.png" alt="Письменный перевод" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          Письменный перевод
+        </button>
       </div>
       <div class="stats-box">
         <div class="stats-title">Прогресс</div>
@@ -186,7 +193,13 @@
     </aside>
     <main class="main">
       <div class="page active" id="page-vocab">
-        <div class="page-header"><div class="page-title" id="vt-title">📖 Словарь</div><div class="page-sub">Нажми карточку — отметь выученным. 🔊 — произношение</div></div>
+        <div class="page-header">
+          <div class="page-title" id="vt-title">
+            <img src="assets/icon/free-icon-dictionary.png" alt="Словарь" style="width: 24px; height: 24px; margin-right: 8px; filter: brightness(0) invert(1);">
+            Словарь
+          </div>
+          <div class="page-sub">Нажми карточку — отметь выученным. 🔊 — произношение</div>
+        </div>
         <div class="search-wrap"><span class="si">🔍</span><input type="text" id="vocabSearch" placeholder="Поиск..." oninput="filterVocab()"></div>
         <div class="pills" id="topicPills"></div>
         <div class="prog-area">
@@ -196,20 +209,44 @@
         <div class="word-grid" id="wordGrid"></div>
       </div>
       <div class="page" id="page-verbs">
-        <div class="page-header"><div class="page-title" id="verb-title">⚡ Глаголы</div><div class="page-sub">Ключевые глаголы уровня с примерами</div></div>
+        <div class="page-header">
+          <div class="page-title" id="verb-title">
+            <img src="assets/icon/free-icon-verb.png" alt="Глаголы" style="width: 24px; height: 24px; margin-right: 8px; filter: brightness(0) invert(1);">
+            Глаголы
+          </div>
+          <div class="page-sub">Ключевые глаголы уровня с примерами</div>
+        </div>
         <div class="search-wrap"><span class="si">🔍</span><input type="text" id="verbSearch" placeholder="Поиск..." oninput="filterVerbs()"></div>
         <div class="tbl-wrap"><table class="vtbl"><thead><tr><th>Глагол</th><th>Перевод</th><th>Транскрипция</th><th>Пример</th><th>🔊</th></tr></thead><tbody id="verbBody"></tbody></table></div>
       </div>
       <div class="page" id="page-grammar">
-        <div class="page-header"><div class="page-title" id="gram-title">📝 Грамматика</div><div class="page-sub">Правила и примеры по уровню</div></div>
+        <div class="page-header">
+          <div class="page-title" id="gram-title">
+            <img src="assets/icon/free-icon-brain.png" alt="Грамматика" style="width: 24px; height: 24px; margin-right: 8px;">
+            Грамматика
+          </div>
+          <div class="page-sub">Правила и примеры по уровню</div>
+        </div>
         <div id="gramContent"></div>
       </div>
       <div class="page" id="page-pronunciation">
-        <div class="page-header"><div class="page-title">🔊 Произношение</div><div class="page-sub">Звуки, фонетика и правила чтения</div></div>
+        <div class="page-header">
+          <div class="page-title">
+            <img src="assets/icon/free-icon-pronunciation.png" alt="Произношение" style="width: 24px; height: 24px; margin-right: 8px;">
+            Произношение
+          </div>
+          <div class="page-sub">Звуки, фонетика и правила чтения</div>
+        </div>
         <div id="phonContent"></div>
       </div>
       <div class="page" id="page-practice">
-        <div class="page-header"><div class="page-title" id="prac-title">✍️ Практика</div><div class="page-sub">Диалоги, упражнения, соединение слов</div></div>
+        <div class="page-header">
+          <div class="page-title" id="prac-title">
+            <img src="assets/icon/free-icon-english.png" alt="Практика" style="width: 24px; height: 24px; margin-right: 8px;">
+            Практика
+          </div>
+          <div class="page-sub">Диалоги, упражнения, соединение слов</div>
+        </div>
         <div class="ptabs">
           <button class="ptab active" onclick="switchPTab('dialogues')">💬 Диалоги</button>
           <button class="ptab" onclick="switchPTab('fill')">✏️ Пробел</button>
@@ -220,16 +257,31 @@
         <div class="psec" id="ps-match"></div>
       </div>
       <div class="page" id="page-schedule">
-        <div class="page-header"><div class="page-title" id="sched-title">📅 Расписание</div><div class="page-sub">7-дневный план занятий</div></div>
+        <div class="page-header">
+          <div class="page-title" id="sched-title">
+            <img src="assets/icon/free-icon-schedule.png" alt="Расписание" style="width: 24px; height: 24px; margin-right: 8px;">
+            Расписание
+          </div>
+          <div class="page-sub">7-дневный план занятий</div>
+        </div>
         <div class="week-grid" id="weekGrid"></div>
       </div>
       <div class="page" id="page-quiz">
-        <div class="page-header"><div class="page-title" id="quiz-title">🎯 Тест</div><div class="page-sub">Проверь знания слов и глаголов</div></div>
+        <div class="page-header">
+          <div class="page-title" id="quiz-title">
+            <img src="assets/icon/free-icon-online-test.png" alt="Тест" style="width: 24px; height: 24px; margin-right: 8px;">
+            Тест
+          </div>
+          <div class="page-sub">Проверь знания слов и глаголов</div>
+        </div>
         <div class="quiz-wrap" id="quizWrap"></div>
       </div>
       <div class="page" id="page-translate">
         <div class="page-header">
-          <div class="page-title">📝 Письменный перевод</div>
+          <div class="page-title">
+            <img src="assets/icon/free-icon-english.png" alt="Письменный перевод" style="width: 24px; height: 24px; margin-right: 8px;">
+            Письменный перевод
+          </div>
           <div class="page-sub">Выбери текст, переведи его с русского на английский и сравни с оригиналом</div>
         </div>
         <div class="tr-picker" id="trPicker"></div>
@@ -248,14 +300,17 @@
     </div>
     <div class="modal-body">
       <div class="profile-editor-avatar-section">
-        <div class="user-avatar" id="edit-avatar-preview" onclick="document.getElementById('edit-avatar').click()">👤</div>
+        <div class="avatar-container" style="position: relative; display: inline-block;">
+          <div class="user-avatar" id="edit-avatar-preview" onclick="document.getElementById('edit-avatar').click()">👤</div>
+          <button class="delete-avatar-btn" id="edit-delete-btn" onclick="deleteEditAvatar(event)" style="display: none; position: absolute; top: -8px; right: -8px; width: 32px; height: 32px; border-radius: 50%; background: var(--red); border: none; color: white; font-size: 18px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">×</button>
+        </div>
         <div class="profile-editor-avatar-buttons">
           <label for="edit-avatar" class="upload-btn gallery-btn">
-            <img src="icon/free-icon-photo-1.png" alt="Галерея">
+            <img src="assets/icon/free-icon-photo-1.png" alt="Галерея">
             Из галереи
           </label>
           <button class="upload-btn camera-btn" onclick="startEditCamera()">
-            <img src="icon/free-icon-take-a-picture-2.png" alt="Камера">
+            <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера">
             Сделать фото
           </button>
         </div>
@@ -267,16 +322,66 @@
           <input type="text" id="edit-name" placeholder="Ваше имя">
         </div>
         <div class="profile-editor-field">
+          <label>Фамилия</label>
+          <input type="text" id="edit-lastname" placeholder="Ваша фамилия">
+        </div>
+        <div class="profile-editor-field">
           <label>Никнейм</label>
           <div class="nickname-input-wrapper">
             <span class="nickname-prefix">@</span>
-            <input type="text" id="edit-nickname" placeholder="username">
+            <input type="text" id="edit-nickname" placeholder="username (English only)">
           </div>
         </div>
       </div>
       <div class="profile-editor-actions">
         <button class="btn cancel-btn" onclick="closeEditProfile()">Отмена</button>
         <button class="btn save-btn" onclick="saveProfile()">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Post-Registration Modal -->
+<div id="post-registration-modal" class="modal hidden">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Добро пожаловать! 🎉</h3>
+    </div>
+    <div class="modal-body">
+      <!-- Step 1: Nickname -->
+      <div id="post-reg-step1" style="text-align: center;">
+        <p style="margin-bottom: 20px; font-size: 18px;">Выберите никнейм (только английские буквы)</p>
+        <div style="margin-bottom: 20px;">
+          <div class="nickname-input-wrapper" style="display: flex; align-items: center; background: var(--bg3); border: 2px solid var(--border); border-radius: 12px; overflow: hidden;">
+            <span class="nickname-prefix" style="padding: 14px 12px 14px 18px; color: var(--accent); font-size: 18px; font-weight: 700; background: rgba(91, 141, 238, 0.1);">@</span>
+            <input type="text" id="post-reg-nickname" placeholder="username (English only)" style="flex: 1; border: none; background: transparent; padding: 14px 18px; color: var(--text); font-size: 16px;">
+          </div>
+        </div>
+        <div id="post-reg-nickname-message" class="auth-message" style="margin-bottom: 20px;"></div>
+        <button class="btn save-btn" onclick="validateAndSaveNickname()" style="width: 100%;">Продолжить</button>
+      </div>
+      <!-- Step 2: Avatar -->
+      <div id="post-reg-step2" style="text-align: center; display: none;">
+        <p style="margin-bottom: 30px; font-size: 18px;">Хотите добавить фото профиля?</p>
+        <div class="avatar-container" style="position: relative; display: inline-block;">
+          <div class="user-avatar" id="post-reg-avatar-preview" style="cursor: pointer; width: 120px; height: 120px; font-size: 50px; border: 3px solid var(--accent);" onclick="document.getElementById('post-reg-avatar').click()">👤</div>
+          <button class="delete-avatar-btn" id="post-reg-delete-btn" onclick="deletePostRegAvatar(event)" style="display: none; position: absolute; top: -8px; right: -8px; width: 32px; height: 32px; border-radius: 50%; background: var(--red); border: none; color: white; font-size: 18px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">×</button>
+        </div>
+        <div style="display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+          <label for="post-reg-avatar" class="upload-btn gallery-btn" style="padding: 12px 24px; border-radius: 16px; background: linear-gradient(135deg, #4facfe, #00f2fe); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
+            <img src="assets/icon/free-icon-photo-1.png" alt="Галерея" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
+            Из галереи
+          </label>
+          <button class="upload-btn camera-btn" style="background: linear-gradient(135deg, #fa709a, #fee140); padding: 12px 24px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" onclick="startPostRegCamera()">
+            <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
+            Сделать фото
+          </button>
+        </div>
+        <input type="file" id="post-reg-avatar" accept="image/*" style="display: none;">
+        <div style="display: flex; gap: 15px; justify-content: center;">
+          <button class="btn cancel-btn" onclick="skipPostRegPhoto()">Пропустить</button>
+          <button class="btn save-btn" onclick="continuePostReg()">Продолжить</button>
+        </div>
       </div>
     </div>
   </div>
@@ -290,6 +395,7 @@
 </button>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="emailjs-service.js"></script>
 <script src="email.js"></script>
 <script src="script.js"></script>
 </body>

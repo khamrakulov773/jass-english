@@ -414,6 +414,42 @@ const LEVELS = {
           ["I want an apple please.", "Я хочу яблоко, пожалуйста."],
         ],
       },
+      {
+        title: "Present Continuous — настоящее длительное",
+        rule: "Используем для действий, которые происходят <strong>прямо сейчас</strong>.\nФорма: <em>am/is/are + глагол-ing</em>",
+        tip: "⏰ Слова-маркеры: now, right now, at the moment, look!, listen!",
+        examples: [
+          ["I am reading a book now.", "Я сейчас читаю книгу."],
+          ["She is cooking dinner.", "Она готовит ужин."],
+          ["They are playing football.", "Они играют в футбол."],
+          ["What are you doing?", "Что ты делаешь?"],
+          ["He is not sleeping.", "Он не спит."],
+        ],
+      },
+      {
+        title: "Have got / Has got — иметь",
+        rule: "Используем чтобы сказать, что у кого-то <strong>есть</strong> что-то.\n<em>I / You / We / They + have got</em>\n<em>He / She / It + has got</em>",
+        tip: "💡 В разговорной речи часто просто have/has: I have a dog.",
+        examples: [
+          ["I have got a new phone.", "У меня есть новый телефон."],
+          ["She has got two sisters.", "У неё есть две сестры."],
+          ["Have you got a pen?", "У тебя есть ручка?"],
+          ["We haven't got any milk.", "У нас нет молока."],
+          ["He has got a big house.", "У него есть большой дом."],
+        ],
+      },
+      {
+        title: "Предлоги места — In / On / At",
+        rule: "<strong>IN</strong> — внутри (in the box, in a city)\n<strong>ON</strong> — на поверхности (on the table, on the wall)\n<strong>AT</strong> — в точке (at home, at school, at the door)",
+        tip: "🔑 IN a room, ON a surface, AT a point/place",
+        examples: [
+          ["The keys are in the bag.", "Ключи в сумке."],
+          ["The book is on the table.", "Книга на столе."],
+          ["She is at school.", "Она в школе."],
+          ["We live in London.", "Мы живём в Лондоне."],
+          ["I'll meet you at the station.", "Я встречу тебя на вокзале."],
+        ],
+      },
     ],
     dialogues: [
       {
@@ -739,6 +775,42 @@ const LEVELS = {
           ["She is the smartest student.", "Она самая умная ученица."],
         ],
       },
+      {
+        title: "Future — Going to / Will",
+        rule: "<strong>Going to</strong> — план, намерение (уже решили)\n<strong>Will</strong> — решение прямо сейчас, обещание, прогноз",
+        tip: "🔮 I think it will rain. / I'm going to visit my parents this weekend.",
+        examples: [
+          ["I am going to buy a new car.", "Я собираюсь купить новую машину."],
+          ["It will rain tomorrow.", "Завтра будет дождь."],
+          ["She is going to study medicine.", "Она собирается изучать медицину."],
+          ["I'll help you with that.", "Я помогу тебе с этим."],
+          ["Are you going to come to the party?", "Ты собираешься прийти на вечеринку?"],
+        ],
+      },
+      {
+        title: "Притяжательный падеж — Possessive 's",
+        rule: "Добавляем <strong>'s</strong> к существительному, чтобы показать принадлежность.\nМножественное число на -s: только апостроф <strong>'</strong>",
+        tip: "💡 Tom's car — машина Тома. The girls' room — комната девочек.",
+        examples: [
+          ["This is Anna's bag.", "Это сумка Анны."],
+          ["My brother's phone is new.", "Телефон моего брата новый."],
+          ["The children's toys are on the floor.", "Игрушки детей на полу."],
+          ["That is my parents' house.", "Это дом моих родителей."],
+          ["Whose book is this? It's Ali's.", "Чья это книга? Это книга Али."],
+        ],
+      },
+      {
+        title: "Модальные глаголы — Can / Must / Should",
+        rule: "<strong>Can</strong> — умение, возможность\n<strong>Must</strong> — обязанность, строгое правило\n<strong>Should</strong> — совет, рекомендация",
+        tip: "⚖️ Must — сильно нужно. Should — просто совет.",
+        examples: [
+          ["I can swim very well.", "Я умею хорошо плавать."],
+          ["You must wear a seatbelt.", "Ты обязан пристегнуть ремень."],
+          ["You should see a doctor.", "Тебе следует сходить к врачу."],
+          ["We must not be late.", "Мы не должны опаздывать."],
+          ["Can you help me, please?", "Можешь мне помочь, пожалуйста?"],
+        ],
+      },
     ],
     dialogues: [
       {
@@ -1013,6 +1085,42 @@ const LEVELS = {
           ["She didn't use to like coffee.", "Она раньше не любила кофе."],
         ],
       },
+      {
+        title: "Будущее время — Will / Going to / Present Continuous",
+        rule: "<strong>Will</strong> — прогноз, решение сейчас\n<strong>Going to</strong> — план, намерение\n<strong>Present Continuous</strong> — уже договорённая встреча/событие",
+        tip: "📅 I'm meeting John at 5 (уже договорились) vs I will meet him someday (прогноз).",
+        examples: [
+          ["I think she will pass the exam.", "Я думаю, она сдаст экзамен."],
+          ["We are going to move to another city.", "Мы собираемся переехать в другой город."],
+          ["I'm having dinner with them tonight.", "Я ужинаю с ними сегодня вечером."],
+          ["Will you call me later?", "Ты позвонишь мне позже?"],
+          ["He isn't going to change his mind.", "Он не собирается менять своё мнение."],
+        ],
+      },
+      {
+        title: "Относительные придаточные — Who / Which / That",
+        rule: "<strong>Who</strong> — для людей\n<strong>Which</strong> — для предметов/животных\n<strong>That</strong> — для людей и предметов (в разговорной речи)",
+        tip: "🔗 Соединяем два предложения в одно с помощью relative clauses.",
+        examples: [
+          ["The man who called you is my uncle.", "Мужчина, который тебе звонил, — мой дядя."],
+          ["This is the book which I read last year.", "Это книга, которую я читал в прошлом году."],
+          ["I know a girl that speaks four languages.", "Я знаю девушку, которая говорит на четырёх языках."],
+          ["The car which broke down is fixed now.", "Машина, которая сломалась, теперь починена."],
+          ["That's the teacher who helped me.", "Это тот учитель, который мне помог."],
+        ],
+      },
+      {
+        title: "Условные предложения — First & Second Conditional",
+        rule: "<strong>First Conditional</strong> (реально) — If + Present Simple, will + инфинитив\n<strong>Second Conditional</strong> (нереально/гипотетично) — If + Past Simple, would + инфинитив",
+        tip: "🎯 First — вполне возможно. Second — фантазия, маловероятно.",
+        examples: [
+          ["If it rains, I will stay home.", "Если пойдёт дождь, я останусь дома."],
+          ["If I had more money, I would travel more.", "Если бы у меня было больше денег, я бы больше путешествовал."],
+          ["If she studies hard, she will pass.", "Если она будет усердно учиться, она сдаст."],
+          ["If I were you, I would apologize.", "На твоём месте я бы извинился."],
+          ["What would you do if you won the lottery?", "Что бы ты сделал, если бы выиграл в лотерею?"],
+        ],
+      },
     ],
     dialogues: [
       {
@@ -1208,6 +1316,42 @@ const LEVELS = {
           ["The long day was tiring.", "Длинный день был утомительным."],
           ["He's excited about the trip.", "Он радуется поездке."]
         ]
+      },
+      {
+        title: "Gerund vs Infinitive — -ing vs to do",
+        rule: "Некоторые глаголы требуют <strong>gerund (-ing)</strong>: enjoy, avoid, finish, suggest\nДругие требуют <strong>to + infinitive</strong>: want, decide, promise, hope\nНекоторые меняют смысл: <em>stop doing</em> vs <em>stop to do</em>",
+        tip: "📌 I stopped smoking (бросил курить) ≠ I stopped to smoke (остановился, чтобы покурить).",
+        examples: [
+          ["I enjoy reading books.", "Мне нравится читать книги."],
+          ["She decided to leave early.", "Она решила уйти пораньше."],
+          ["He avoids talking about it.", "Он избегает говорить об этом."],
+          ["They promised to help us.", "Они пообещали нам помочь."],
+          ["Remember to lock the door.", "Не забудь закрыть дверь на замок."],
+        ],
+      },
+      {
+        title: "Косвенные вопросы — Reported Questions",
+        rule: "В косвенных вопросах <strong>прямой порядок слов</strong> (без инверсии).\n<em>Yes/No</em> вопросы — вводим через <strong>if/whether</strong>\n<em>Wh-</em> вопросы — сохраняем вопросительное слово",
+        tip: "🔁 Времена сдвигаются назад: Present → Past, как и в обычной косвенной речи.",
+        examples: [
+          ["She asked me where I lived.", "Она спросила меня, где я живу."],
+          ["He wanted to know if I was coming.", "Он хотел знать, приду ли я."],
+          ["They asked what time it was.", "Они спросили, который час."],
+          ["I asked her whether she liked the film.", "Я спросил её, понравился ли ей фильм."],
+          ["He asked why I was late.", "Он спросил, почему я опоздал."],
+        ],
+      },
+      {
+        title: "Каузативная форма — Have/Get Something Done",
+        rule: "Используем, когда кто-то <strong>делает что-то для нас</strong> (не мы сами).\nФорма: <em>have/get + объект + причастие прошедшего времени</em>",
+        tip: "🔧 I cut my hair (сам постригся) vs I had my hair cut (постригся в парикмахерской).",
+        examples: [
+          ["I had my car repaired yesterday.", "Мне вчера починили машину."],
+          ["She is getting her house painted.", "Ей красят дом."],
+          ["We had our photos taken at the studio.", "Нам сделали фото в студии."],
+          ["He needs to get his eyes checked.", "Ему нужно проверить зрение."],
+          ["They had the documents translated.", "Им перевели документы."],
+        ],
       }
     ],
     dialogues: [
@@ -1408,6 +1552,42 @@ const LEVELS = {
           ["She looks as if she were tired.", "Она выглядит так, как будто устала."],
           ["The manager demanded that everyone attend.", "Менеджер потребовал, чтобы все присутствовали."]
         ]
+      },
+      {
+        title: "Смешанные условные — Mixed Conditionals",
+        rule: "Соединяют разные времена: прошлое условие → настоящий результат, или наоборот.\n<em>If + Past Perfect, would + инфинитив</em> (прошлое → настоящее)\n<em>If + Past Simple, would have + причастие</em> (настоящее → прошлое)",
+        tip: "🧩 If I had studied medicine, I would be a doctor now.",
+        examples: [
+          ["If she had taken that job, she would be rich now.", "Если бы она взяла ту работу, она была бы богата сейчас."],
+          ["If I weren't so busy, I would have gone to the party.", "Если бы я не был так занят, я бы пошёл на вечеринку."],
+          ["If he had listened, he wouldn't be in trouble now.", "Если бы он послушал, он бы сейчас не был в беде."],
+          ["If they were more careful, the accident wouldn't have happened.", "Если бы они были осторожнее, аварии бы не случилось."],
+          ["If I hadn't missed the flight, I would be there now.", "Если бы я не опоздал на рейс, я был бы уже там."],
+        ],
+      },
+      {
+        title: "Эмфатическое Do/Does/Did",
+        rule: "Используем <strong>do/does/did</strong> перед глаголом для <strong>усиления и акцента</strong> в утвердительных предложениях.",
+        tip: "🔥 I do agree with you! — Я действительно согласен с тобой!",
+        examples: [
+          ["I do like this song.", "Мне правда нравится эта песня."],
+          ["She does understand the problem.", "Она действительно понимает проблему."],
+          ["He did warn us about the risks.", "Он и правда предупреждал нас о рисках."],
+          ["We do appreciate your help.", "Мы очень ценим вашу помощь."],
+          ["It does matter to me.", "Это действительно важно для меня."],
+        ],
+      },
+      {
+        title: "Номинализация — Nominalization",
+        rule: "Превращение глаголов/прилагательных в <strong>существительные</strong> для формального, академического стиля.\n<em>decide → decision, arrive → arrival, popular → popularity</em>",
+        tip: "🎓 Часто используется в академических и деловых текстах вместо разговорных глагольных конструкций.",
+        examples: [
+          ["The decision was made quickly.", "Решение было принято быстро."],
+          ["Her arrival surprised everyone.", "Её прибытие всех удивило."],
+          ["The popularity of the app increased.", "Популярность приложения выросла."],
+          ["There was a significant improvement in results.", "Произошло значительное улучшение результатов."],
+          ["The government announced the implementation of new rules.", "Правительство объявило о введении новых правил."],
+        ],
       }
     ],
     dialogues: [
@@ -1556,6 +1736,42 @@ const LEVELS = {
           ["It's a beautiful day! (informal)", "Красивый день!"],
           ["It is a beautiful day. (formal)", "День прекрасный."]
         ]
+      },
+      {
+        title: "Фронтирование — Fronting for Emphasis",
+        rule: "Вынесение элемента предложения в <strong>начало</strong> для стилистического акцента — характерно для литературного и риторического стиля.",
+        tip: "✨ Little did I know... / Never have I seen such a thing.",
+        examples: [
+          ["Little did she know what awaited her.", "Она и не подозревала, что её ждёт."],
+          ["Never have I seen such courage.", "Никогда я не видел такой смелости."],
+          ["Gone are the days of simple living.", "Прошли те дни простой жизни."],
+          ["Such was his charm that everyone loved him.", "Таково было его обаяние, что все его любили."],
+          ["Only later did he realize his mistake.", "Лишь позже он осознал свою ошибку."],
+        ],
+      },
+      {
+        title: "Дискурсивные маркеры — Discourse Markers",
+        rule: "Слова и фразы, организующие речь и связывающие идеи в <strong>формальном и академическом</strong> стиле: furthermore, nevertheless, arguably, on the whole.",
+        tip: "🧵 Помогают выстроить логичную и связную аргументацию в письме и речи.",
+        examples: [
+          ["Furthermore, the data supports this theory.", "Более того, данные подтверждают эту теорию."],
+          ["Nevertheless, the plan went ahead.", "Тем не менее план был реализован."],
+          ["Arguably, this is the best solution.", "Можно утверждать, что это лучшее решение."],
+          ["On the whole, the results were positive.", "В целом результаты были положительными."],
+          ["That said, there are exceptions.", "При этом есть исключения."],
+        ],
+      },
+      {
+        title: "Хеджирование — Hedging Language",
+        rule: "Смягчение категоричности утверждений с помощью модальных слов и конструкций: <em>seems to, tends to, it could be argued, to some extent</em>.",
+        tip: "🕊️ Используется в академическом письме, чтобы избежать чрезмерной уверенности.",
+        examples: [
+          ["It could be argued that the policy failed.", "Можно было бы утверждать, что политика провалилась."],
+          ["The results seem to suggest a correlation.", "Результаты, похоже, указывают на связь."],
+          ["This tends to happen in larger organizations.", "Это, как правило, происходит в крупных организациях."],
+          ["To some extent, the theory is valid.", "В некоторой степени теория верна."],
+          ["It is generally believed that the effect is temporary.", "Принято считать, что эффект временный."],
+        ],
       }
     ],
     dialogues: [
@@ -1603,6 +1819,7 @@ function openLevel(level) {
   currentLevel = level;
   document.getElementById('landing').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
+  document.body.classList.add('screen-app');
   document.documentElement.style.setProperty('--accent', LEVELS[level].color);
   document.getElementById('sb-badge').textContent = level;
   updateAvatarDisplay(); // Update sidebar avatar
@@ -1618,6 +1835,20 @@ function openLevel(level) {
 function backToLanding() {
   document.getElementById('app').classList.add('hidden');
   document.getElementById('landing').classList.remove('hidden');
+  document.body.classList.remove('screen-app');
+  // Сбрасываем открытое мобильное меню, чтобы затемнение и бургер не оставались активными
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('backdrop');
+  const btn = document.getElementById('menu-toggle-btn');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  if (btn) btn.classList.remove('open');
+}
+
+// Кнопка "На выбор уровней" в сайдбаре — просто возвращает на экран выбора уровня,
+// не разлогинивая пользователя (в отличие от logoutUser)
+function logoutToLanding() {
+  backToLanding();
 }
 
 function goto(section) {
@@ -2206,12 +2437,8 @@ function switchAuthTab(tab) {
   document.getElementById('login-message').className = 'auth-message';
   document.getElementById('register-message').className = 'auth-message';
   
-  // Reset avatar preview when switching to register
+  // Reset avatar when switching to register
   if (tab === 'register') {
-    const preview = document.getElementById('register-avatar-preview');
-    if (preview) preview.innerHTML = '👤';
-    const input = document.getElementById('register-avatar');
-    if (input) input.value = '';
     if (typeof window.currentAvatar !== 'undefined') {
       window.currentAvatar = null;
     }
@@ -2222,17 +2449,17 @@ function switchAuthTab(tab) {
 }
 
 function handleLogin() {
-  const email = document.getElementById('login-email').value;
+  const loginInput = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
   const msgDiv = document.getElementById('login-message');
   
-  if (!email || !password) {
+  if (!loginInput || !password) {
     msgDiv.textContent = 'Пожалуйста, заполните все поля!';
     msgDiv.className = 'auth-message error';
     return;
   }
   
-  const result = loginUser(email, password);
+  const result = loginUser(loginInput, password);
   if (result.success) {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message success';
@@ -2245,14 +2472,14 @@ function handleLogin() {
 
 async function handleRegister() {
   const name = document.getElementById('register-name').value;
-  const nicknameInput = document.getElementById('register-nickname').value;
+  const lastName = document.getElementById('register-lastname').value;
   const email = document.getElementById('register-email').value;
   const password = document.getElementById('register-password').value;
   const confirm = document.getElementById('register-confirm').value;
   const msgDiv = document.getElementById('register-message');
   
   if (!name || !email || !password || !confirm) {
-    msgDiv.textContent = 'Пожалуйста, заполните все поля!';
+    msgDiv.textContent = 'Пожалуйста, заполните все обязательные поля!';
     msgDiv.className = 'auth-message error';
     return;
   }
@@ -2263,17 +2490,11 @@ async function handleRegister() {
     return;
   }
   
-  // Process nickname to add @ prefix
-  let nickname = nicknameInput.trim();
-  if (nickname && !nickname.startsWith('@')) {
-    nickname = '@' + nickname;
-  }
-  
-  const result = await registerUser(email, password, name, nickname);
+  const result = await registerUser(email, password, name, lastName);
   if (result.success) {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message success';
-    setTimeout(() => showLanding(), 800);
+    setTimeout(() => showPostRegModal(), 800);
   } else {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message error';
@@ -2283,6 +2504,7 @@ async function handleRegister() {
 function showLanding() {
   document.getElementById('auth-screen').classList.add('hidden');
   document.getElementById('landing').classList.remove('hidden');
+  document.body.classList.remove('screen-app');
   const userInfoDiv = document.getElementById('user-info');
   if (currentUser) {
     let displayName = currentUser.nickname || currentUser.name;
@@ -2333,6 +2555,7 @@ function showAuth() {
   document.getElementById('auth-screen').classList.remove('hidden');
   document.getElementById('landing').classList.add('hidden');
   document.getElementById('app').classList.add('hidden');
+  document.body.classList.remove('screen-app');
 }
 
 // Check if user is logged in on page load
