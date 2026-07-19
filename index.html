@@ -5,52 +5,166 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JASS-ENGLISH — Все уровни английского</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ext-style.css">
+  <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="theme-milk.css">
   <link rel="icon" href="assets/icon/faviction/favicon-32.png" type="image/png">
   <link rel="shortcut icon" href="assets/icon/faviction/favicon-32.png" type="image/png">
 </head>
 <body>
 
+<!-- Friendly site mascot: a little original spider that drops in on a thread -->
+<div class="site-spider" id="siteSpider" onclick="siteSpiderRetract()">
+  <div class="spider-thread"></div>
+  <svg class="spider-body" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="30" cy="34" rx="12" ry="10" fill="var(--accent)"/>
+    <circle cx="30" cy="20" r="8" fill="var(--accent)"/>
+    <circle cx="27" cy="19" r="1.6" fill="#fff"/>
+    <circle cx="33" cy="19" r="1.6" fill="#fff"/>
+    <g stroke="var(--accent2)" stroke-width="2.4" stroke-linecap="round" fill="none">
+      <path d="M20 30 C10 26, 6 20, 4 14"/>
+      <path d="M20 34 C8 34, 4 34, 2 34"/>
+      <path d="M20 38 C10 42, 6 46, 4 52"/>
+      <path d="M40 30 C50 26, 54 20, 56 14"/>
+      <path d="M40 34 C52 34, 56 34, 58 34"/>
+      <path d="M40 38 C50 42, 54 46, 56 52"/>
+    </g>
+  </svg>
+</div>
+
 <!-- ═════════════ AUTH SCREEN ═════════════ -->
-<div id="auth-screen">
-  <div class="brand"><img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 300px; height: auto;"></div>
-  <div class="auth-card">
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchAuthTab('login')">Вход</button>
-      <button class="auth-tab" onclick="switchAuthTab('register')">Регистрация</button>
+<div id="auth-screen" class="hidden">
+  <!-- Header with burger menu -->
+  <header class="auth-header">
+    <div class="auth-header-inner">
+      <a href="#top" class="auth-header-brand" onclick="hideAuthScreen()">
+        <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="auth-header-logo">
+      </a>
+      <nav class="auth-header-nav">
+        <a href="#about" onclick="hideAuthScreen()">Возможности</a>
+        <a href="#courses" onclick="hideAuthScreen()">Уровни</a>
+        <a href="#coding" onclick="hideAuthScreen()">Программирование</a>
+        <a href="#reviews" onclick="hideAuthScreen()">Отзывы</a>
+        <a href="#contact" onclick="hideAuthScreen()">Контакты</a>
+      </nav>
+      <button class="auth-header-burger" id="authBurger" aria-label="Открыть меню" onclick="toggleAuthMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile nav -->
+    <nav class="auth-mobile-nav" id="authMobileNav">
+      <a href="#about" onclick="hideAuthScreen(); toggleAuthMenu();">Возможности</a>
+      <a href="#courses" onclick="hideAuthScreen(); toggleAuthMenu();">Уровни</a>
+      <a href="#coding" onclick="hideAuthScreen(); toggleAuthMenu();">Программирование</a>
+      <a href="#reviews" onclick="hideAuthScreen(); toggleAuthMenu();">Отзывы</a>
+      <a href="#contact" onclick="hideAuthScreen(); toggleAuthMenu();">Контакты</a>
+    </nav>
+  </header>
+
+  <!-- Main split content -->
+  <div class="auth-main">
+    <!-- Left visual section -->
+    <div class="auth-visual-section">
+      <div class="auth-visual-inner">
+        <img src="assets/icon/logo/logo-horizontal.png" alt="JASS" class="auth-visual-logo">
+        <h1 class="auth-visual-title">Добро пожаловать!</h1>
+        <p class="auth-visual-subtitle">Выберите направление, чтобы начать обучение</p>
+        <div class="auth-track-selector">
+          <button class="auth-track-btn active" data-track="english">
+            <span class="auth-track-icon">🇬🇧</span>
+            <span class="auth-track-name">JASS-ENGLISH</span>
+            <span class="auth-track-desc">Изучайте английский от A1 до C2</span>
+          </button>
+          <button class="auth-track-btn" data-track="coding">
+            <span class="auth-track-icon">💻</span>
+            <span class="auth-track-name">JASS-CODING</span>
+            <span class="auth-track-desc">Изучайте программирование (скоро)</span>
+          </button>
+        </div>
+        <div class="auth-visual-badge">
+          <span class="auth-visual-star">★</span>
+          <span class="auth-visual-text">4.9/5 Рейтинг платформы</span>
+        </div>
+      </div>
+      <div class="auth-visual-red-bottom"></div>
     </div>
 
-    <!-- Login Form -->
-    <div id="login-form" class="auth-form">
-      <input type="text" id="login-email" placeholder="Email или никнейм">
-      <input type="password" id="login-password" placeholder="Пароль">
-      <div id="login-message" class="auth-message"></div>
-      <button class="btn" onclick="handleLogin()">Войти</button>
-    </div>
+    <!-- Right form section -->
+    <div class="auth-form-section">
+      <div class="auth-form-container">
+        <div class="auth-form-welcome">
+          <div class="auth-form-welcome-line"></div>
+          <span class="auth-form-welcome-text" id="authWelcomeText">Добро пожаловать в JASS-ENGLISH</span>
+        </div>
+        
+        <h1 class="auth-form-heading" id="authHeading">Вход в аккаунт</h1>
+        <p class="auth-form-subtitle" id="authSubtitle">Войдите, чтобы открыть профиль и продолжить обучение.</p>
 
-    <!-- Registration Form -->
-    <div id="register-form" class="auth-form hidden">
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Имя</label>
-        <input type="text" id="register-name" placeholder="Ваше имя" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
+        <!-- Login Form -->
+        <div id="login-form" class="auth-form">
+          <div class="field-group">
+            <label class="field-label">Электронная почта</label>
+            <input type="text" id="login-email" placeholder="you@example.com">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Пароль</label>
+            <input type="password" id="login-password" placeholder="Введите пароль">
+          </div>
+          <div id="login-message" class="auth-message"></div>
+          <button class="btn btn-large btn-block" onclick="handleLogin()">Войти</button>
+          <div class="auth-divider"><span>или</span></div>
+          <button type="button" class="btn-google" onclick="handleGoogleAuthClick()">
+            <svg class="google-g" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4c-7.6 0-14.2 4.3-17.7 10.7z"/>
+              <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.2 26.7 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.7 39.6 16.3 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.3 5.3C39.9 36.9 44 31 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+            </svg>
+            Продолжить через Google
+          </button>
+          <p class="auth-switch">
+            <span class="auth-switch-gray">Нет аккаунта?</span>
+            <a href="#" onclick="switchAuthTab('register'); return false;" class="auth-switch-red">Создать аккаунт</a>
+          </p>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register-form" class="auth-form hidden">
+          <div class="field-group">
+            <label class="field-label">Имя</label>
+            <input type="text" id="register-name" placeholder="Ваше имя">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Электронная почта</label>
+            <input type="email" id="register-email" placeholder="email@example.com">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Пароль</label>
+            <input type="password" id="register-password" placeholder="Придумайте пароль">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Подтвердите пароль</label>
+            <input type="password" id="register-confirm-password" placeholder="Повторите пароль">
+          </div>
+          <div id="register-message" class="auth-message"></div>
+          <button class="btn btn-large btn-block" onclick="handleRegister()">Зарегистрироваться</button>
+          <div class="auth-divider"><span>или</span></div>
+          <button type="button" class="btn-google" onclick="handleGoogleAuthClick()">
+            <svg class="google-g" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.5 6.1 29.5 4 24 4c-7.6 0-14.2 4.3-17.7 10.7z"/>
+              <path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.2 26.7 36 24 36c-5.3 0-9.7-3.3-11.3-8l-6.6 5.1C9.7 39.6 16.3 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.3 5.3C39.9 36.9 44 31 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+            </svg>
+            Продолжить через Google
+          </button>
+          <p class="auth-switch">
+            <span class="auth-switch-gray">Уже есть аккаунт?</span>
+            <a href="#" onclick="switchAuthTab('login'); return false;" class="auth-switch-red">Войти</a>
+          </p>
+        </div>
       </div>
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Фамилия</label>
-        <input type="text" id="register-lastname" placeholder="Ваша фамилия" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
-      </div>
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
-        <input type="email" id="register-email" placeholder="your@email.com" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
-      </div>
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Пароль</label>
-        <input type="password" id="register-password" placeholder="••••••••" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
-      </div>
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; color: var(--text2); font-size: 14px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Подтвердите пароль</label>
-        <input type="password" id="register-confirm" placeholder="••••••••" style="width: 100%; padding: 14px 18px; border: 2px solid var(--border); border-radius: 12px; background: var(--bg3); color: var(--text); font-size: 16px;">
-      </div>
-      <div id="register-message" class="auth-message"></div>
-      <button class="btn" onclick="handleRegister()" style="width: 100%; padding: 14px; font-size: 16px; font-weight: 600; border-radius: 12px;">Зарегистрироваться</button>
     </div>
   </div>
 </div>
@@ -69,7 +183,7 @@
       </div>
       <div class="editor-controls">
         <button class="editor-btn capture-btn" id="camera-capture-btn" onclick="captureFromCamera()" style="display: none;">
-          <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;">
+          <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" class="action-icon">
           Сделать фото
         </button>
         <button class="editor-btn" onclick="rotateImage(-90)">↺ Поворот</button>
@@ -81,53 +195,333 @@
 </div>
     
 <!-- ═════════════ LANDING ═════════════ -->
-<div id="landing" class="hidden">
-  <div class="brand"><img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 300px; height: auto;"></div>
-  <div class="brand-sub">Полный курс английского языка · Все уровни</div>
-  <div class="user-info" id="user-info">
-    <div class="user-avatar" id="landing-user-avatar">👤</div>
-    <span id="user-name"></span>
-    <button class="btn" style="background: var(--accent);" onclick="openEditProfile()">Редактировать</button>
-    <button class="btn" style="background:var(--text2);" onclick="logoutUser()">Выйти</button>
+<div id="landing">
+
+  <div class="lp-bg" aria-hidden="true">
+    <div class="lp-blob lp-blob-1"></div>
+    <div class="lp-blob lp-blob-2"></div>
+    <div class="lp-blob lp-blob-3"></div>
+    <div class="lp-grid"></div>
   </div>
-  <div class="level-grid">
-    <div class="level-card lc-a1" onclick="openLevel('A1')">
-      <div class="lc-badge" style="color:#22d37a">A1</div>
-      <div class="lc-name">Beginner</div>
-      <div class="lc-desc">Начинающий. Базовые слова, приветствия, числа, семья</div>
-      <div class="lc-words">250+ слов</div>
+
+  <!-- ── NAV ── -->
+  <header class="landing-header" id="landingHeader">
+    <div class="container header-content">
+      <a href="#top" class="header-brand">
+        <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="header-logo">
+      </a>
+      <nav class="header-nav">
+        <a href="#about" class="nav-link">Возможности</a>
+        <a href="#courses" class="nav-link">Уровни</a>
+        <a href="#coding" class="nav-link">Программирование<span class="nav-soon">скоро</span></a>
+        <a href="#reviews" class="nav-link">Отзывы</a>
+        <a href="#contact" class="nav-link">Контакты</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-header" onclick="switchAuthTab('login'); showAuthScreen();">Войти</button>
+        <button class="btn btn-header" onclick="showAuthScreen()">Начать бесплатно</button>
+      </div>
+      <button class="lp-burger" id="lpBurger" aria-label="Открыть меню" onclick="toggleLandingNav()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div class="level-card lc-a2" onclick="openLevel('A2')">
-      <div class="lc-badge" style="color:#22d3c8">A2</div>
-      <div class="lc-name">Elementary</div>
-      <div class="lc-desc">Элементарный. Прошедшее время, быт, покупки, путешествия</div>
-      <div class="lc-words">350+ слов</div>
+    <nav class="lp-mobile-nav" id="lpMobileNav">
+      <a href="#about" onclick="closeLandingNav()">Возможности</a>
+      <a href="#courses" onclick="closeLandingNav()">Уровни</a>
+      <a href="#coding" onclick="closeLandingNav()">Программирование</a>
+      <a href="#reviews" onclick="closeLandingNav()">Отзывы</a>
+      <a href="#contact" onclick="closeLandingNav()">Контакты</a>
+      <div class="lp-mobile-actions">
+        <button class="btn btn-secondary" onclick="switchAuthTab('login'); showAuthScreen(); closeLandingNav();">Войти</button>
+        <button class="btn" onclick="showAuthScreen(); closeLandingNav();">Начать</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+      <div class="hero-content reveal">
+        <div class="hero-eyebrow"><span class="pulse-dot"></span> Совсем скоро — курс программирования</div>
+        <h1 class="hero-title">Английский, который <span class="grad-text">входит в привычку</span></h1>
+        <p class="hero-subtitle">Слова, грамматика, произношение, аудирование и живые тесты — всё в одном месте, по уровням CEFR от A1 до C2. А в будущем на платформе появится ещё и программирование.</p>
+        <ul class="hero-features">
+          <li><i class="fas fa-layer-group"></i> 6 уровней — от новичка до носителя языка</li>
+          <li><i class="fas fa-microphone"></i> Speaking с распознаванием речи</li>
+          <li><i class="fas fa-headphones-simple"></i> Listening-задания с живой озвучкой</li>
+          <li><i class="fas fa-code"></i> Скоро: курс программирования на платформе</li>
+        </ul>
+        <div class="hero-buttons">
+          <button class="btn btn-large" onclick="openPlacementModal()">Начать бесплатно</button>
+          <button class="btn btn-large btn-secondary" onclick="switchAuthTab('login'); showAuthScreen();">Войти</button>
+        </div>
+        <div class="user-info" id="user-info" style="display:none">
+          <div class="user-avatar" id="landing-user-avatar">👤</div>
+          <span id="user-name"></span>
+          <button class="btn" style="background: var(--accent);" onclick="openEditProfile()"><i class="fas fa-edit" style="margin-right: 8px;"></i> Редактировать</button>
+          <button class="btn" style="background:var(--text2);" onclick="logoutUser()"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Выйти</button>
+        </div>
+        <div class="hero-stats" id="heroStats">
+          <div class="hero-stat"><span class="hero-stat-num" data-count="6">0</span><span class="hero-stat-label">уровней CEFR</span></div>
+          <div class="hero-stat"><span class="hero-stat-num" data-count="3700" data-source="words">0</span><span class="hero-stat-label">слов и фраз</span></div>
+          <div class="hero-stat"><span class="hero-stat-num" data-count="11">0</span><span class="hero-stat-label">разделов практики</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="hv-glow"></div>
+        <div class="hv-card">
+          <div class="hv-topbar"><span></span><span></span><span></span><div class="hv-title">practice.js</div></div>
+          <div class="hv-body">
+            <div class="hv-line"><span class="hv-prompt">EN&gt;</span><span id="hvTextEn"></span><span class="hv-cursor"></span></div>
+            <div class="hv-line hv-sub" id="hvTextRu"></div>
+          </div>
+        </div>
+        <div class="hv-chip hv-chip-1">a → a перевод</div>
+        <div class="hv-chip hv-chip-2">A1 → C2</div>
+        <div class="hv-chip hv-chip-3"><i class="fas fa-microphone"></i> Speaking</div>
+        <div class="hv-chip hv-chip-4"><i class="fas fa-code"></i> скоро</div>
+      </div>
     </div>
-    <div class="level-card lc-b1" onclick="openLevel('B1')">
-      <div class="lc-badge" style="color:#5b8dee">B1</div>
-      <div class="lc-name">Intermediate</div>
-      <div class="lc-desc">Средний. Разговорная речь, работа, мнения, будущее время</div>
-      <div class="lc-words">500+ слов</div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marqueeTrack"></div>
     </div>
-    <div class="level-card lc-b2" onclick="openLevel('B2')">
-      <div class="lc-badge" style="color:#9d6ef5">B2</div>
-      <div class="lc-name">Upper-Intermediate</div>
-      <div class="lc-desc">Выше среднего. Условные предложения, пассив, сложные темы</div>
-      <div class="lc-words">700+ слов</div>
+  </section>
+
+  <!-- ── ВОЗМОЖНОСТИ ── -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-eyebrow reveal">Возможности</div>
+      <h2 class="section-title reveal">Всё, чтобы заговорить свободно</h2>
+      <p class="section-desc reveal">Каждый раздел платформы отвечает за свой навык — от первого слова до уверенной беглой речи.</p>
+      <div class="about-grid">
+        <div class="about-card reveal reveal-stagger">
+          <div class="about-icon ic-red"><i class="fas fa-book"></i></div>
+          <h3>Словарь по темам</h3>
+          <p>Карточки слов по темам и уровням — отмечай выученное и следи за прогрессом в реальном времени.</p>
+        </div>
+        <div class="about-card reveal reveal-stagger">
+          <div class="about-icon ic-teal"><i class="fas fa-rotate"></i></div>
+          <h3>Глаголы</h3>
+          <p>Правильные и неправильные глаголы с озвучкой и тремя формами — V1, V2, V3.</p>
+        </div>
+        <div class="about-card reveal reveal-stagger">
+          <div class="about-icon ic-blue"><i class="fas fa-headphones-simple"></i></div>
+          <h3>Listening</h3>
+          <p>Слушай тексты и выполняй задания на понимание — как на настоящем языковом экзамене.</p>
+        </div>
+        <div class="about-card reveal reveal-stagger">
+          <div class="about-icon ic-purple"><i class="fas fa-microphone"></i></div>
+          <h3>Speaking</h3>
+          <p>Говори вслух — распознавание речи проверит произношение и подсветит слабые места.</p>
+        </div>
+        <div class="about-card reveal reveal-stagger">
+          <div class="about-icon ic-orange"><i class="fas fa-brain"></i></div>
+          <h3>Грамматика и тесты</h3>
+          <p>Разбирай правила и сразу закрепляй их тестами с мгновенной проверкой ответов.</p>
+        </div>
+        <div class="about-card reveal reveal-stagger">
+          <div class="about-icon ic-green"><i class="fas fa-calendar-check"></i></div>
+          <h3>План на 7 дней</h3>
+          <p>Расписание занятий по дням недели — учись без хаоса, шаг за шагом.</p>
+        </div>
+      </div>
     </div>
-    <div class="level-card lc-c1" onclick="openLevel('C1')">
-      <div class="lc-badge" style="color:#f0b429">C1</div>
-      <div class="lc-name">Advanced</div>
-      <div class="lc-desc">Продвинутый. Идиомы, академический язык, сложные структуры</div>
-      <div class="lc-words">900+ слов</div>
+  </section>
+
+  <!-- ── УРОВНИ ── -->
+  <section class="section section-gray" id="courses">
+    <div class="container">
+      <div class="section-eyebrow reveal">Уровни</div>
+      <h2 class="section-title reveal">Выбери свой уровень</h2>
+      <p class="section-desc reveal">Каждый уровень — отдельный набор слов, тем и упражнений. Прогресс сохраняется — можно вернуться в любой момент.</p>
+      <div class="level-grid">
+        <div class="level-card lc-a1 reveal reveal-stagger" onclick="openLevel('A1')">
+          <div class="lc-badge" style="color:#22d37a">A1</div>
+          <div class="lc-name">Beginner</div>
+          <div class="lc-desc">Начинающий. Базовые слова, приветствия, числа, семья</div>
+          <div class="lc-words">250+ слов</div>
+        </div>
+        <div class="level-card lc-a2 reveal reveal-stagger" onclick="openLevel('A2')">
+          <div class="lc-badge" style="color:#22d3c8">A2</div>
+          <div class="lc-name">Elementary</div>
+          <div class="lc-desc">Элементарный. Прошедшее время, быт, покупки, путешествия</div>
+          <div class="lc-words">350+ слов</div>
+        </div>
+        <div class="level-card lc-b1 reveal reveal-stagger" onclick="openLevel('B1')">
+          <div class="lc-badge" style="color:#5b8dee">B1</div>
+          <div class="lc-name">Intermediate</div>
+          <div class="lc-desc">Средний. Разговорная речь, работа, мнения, будущее время</div>
+          <div class="lc-words">500+ слов</div>
+        </div>
+        <div class="level-card lc-b2 reveal reveal-stagger" onclick="openLevel('B2')">
+          <div class="lc-badge" style="color:#9d6ef5">B2</div>
+          <div class="lc-name">Upper-Intermediate</div>
+          <div class="lc-desc">Выше среднего. Условные предложения, пассив, сложные темы</div>
+          <div class="lc-words">700+ слов</div>
+        </div>
+        <div class="level-card lc-c1 reveal reveal-stagger" onclick="openLevel('C1')">
+          <div class="lc-badge" style="color:#f0b429">C1</div>
+          <div class="lc-name">Advanced</div>
+          <div class="lc-desc">Продвинутый. Идиомы, академический язык, сложные структуры</div>
+          <div class="lc-words">900+ слов</div>
+        </div>
+        <div class="level-card lc-c2 reveal reveal-stagger" onclick="openLevel('C2')">
+          <div class="lc-badge" style="color:#f05252">C2</div>
+          <div class="lc-name">Mastery</div>
+          <div class="lc-desc">Мастерство. Носитель языка. Фразеологизмы, нюансы</div>
+          <div class="lc-words">1000+ слов</div>
+        </div>
+      </div>
+      <p class="levels-note reveal">Нажми на уровень — не нужно ничего скачивать, всё открывается прямо в браузере.</p>
     </div>
-    <div class="level-card lc-c2" onclick="openLevel('C2')">
-      <div class="lc-badge" style="color:#f05252">C2</div>
-      <div class="lc-name">Mastery</div>
-      <div class="lc-desc">Мастерство. Носитель языка. Фразеологизмы, нюансы</div>
-      <div class="lc-words">1000+ слов</div>
+  </section>
+
+  <!-- ── ПРОГРАММИРОВАНИЕ (скоро) ── -->
+  <section class="coding-teaser" id="coding">
+    <div class="coding-particles" aria-hidden="true"></div>
+    <div class="container coding-inner">
+      <div class="coding-badge reveal">Скоро на платформе</div>
+      <h2 class="coding-title reveal">Следующий шаг — <span class="grad-text-alt">программирование</span></h2>
+      <p class="coding-desc reveal">Мы готовим курс, где английский и код будут учиться вместе: термины, документация и логика — на языке, на котором говорит вся индустрия разработки.</p>
+      <div class="coding-langs reveal">
+        <span class="lang-chip"><i class="fab fa-html5"></i> HTML</span>
+        <span class="lang-chip"><i class="fab fa-css3-alt"></i> CSS</span>
+        <span class="lang-chip"><i class="fab fa-js"></i> JavaScript</span>
+        <span class="lang-chip"><i class="fab fa-python"></i> Python</span>
+      </div>
+      <button class="btn btn-large coding-btn reveal" onclick="openPlacementModal('programming')">Узнать первым о запуске</button>
     </div>
-  </div>
+  </section>
+
+  <!-- ── ОТЗЫВЫ ── -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <div class="section-eyebrow reveal">Отзывы</div>
+      <h2 class="section-title reveal">Что говорят ученики</h2>
+      <p class="section-desc reveal">Реальные впечатления от занятий на платформе.</p>
+      <div class="reviews-grid">
+        <div class="review-card reveal reveal-stagger">
+          <div class="review-avatar">И.И</div>
+          <div class="review-name">И. Исфандиёр<span class="review-level">B2</span></div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Прошёл путь до B2 без скучной зубрёжки — карточки и тесты держат в тонусе каждый день.</p>
+        </div>
+        <div class="review-card reveal reveal-stagger">
+          <div class="review-avatar">Ф.К</div>
+          <div class="review-name">Ф. Кирилл<span class="review-level">B2</span></div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Больше всего понравился Speaking — сразу слышно, где я произношу слова неправильно.</p>
+        </div>
+        <div class="review-card reveal reveal-stagger">
+          <div class="review-avatar">Х.И</div>
+          <div class="review-name">Х. Исрофил<span class="review-level">B2</span></div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Удобно, что прогресс сохраняется — можно заниматься по 15 минут в день и видеть результат.</p>
+        </div>
+        <div class="review-card reveal reveal-stagger">
+          <div class="review-avatar">Х.Р</div>
+          <div class="review-name">Х. Рустам<span class="review-level review-level-c1">C1</span></div>
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">Жду курс программирования — идея объединить английский и код с самого начала звучит очень сильно.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-band">
+    <div class="container">
+      <h2 class="reveal">Готов начать говорить по-английски?</h2>
+      <p class="reveal">Регистрация занимает меньше минуты. Первый уровень — бесплатно, прямо сейчас.</p>
+      <button class="btn btn-large reveal" onclick="openPlacementModal()">Начать бесплатно</button>
+    </div>
+  </section>
+
+  <!-- ── КОНТАКТЫ ── -->
+  <section class="section section-gray" id="contact">
+    <div class="container">
+      <div class="section-eyebrow reveal">Контакты</div>
+      <h2 class="section-title reveal">Мы на связи</h2>
+      <p class="section-desc reveal">Остались вопросы о курсах или регистрации — напишите нам.</p>
+      <div class="contact-grid" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="contact-card reveal reveal-stagger">
+            <div class="contact-icon"><i class="fas fa-envelope" style="color:var(--accent)"></i></div>
+            <h4>Email</h4>
+            <p><a href="mailto:jasss.school773@gmail.com" style="color:var(--text2)">jasss.school773@gmail.com</a></p>
+          </div>
+          <div class="contact-card reveal reveal-stagger">
+            <div class="contact-icon"><i class="fas fa-phone" style="color:var(--teal)"></i></div>
+            <h4>Телефон</h4>
+            <p><a href="tel:+998880301773" style="color:var(--text2)">+998 (88) 030 17-73</a></p>
+          </div>
+          <div class="contact-card reveal reveal-stagger">
+            <div class="contact-icon"><i class="fas fa-location-dot" style="color:var(--purple)"></i></div>
+            <h4>Адрес</h4>
+            <p>Узбекистан, Самарканд</p>
+          </div>
+        </div>
+        <div class="reveal reveal-stagger">
+          <form id="contact-form" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 30px; display: flex; flex-direction: column; gap: 20px;">
+            <div class="field-group">
+              <label class="field-label">Ваше имя</label>
+              <input type="text" id="contact-name" placeholder="Введите ваше имя" required style="width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; outline: none; transition: all 0.2s; box-sizing: border-box;">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Ваш email</label>
+              <input type="email" id="contact-email" placeholder="Введите ваш email" required style="width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; outline: none; transition: all 0.2s; box-sizing: border-box;">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Сообщение</label>
+              <textarea id="contact-message" placeholder="Введите ваше сообщение" rows="5" required style="width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; outline: none; transition: all 0.2s; box-sizing: border-box; resize: vertical;"></textarea>
+            </div>
+            <div id="contact-message-status" style="min-height: 20px; text-align: center;"></div>
+            <button type="submit" class="btn btn-large btn-block" style="width: 100%;">Отправить сообщение</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="footer-logo">
+          <p class="footer-desc">Обучение английскому и программированию с удовольствием!</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">Навигация</h4>
+          <ul class="footer-links">
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#courses">Уровни</a></li>
+            <li><a href="#coding">Программирование</a></li>
+            <li><a href="#reviews">Отзывы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-title">Контакты</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:jasss.school773@gmail.com">jasss.school773@gmail.com</a></li>
+            <li>+998 (88) 030 17-73</li>
+            <li>Узбекистан, Самарканд</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-text">© 2024 JASS. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <!-- ═════════════ APP ═════════════ -->
@@ -147,35 +541,51 @@
       <div class="nav-section">
         <div class="nav-label">Разделы</div>
         <button class="nav-btn active" onclick="goto('vocab')">
-          <img src="assets/icon/free-icon-dictionary.png" alt="Словарь" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-dictionary.png" alt="Словарь" class="nav-icon">
           Словарь
         </button>
         <button class="nav-btn" onclick="goto('verbs')">
-          <img src="assets/icon/free-icon-verb.png" alt="Глаголы" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-verb.png" alt="Глаголы" class="nav-icon">
           Глаголы
         </button>
+        <button class="nav-btn" onclick="goto('irregular')">
+          <img src="assets/icon/free-icon-verb.png" alt="Неправильные глаголы" class="nav-icon">
+          Неправильные глаголы
+        </button>
+        <button class="nav-btn" onclick="goto('regular')">
+          <img src="assets/icon/free-icon-verb.png" alt="Правильные глаголы" class="nav-icon">
+          Правильные глаголы
+        </button>
+        <button class="nav-btn" onclick="goto('listening')">
+          <img src="assets/icon/listen.png" alt="Listening" class="nav-icon">
+          Listening
+        </button>
+        <button class="nav-btn" onclick="goto('speaking')">
+          <i class="fas fa-microphone" style="margin-right: 8px; width: 20px; text-align: center; opacity: 0.9;"></i>
+          Speaking
+        </button>
         <button class="nav-btn" onclick="goto('grammar')">
-          <img src="assets/icon/free-icon-brain.png" alt="Грамматика" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-brain.png" alt="Грамматика" class="nav-icon">
           Грамматика
         </button>
         <button class="nav-btn" onclick="goto('pronunciation')">
-          <img src="assets/icon/free-icon-pronunciation.png" alt="Произношение" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-pronunciation.png" alt="Произношение" class="nav-icon">
           Произношение
         </button>
         <button class="nav-btn" onclick="goto('practice')">
-          <img src="assets/icon/free-icon-english.png" alt="Практика" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-english.png" alt="Практика" class="nav-icon nav-icon-red">
           Практика
         </button>
         <button class="nav-btn" onclick="goto('schedule')">
-          <img src="assets/icon/free-icon-schedule.png" alt="Расписание" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-schedule.png" alt="Расписание" class="nav-icon">
           Расписание
         </button>
         <button class="nav-btn" onclick="goto('quiz')">
-          <img src="assets/icon/free-icon-online-test.png" alt="Тест" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-online-test.png" alt="Тест" class="nav-icon">
           Тест
         </button>
         <button class="nav-btn" id="nav-translate-btn" onclick="goto('translate')">
-          <img src="assets/icon/free-icon-english.png" alt="Письменный перевод" style="width: 20px; height: 20px; margin-right: 8px; filter: brightness(0) invert(1);">
+          <img src="assets/icon/free-icon-written-language.png" alt="Письменный перевод" class="nav-icon">
           Письменный перевод
         </button>
       </div>
@@ -187,20 +597,20 @@
         <div class="stat-row"><span class="stat-name">Тестов</span><span class="stat-val" id="s-tests" style="color:var(--yellow)">0</span></div>
       </div>
       <div style="padding: 0 10px 16px;">
-        <button class="btn" style="width: 100%; background: var(--text2);" onclick="logoutToLanding()">↩️ На выбор уровней</button>
-        <button class="btn" style="width: 100%; margin-top: 8px; background: #dc2626;" onclick="logoutUser()">🚪 Выйти из аккаунта</button>
+        <button class="btn" style="width: 100%; background: var(--text2);" onclick="logoutToLanding()"><i class="fas fa-arrow-left" style="margin-right: 8px;"></i> На выбор уровней</button>
+        <button class="btn" style="width: 100%; margin-top: 8px; background: #dc2626;" onclick="logoutUser()"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Выйти из аккаунта</button>
       </div>
     </aside>
     <main class="main">
       <div class="page active" id="page-vocab">
         <div class="page-header">
           <div class="page-title" id="vt-title">
-            <img src="assets/icon/free-icon-dictionary.png" alt="Словарь" style="width: 24px; height: 24px; margin-right: 8px; filter: brightness(0) invert(1);">
+            <img src="assets/icon/free-icon-dictionary.png" alt="Словарь" class="page-icon">
             Словарь
           </div>
           <div class="page-sub">Нажми карточку — отметь выученным. 🔊 — произношение</div>
         </div>
-        <div class="search-wrap"><span class="si">🔍</span><input type="text" id="vocabSearch" placeholder="Поиск..." oninput="filterVocab()"></div>
+        <div class="search-wrap"><span class="si"><i class="fas fa-search"></i></span><input type="text" id="vocabSearch" placeholder="Поиск..." oninput="filterVocab()"></div>
         <div class="pills" id="topicPills"></div>
         <div class="prog-area">
           <div class="prog-top"><span id="progText">0 / 0</span><span id="progPct">0%</span></div>
@@ -211,18 +621,48 @@
       <div class="page" id="page-verbs">
         <div class="page-header">
           <div class="page-title" id="verb-title">
-            <img src="assets/icon/free-icon-verb.png" alt="Глаголы" style="width: 24px; height: 24px; margin-right: 8px; filter: brightness(0) invert(1);">
+            <img src="assets/icon/free-icon-verb.png" alt="Глаголы" class="page-icon">
             Глаголы
           </div>
           <div class="page-sub">Ключевые глаголы уровня с примерами</div>
         </div>
-        <div class="search-wrap"><span class="si">🔍</span><input type="text" id="verbSearch" placeholder="Поиск..." oninput="filterVerbs()"></div>
+        <div class="search-wrap"><span class="si"><i class="fas fa-search"></i></span><input type="text" id="verbSearch" placeholder="Поиск..." oninput="filterVerbs()"></div>
         <div class="tbl-wrap"><table class="vtbl"><thead><tr><th>Глагол</th><th>Перевод</th><th>Транскрипция</th><th>Пример</th><th>🔊</th></tr></thead><tbody id="verbBody"></tbody></table></div>
+      </div>
+      <div class="page" id="page-irregular">
+        <div class="page-header">
+          <div class="page-title"><i class="fas fa-bolt" style="margin-right: 8px; width: 24px; text-align: center;"></i> Неправильные глаголы</div>
+          <div class="page-sub">Irregular verbs — 3 формы глагола по твоему уровню</div>
+        </div>
+        <div id="irregularVerbsWrap"></div>
+      </div>
+      <div class="page" id="page-regular">
+        <div class="page-header">
+          <div class="page-title"><i class="fas fa-book-open" style="margin-right: 8px; width: 24px; text-align: center;"></i> Правильные глаголы</div>
+          <div class="page-sub">Regular verbs — форма прошедшего времени на -ed по твоему уровню</div>
+        </div>
+        <div id="regularVerbsWrap"></div>
+      </div>
+      <div class="page" id="page-listening">
+        <div class="page-header">
+          <div class="page-title"><img src="assets/icon/listen.png" alt="Listening" class="page-icon"> Listening — Task 5</div>
+          <div class="page-sub">Прослушай текст и ответь на 5 вопросов. Выбери уровень:</div>
+        </div>
+        <div class="pills" id="listenLevelPills"></div>
+        <div id="listeningWrap"></div>
+      </div>
+      <div class="page" id="page-speaking">
+        <div class="page-header">
+          <div class="page-title"><i class="fas fa-microphone" style="margin-right: 8px; width: 24px; text-align: center;"></i> Speaking — Task 3</div>
+          <div class="page-sub">Произнеси фразу вслух — микрофон проверит произношение. Выбери уровень:</div>
+        </div>
+        <div class="pills" id="speakLevelPills"></div>
+        <div id="speakingWrap"></div>
       </div>
       <div class="page" id="page-grammar">
         <div class="page-header">
           <div class="page-title" id="gram-title">
-            <img src="assets/icon/free-icon-brain.png" alt="Грамматика" style="width: 24px; height: 24px; margin-right: 8px;">
+            <img src="assets/icon/free-icon-brain.png" alt="Грамматика" class="page-icon">
             Грамматика
           </div>
           <div class="page-sub">Правила и примеры по уровню</div>
@@ -232,7 +672,7 @@
       <div class="page" id="page-pronunciation">
         <div class="page-header">
           <div class="page-title">
-            <img src="assets/icon/free-icon-pronunciation.png" alt="Произношение" style="width: 24px; height: 24px; margin-right: 8px;">
+            <img src="assets/icon/free-icon-pronunciation.png" alt="Произношение" class="page-icon">
             Произношение
           </div>
           <div class="page-sub">Звуки, фонетика и правила чтения</div>
@@ -242,15 +682,15 @@
       <div class="page" id="page-practice">
         <div class="page-header">
           <div class="page-title" id="prac-title">
-            <img src="assets/icon/free-icon-english.png" alt="Практика" style="width: 24px; height: 24px; margin-right: 8px;">
+            <img src="assets/icon/free-icon-english.png" alt="Практика" class="page-icon nav-icon-red">
             Практика
           </div>
           <div class="page-sub">Диалоги, упражнения, соединение слов</div>
         </div>
         <div class="ptabs">
-          <button class="ptab active" onclick="switchPTab('dialogues')">💬 Диалоги</button>
-          <button class="ptab" onclick="switchPTab('fill')">✏️ Пробел</button>
-          <button class="ptab" onclick="switchPTab('match')">🔗 Соединить</button>
+          <button class="ptab active" onclick="switchPTab('dialogues')"><img src="assets/icon/conversation.png" alt="Диалоги" class="action-icon" style="margin-right: 6px;"> Диалоги</button>
+          <button class="ptab" onclick="switchPTab('fill')"><i class="fas fa-pencil-alt" style="margin-right: 6px;"></i> Пробел</button>
+          <button class="ptab" onclick="switchPTab('match')"><i class="fas fa-link" style="margin-right: 6px;"></i> Соединить</button>
         </div>
         <div class="psec active" id="ps-dialogues"></div>
         <div class="psec" id="ps-fill"></div>
@@ -259,7 +699,7 @@
       <div class="page" id="page-schedule">
         <div class="page-header">
           <div class="page-title" id="sched-title">
-            <img src="assets/icon/free-icon-schedule.png" alt="Расписание" style="width: 24px; height: 24px; margin-right: 8px;">
+            <img src="assets/icon/free-icon-schedule.png" alt="Расписание" class="page-icon">
             Расписание
           </div>
           <div class="page-sub">7-дневный план занятий</div>
@@ -269,7 +709,7 @@
       <div class="page" id="page-quiz">
         <div class="page-header">
           <div class="page-title" id="quiz-title">
-            <img src="assets/icon/free-icon-online-test.png" alt="Тест" style="width: 24px; height: 24px; margin-right: 8px;">
+            <img src="assets/icon/free-icon-online-test.png" alt="Тест" class="page-icon">
             Тест
           </div>
           <div class="page-sub">Проверь знания слов и глаголов</div>
@@ -279,7 +719,7 @@
       <div class="page" id="page-translate">
         <div class="page-header">
           <div class="page-title">
-            <img src="assets/icon/free-icon-english.png" alt="Письменный перевод" style="width: 24px; height: 24px; margin-right: 8px;">
+            <img src="assets/icon/free-icon-written-language.png" alt="Письменный перевод" class="page-icon">
             Письменный перевод
           </div>
           <div class="page-sub">Выбери текст, переведи его с русского на английский и сравни с оригиналом</div>
@@ -306,11 +746,11 @@
         </div>
         <div class="profile-editor-avatar-buttons">
           <label for="edit-avatar" class="upload-btn gallery-btn">
-            <img src="assets/icon/free-icon-photo-1.png" alt="Галерея">
+            <img src="assets/icon/free-icon-photo-1.png" alt="Галерея" class="action-icon">
             Из галереи
           </label>
           <button class="upload-btn camera-btn" onclick="startEditCamera()">
-            <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера">
+            <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" class="action-icon">
             Сделать фото
           </button>
         </div>
@@ -369,11 +809,11 @@
         </div>
         <div style="display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
           <label for="post-reg-avatar" class="upload-btn gallery-btn" style="padding: 12px 24px; border-radius: 16px; background: linear-gradient(135deg, #4facfe, #00f2fe); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">
-            <img src="assets/icon/free-icon-photo-1.png" alt="Галерея" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
+            <img src="assets/icon/free-icon-photo-1.png" alt="Галерея" class="action-icon" style="width: 24px; height: 24px; margin-right: 10px;">
             Из галереи
           </label>
           <button class="upload-btn camera-btn" style="background: linear-gradient(135deg, #fa709a, #fee140); padding: 12px 24px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" onclick="startPostRegCamera()">
-            <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" style="width: 24px; height: 24px; margin-right: 10px; filter: brightness(0) invert(1);">
+            <img src="assets/icon/free-icon-take-a-picture-2.png" alt="Камера" class="action-icon" style="width: 24px; height: 24px; margin-right: 10px;">
             Сделать фото
           </button>
         </div>
@@ -387,6 +827,63 @@
   </div>
 </div>
 
+<!-- Placement Test Modal -->
+<div id="placement-modal" class="modal hidden">
+  <div class="modal-content placement-modal-content">
+    <button class="close-btn" onclick="closePlacementModal()">&times;</button>
+
+    <!-- Step 1: choose track -->
+    <div id="placement-step-choice" class="placement-step">
+      <div class="placement-eyebrow">Бесплатный тест</div>
+      <h3 class="placement-h">С чего начнём?</h3>
+      <p class="placement-p">Выбери направление — за пару минут узнаешь свой уровень.</p>
+      <div class="placement-choice-grid">
+        <button class="placement-choice-card" onclick="startPlacementTest('english')">
+          <div class="pc-icon">🇬🇧</div>
+          <div class="pc-title">Английский язык</div>
+          <div class="pc-desc">Тест определит уровень CEFR: A1–C2</div>
+        </button>
+        <button class="placement-choice-card" onclick="startPlacementTest('programming')">
+          <div class="pc-icon">💻</div>
+          <div class="pc-title">Программирование</div>
+          <div class="pc-desc">Короткий тест по основам логики и кода</div>
+          <div class="pc-soon">скоро на платформе</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: quiz -->
+    <div id="placement-step-quiz" class="placement-step hidden">
+      <div class="placement-progress"><div class="placement-progress-bar" id="placementProgressBar"></div></div>
+      <div class="placement-qcounter" id="placementQCounter">Вопрос 1 из 10</div>
+      <div class="placement-question" id="placementQuestion"></div>
+      <div class="placement-options" id="placementOptions"></div>
+    </div>
+
+    <!-- Step 3: results -->
+    <div id="placement-step-result" class="placement-step hidden">
+      <div class="placement-confetti" id="placementConfetti"></div>
+      <div class="placement-result-badge" id="placementResultBadge">B1</div>
+      <h3 class="placement-h" id="placementResultTitle">Твой уровень определён!</h3>
+      <p class="placement-p" id="placementResultDesc"></p>
+      <div class="placement-stats">
+        <div class="placement-stat ok">
+          <span class="placement-stat-num" id="placementCorrectNum">0</span>
+          <span class="placement-stat-label">верно</span>
+        </div>
+        <div class="placement-stat bad">
+          <span class="placement-stat-num" id="placementWrongNum">0</span>
+          <span class="placement-stat-label">ошибок</span>
+        </div>
+      </div>
+      <div class="placement-result-actions">
+        <button class="btn btn-secondary" onclick="placementReturnToSite()">Вернуться на сайт</button>
+        <button class="btn" onclick="placementGoRegister()">Зарегистрироваться</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="backdrop" id="backdrop" onclick="toggleMenu()"></div>
 <button class="menu-toggle" id="menu-toggle-btn" onclick="toggleMenu()">
   <span class="burger-bar"></span>
@@ -394,9 +891,117 @@
   <span class="burger-bar"></span>
 </button>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="emailjs-service.js"></script>
 <script src="email.js"></script>
 <script src="script.js"></script>
+<script src="ext-data.js"></script>
+<script src="ext-script.js"></script>
+<script src="landing.js"></script>
+<script src="site-update.js"></script>
+<script>
+// Grainient-style animated gradient + grain effect
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('grainient-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  // Resize canvas
+  const resizeCanvas = () => {
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  };
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  
+  // Helper: noise function
+  const random = (x, y) => {
+    const v = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+    return v - Math.floor(v);
+  };
+  
+  // Helper: interpolate colors
+  const lerpColor = (c1, c2, t) => {
+    return [
+      c1[0] + (c2[0] - c1[0]) * t,
+      c1[1] + (c2[1] - c1[1]) * t,
+      c1[2] + (c2[2] - c1[2]) * t,
+    ];
+  };
+  
+  // Colors from user
+  const colors = [
+    [239, 182, 237], // #efb6ed
+    [244, 109, 96],   // #f46d60
+    [180, 151, 207]   // #B497CF
+  ];
+  
+  // Create reusable grain texture (smaller, tiled)
+  const grainCanvas = document.createElement('canvas');
+  const grainSize = 256;
+  grainCanvas.width = grainSize;
+  grainCanvas.height = grainSize;
+  const grainCtx = grainCanvas.getContext('2d');
+  const updateGrainTexture = (time) => {
+    const data = grainCtx.createImageData(grainSize, grainSize);
+    const grainAmount = 0.1;
+    const grainScale = 2;
+    for (let y = 0; y < grainSize; y++) {
+      for (let x = 0; x < grainSize; x++) {
+        const grain = (random(x / grainScale + time * 10, y / grainScale) - 0.5) * 2 * grainAmount * 255;
+        const i = (y * grainSize + x) * 4;
+        data.data[i] = 128 + grain;
+        data.data[i + 1] = 128 + grain;
+        data.data[i + 2] = 128 + grain;
+        data.data[i + 3] = 255;
+      }
+    }
+    grainCtx.putImageData(data, 0, 0);
+  };
+  
+  let time = 0;
+  const timeSpeed = 2;
+  
+  const animate = () => {
+    time += 0.016 * timeSpeed;
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    
+    // Draw animated gradient background
+    const gradient = ctx.createLinearGradient(
+      w * 0.2 + Math.sin(time * 0.5) * w * 0.3,
+      h * 0.2 + Math.cos(time * 0.3) * h * 0.3,
+      w * 0.8 + Math.cos(time * 0.4) * w * 0.3,
+      h * 0.8 + Math.sin(time * 0.6) * h * 0.3
+    );
+    
+    // Animate color balance between color1/color2/color3
+    const t1 = (Math.sin(time * 0.7) + 1) / 2;
+    const t2 = (Math.cos(time * 0.9) + 1) / 2;
+    const colorA = lerpColor(colors[0], colors[1], t1);
+    const colorB = lerpColor(colors[1], colors[2], t2);
+    
+    gradient.addColorStop(0, `rgb(${Math.round(colorA[0])}, ${Math.round(colorA[1])}, ${Math.round(colorA[2])})`);
+    gradient.addColorStop(1, `rgb(${Math.round(colorB[0])}, ${Math.round(colorB[1])}, ${Math.round(colorB[2])})`);
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, w, h);
+    
+    // Add grain overlay using tiled texture
+    updateGrainTexture(time);
+    const pattern = ctx.createPattern(grainCanvas, 'repeat');
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'source-over';
+    
+    requestAnimationFrame(animate);
+  };
+  
+  animate();
+});
+</script>
 </body>
 </html>

@@ -600,8 +600,8 @@ function logoutUser() {
   window.currentUser = null;
   localStorage.removeItem('currentUser');
 
-  document.getElementById('auth-screen').classList.remove('hidden');
-  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
   document.getElementById('app').classList.add('hidden');
   document.body.classList.remove('screen-app');
   const sb = document.getElementById('sidebar');
@@ -619,6 +619,9 @@ function logoutUser() {
     window.quizzesTaken = 0;
   }
   if (typeof resetQuiz === 'function') resetQuiz();
+  
+  // Call showLanding to update the UI
+  showLanding();
 }
 window.logoutUser = logoutUser;
 
