@@ -2423,30 +2423,32 @@ function initLevelCards() {
 
 // Auth functions
 function switchAuthTab(tab) {
-  const authScreen = document.getElementById('auth-screen');
-  if (!authScreen.classList.contains('hidden')) {
-    const forms = authScreen.querySelectorAll('.auth-form');
-    const authHeading = document.getElementById('authHeading');
-    const authSubtitle = document.getElementById('authSubtitle');
-    forms.forEach(f => f.classList.add('hidden'));
-    authScreen.getElementById(`${tab}-form`).classList.remove('hidden');
-    
-    // Update heading and subtitle
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  const authHeading = document.getElementById('authHeading');
+  const authSubtitle = document.getElementById('authSubtitle');
+
+  if (loginForm) loginForm.classList.toggle('hidden', tab !== 'login');
+  if (registerForm) registerForm.classList.toggle('hidden', tab !== 'register');
+
+  document.querySelectorAll('.auth-tabs .auth-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+
+  if (authHeading && authSubtitle) {
     if (tab === 'login') {
       authHeading.textContent = 'Вход в аккаунт';
       authSubtitle.textContent = 'Войдите, чтобы открыть профиль и продолжить обучение.';
-    } else if (tab === 'register') {
+    } else {
       authHeading.textContent = 'Создать аккаунт';
-      authSubtitle.textContent = 'Зарегистрируйтесь, чтобы начать обучение.';
+      authSubtitle.textContent = 'Регистрация занимает меньше минуты — начните учиться прямо сейчас.';
     }
-    
-    const loginMsg = authScreen.querySelector('#login-message');
-    const registerMsg = authScreen.querySelector('#register-message');
-    if (loginMsg) loginMsg.textContent = '';
-    if (registerMsg) registerMsg.textContent = '';
-    if (loginMsg) loginMsg.className = 'auth-message';
-    if (registerMsg) registerMsg.className = 'auth-message';
   }
+
+  const loginMsg = document.getElementById('login-message');
+  const registerMsg = document.getElementById('register-message');
+  if (loginMsg) { loginMsg.textContent = ''; loginMsg.className = 'auth-message'; }
+  if (registerMsg) { registerMsg.textContent = ''; registerMsg.className = 'auth-message'; }
 }
 
 function toggleAuthMenu() {
@@ -2493,23 +2495,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initTrackSelection();
 });
 
-function switchLandingAuthTab(tab) {
-  const landing = document.getElementById('landing');
-  const tabs = landing.querySelectorAll('.auth-tabs .auth-tab');
-  const forms = landing.querySelectorAll('.auth-form');
-  
-  tabs.forEach(t => t.classList.remove('active'));
-  forms.forEach(f => f.classList.add('hidden'));
-  
-  landing.querySelector(`[onclick="switchLandingAuthTab('${tab}')"]`).classList.add('active');
-  landing.getElementById(`landing-${tab}-form`).classList.remove('hidden');
-  
-  landing.getElementById('landing-login-message').textContent = '';
-  landing.getElementById('landing-register-message').textContent = '';
-  landing.getElementById('landing-login-message').className = 'auth-message';
-  landing.getElementById('landing-register-message').className = 'auth-message';
-}
-
 function handleLogin() {
   const loginInput = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
@@ -2522,59 +2507,6 @@ function handleLogin() {
   }
   
   const result = loginUser(loginInput, password);
-  if (result.success) {
-    msgDiv.textContent = result.message;
-    msgDiv.className = 'auth-message success';
-    setTimeout(() => showLanding(), 800);
-  } else {
-    msgDiv.textContent = result.message;
-    msgDiv.className = 'auth-message error';
-  }
-}
-
-function handleLandingLogin() {
-  const loginInput = document.getElementById('landing-login-email').value;
-  const password = document.getElementById('landing-login-password').value;
-  const msgDiv = document.getElementById('landing-login-message');
-  
-  if (!loginInput || !password) {
-    msgDiv.textContent = 'Пожалуйста, заполните все поля!';
-    msgDiv.className = 'auth-message error';
-    return;
-  }
-  
-  const result = loginUser(loginInput, password);
-  if (result.success) {
-    msgDiv.textContent = result.message;
-    msgDiv.className = 'auth-message success';
-    setTimeout(() => showLanding(), 800);
-  } else {
-    msgDiv.textContent = result.message;
-    msgDiv.className = 'auth-message error';
-  }
-}
-
-async function handleLandingRegister() {
-  const name = document.getElementById('landing-register-name').value;
-  const lastName = document.getElementById('landing-register-lastname').value;
-  const email = document.getElementById('landing-register-email').value;
-  const password = document.getElementById('landing-register-password').value;
-  const confirm = document.getElementById('landing-register-confirm').value;
-  const msgDiv = document.getElementById('landing-register-message');
-  
-  if (!name || !email || !password || !confirm) {
-    msgDiv.textContent = 'Пожалуйста, заполните все обязательные поля!';
-    msgDiv.className = 'auth-message error';
-    return;
-  }
-  
-  if (password !== confirm) {
-    msgDiv.textContent = 'Пароли не совпадают!';
-    msgDiv.className = 'auth-message error';
-    return;
-  }
-  
-  const result = await registerUser(email, password, name, lastName);
   if (result.success) {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message success';
@@ -2615,12 +2547,12 @@ async function handleRegister() {
   }
 }
 
-function showAuthScreen() {
+function showAuthScreen(tab = 'login') {
   document.getElementById('auth-screen').classList.remove('hidden');
   document.getElementById('landing').classList.add('hidden');
   document.getElementById('app').classList.add('hidden');
   document.body.classList.remove('screen-app');
-  switchAuthTab('login'); // Default to login tab
+  switchAuthTab(tab);
 }
 
 function hideAuthScreen() {
@@ -2687,13 +2619,6 @@ window.updateAvatarDisplay = function() {
       }
     }
   }
-}
-
-function showAuth() {
-  document.getElementById('auth-screen').classList.remove('hidden');
-  document.getElementById('landing').classList.add('hidden');
-  document.getElementById('app').classList.add('hidden');
-  document.body.classList.remove('screen-app');
 }
 
 // Check if user is logged in on page load

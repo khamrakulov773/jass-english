@@ -101,15 +101,22 @@
         <h1 class="auth-form-heading" id="authHeading">Вход в аккаунт</h1>
         <p class="auth-form-subtitle" id="authSubtitle">Войдите, чтобы открыть профиль и продолжить обучение.</p>
 
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">Вход</button>
+          <button type="button" class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">Регистрация</button>
+        </div>
+
         <!-- Login Form -->
         <div id="login-form" class="auth-form">
-          <div class="field-group">
-            <label class="field-label">Электронная почта</label>
-            <input type="text" id="login-email" placeholder="you@example.com">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Пароль</label>
-            <input type="password" id="login-password" placeholder="Введите пароль">
+          <div class="auth-form-card">
+            <div class="field-group">
+              <label class="field-label">Email</label>
+              <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Пароль</label>
+              <input type="password" id="login-password" placeholder="Введите пароль" autocomplete="current-password">
+            </div>
           </div>
           <div id="login-message" class="auth-message"></div>
           <button class="btn btn-large btn-block" onclick="handleLogin()">Войти</button>
@@ -131,21 +138,23 @@
 
         <!-- Registration Form -->
         <div id="register-form" class="auth-form hidden">
-          <div class="field-group">
-            <label class="field-label">Имя</label>
-            <input type="text" id="register-name" placeholder="Ваше имя">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Электронная почта</label>
-            <input type="email" id="register-email" placeholder="email@example.com">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Пароль</label>
-            <input type="password" id="register-password" placeholder="Придумайте пароль">
-          </div>
-          <div class="field-group">
-            <label class="field-label">Подтвердите пароль</label>
-            <input type="password" id="register-confirm-password" placeholder="Повторите пароль">
+          <div class="auth-form-card">
+            <div class="field-group">
+              <label class="field-label">Имя</label>
+              <input type="text" id="register-name" placeholder="Ваше имя" autocomplete="given-name">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Email</label>
+              <input type="email" id="register-email" placeholder="email@example.com" autocomplete="email">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Пароль</label>
+              <input type="password" id="register-password" placeholder="Придумайте пароль" autocomplete="new-password">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Подтвердите пароль</label>
+              <input type="password" id="register-confirm-password" placeholder="Повторите пароль" autocomplete="new-password">
+            </div>
           </div>
           <div id="register-message" class="auth-message"></div>
           <button class="btn btn-large btn-block" onclick="handleRegister()">Зарегистрироваться</button>
@@ -218,8 +227,8 @@
         <a href="#contact" class="nav-link">Контакты</a>
       </nav>
       <div class="header-actions">
-        <button class="btn btn-secondary btn-header" onclick="switchAuthTab('login'); showAuthScreen();">Войти</button>
-        <button class="btn btn-header" onclick="showAuthScreen()">Начать бесплатно</button>
+        <button class="btn btn-secondary btn-header" onclick="showAuthScreen('login')">Войти</button>
+        <button class="btn btn-header" onclick="showAuthScreen('register')">Начать бесплатно</button>
       </div>
       <button class="lp-burger" id="lpBurger" aria-label="Открыть меню" onclick="toggleLandingNav()">
         <span></span><span></span><span></span>
@@ -232,8 +241,8 @@
       <a href="#reviews" onclick="closeLandingNav()">Отзывы</a>
       <a href="#contact" onclick="closeLandingNav()">Контакты</a>
       <div class="lp-mobile-actions">
-        <button class="btn btn-secondary" onclick="switchAuthTab('login'); showAuthScreen(); closeLandingNav();">Войти</button>
-        <button class="btn" onclick="showAuthScreen(); closeLandingNav();">Начать</button>
+        <button class="btn btn-secondary" onclick="showAuthScreen('login'); closeLandingNav();">Войти</button>
+        <button class="btn" onclick="showAuthScreen('register'); closeLandingNav();">Начать</button>
       </div>
     </nav>
   </header>
@@ -253,7 +262,7 @@
         </ul>
         <div class="hero-buttons">
           <button class="btn btn-large" onclick="openPlacementModal()">Начать бесплатно</button>
-          <button class="btn btn-large btn-secondary" onclick="switchAuthTab('login'); showAuthScreen();">Войти</button>
+          <button class="btn btn-large btn-secondary" onclick="showAuthScreen('login')">Войти</button>
         </div>
         <div class="user-info" id="user-info" style="display:none">
           <div class="user-avatar" id="landing-user-avatar">👤</div>

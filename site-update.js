@@ -20,21 +20,6 @@
    сообщение, что вход через Google ещё не настроен. ---------- */
 const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
 
-const _origSwitchAuthTab = window.switchAuthTab;
-window.switchAuthTab = function (tab) {
-  if (typeof _origSwitchAuthTab === 'function') _origSwitchAuthTab(tab);
-  const heading = document.getElementById('authHeading');
-  const subtitle = document.getElementById('authSubtitle');
-  if (!heading || !subtitle) return;
-  if (tab === 'login') {
-    heading.textContent = 'Вход в аккаунт';
-    subtitle.textContent = 'Войдите, чтобы открыть профиль и продолжить обучение.';
-  } else {
-    heading.textContent = 'Создать аккаунт';
-    subtitle.textContent = 'Регистрация занимает меньше минуты — начните учиться прямо сейчас.';
-  }
-};
-
 let googleAuthReady = false;
 function initGoogleAuth() {
   if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) return;
@@ -308,8 +293,7 @@ function placementReturnToSite() {
 }
 function placementGoRegister() {
   closePlacementModal();
-  if (typeof switchAuthTab === 'function') switchAuthTab('register');
-  if (typeof showAuthScreen === 'function') showAuthScreen();
+  if (typeof showAuthScreen === 'function') showAuthScreen('register');
 }
 
 /* ---------- паучок-талисман ---------- */
