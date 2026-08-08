@@ -454,21 +454,69 @@ document.addEventListener('DOMContentLoaded', () => {
 //  АВТОРИЗАЦИЯ
 // ═══════════════════════════════════════════════════════════
 
-// Регистрация нового пользователя
-async function registerUser(email, password, name, lastName) {
+// Регистрация нового пользователя (поддерживает старую и новую сигнатуры)
+async function registerUser(...args) {
+  let email, password, name, lastName, nickname, phone, education, track, level;
+  // Новый формат: registerUser({ name, email, password, nickname, phone, education, track, level })
+  if (args.length === 1 && typeof args[0] === 'object' && args[0] !== null) {
+    const o = args[0];
+    email     = o.email     || '';
+    password  = o.password  || '';
+    name      = o.name      || '';
+    lastName  = o.lastName  || '';
+    nickname  = o.nickname  || '';
+    phone     = o.phone     || '';
+    education = o.education || '';
+    track     = o.track     || 'english';
+    level     = o.level     || '';
+  } else {
+    // Старый формат: registerUser(email, password, name, lastName)
+    email     = args[0] || '';
+    password  = args[1] || '';
+    name      = args[2] || '';
+    lastName  = args[3] || '';
+    nickname  = '';
+    phone     = '';
+    education = '';
+    track     = 'english';
+    level     = '';
+  }
+
   const existingUser = allUsers.find(u => u.email === email);
   if (existingUser) {
     return { success: false, message: 'Этот email уже зарегистрирован!' };
   }
 
+  // Проверка уникальности никнейма (если передан)
+  if (nickname) {
+    const cleanNick = nickname.startsWith('@') ? nickname : '@' + nickname;
+    const existingByNick = allUsers.find(u => u.nickname === cleanNick);
+    if (existingByNick) {
+      return { success: false, message: 'Этот никнейм уже занят!' };
+    }
+    nickname = cleanNick;
+  }
+
+  // Отделяем регистрационные данные (regInfo) от прогресса в основном редакторе (studiedWords / quizzesTaken)
+  // они не "зачисляются" автоматически — до явного выбора пользователя
   const newUser = {
     email,
     password,
     name,
-    lastName: lastName || '',
-    nickname: '',
+    lastName,
+    nickname: nickname || '',
     avatar: null,
     registeredAt: new Date().toISOString(),
+    // Регистрационные данные (собираются при регистрации, но не используются для прогресса автоматически)
+    regInfo: {
+      phone,
+      education,
+      track,      // english / coding
+      level,      // A1..C2 or starter..senior
+      registeredFrom: 'registration-form'
+    },
+    // Прогресс в основном редакторе кредитования — ИЗНАЧАЛЬНО ОТДЕЛЬНО и ПУСТОЙ
+    // заполнится только когда пользователь сам зайдёт в уровень и начнёт учиться
     studiedWords: {},
     quizzesTaken: 0
   };
@@ -489,6 +537,8 @@ async function registerUser(email, password, name, lastName) {
   window.currentUser = newUser;
   localStorage.setItem('currentUser', JSON.stringify(newUser));
   window.currentAvatar = null;
+
+  // Прогресс studiedWords при регистрации НЕ ЗАГРУЖАЕМ — он начнётся только после явного входа в уровень
 
   return { success: true, message: 'Добро пожаловать!' };
 }

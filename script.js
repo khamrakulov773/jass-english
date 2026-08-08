@@ -1846,9 +1846,19 @@ function backToLanding() {
 }
 
 // Кнопка "На выбор уровней" в сайдбаре — просто возвращает на экран выбора уровня,
-// не разлогинивая пользователя (в отличие от logoutUser)
+// не разлогинивая пользователя (в отличие от logoutUser).
+// Раньше это возвращало на самый верх главной страницы (hero), из-за чего
+// казалось, что пользователя "выкинуло на главную" вместо выбора нового уровня.
+// Теперь сразу прокручиваем к блоку карточек уровней (#courses).
 function logoutToLanding() {
   backToLanding();
+  const coursesSection = document.getElementById('courses');
+  if (coursesSection) {
+    // Небольшая задержка, чтобы #landing успел стать видимым перед скроллом
+    requestAnimationFrame(() => {
+      coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 }
 
 function goto(section) {
@@ -2490,6 +2500,31 @@ function selectTrack(track) {
   }
 }
 
+// Helper: swap level select options based on track
+function updateRegLevelOptions() {
+  const trackRadio = document.querySelector('input[name="reg-track"]:checked');
+  const track = trackRadio ? trackRadio.value : 'english';
+  const sel = document.getElementById('register-level');
+  if (!sel) return;
+  const engLevels = [
+    ['A1', 'A1 — Beginner (Начинающий)'],
+    ['A2', 'A2 — Elementary (Элементарный)'],
+    ['B1', 'B1 — Intermediate (Средний)'],
+    ['B2', 'B2 — Upper-Intermediate (Выше среднего)'],
+    ['C1', 'C1 — Advanced (Продвинутый)'],
+    ['C2', 'C2 — Mastery (Носитель)']
+  ];
+  const codLevels = [
+    ['starter',   'Starter — Основы (с нуля)'],
+    ['junior',    'Junior — Базовые алгоритмы'],
+    ['middle',    'Middle — ООП и реальные проекты'],
+    ['senior',    'Senior — Архитектура и паттерны']
+  ];
+  const list = track === 'coding' ? codLevels : engLevels;
+  sel.innerHTML = list.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+}
+window.updateRegLevelOptions = updateRegLevelOptions;
+
 // Call init on load
 document.addEventListener('DOMContentLoaded', () => {
   initTrackSelection();
@@ -2510,7 +2545,10 @@ function handleLogin() {
   if (result.success) {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message success';
-    setTimeout(() => showLanding(), 800);
+    setTimeout(() => {
+      // Перенаправляем в личный кабинет — dashboard.html
+      window.location.href = 'dashboard.html';
+    }, 700);
   } else {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message error';
@@ -2518,29 +2556,54 @@ function handleLogin() {
 }
 
 async function handleRegister() {
-  const name = document.getElementById('register-name').value;
-  const email = document.getElementById('register-email').value;
-  const password = document.getElementById('register-password').value;
-  const confirmPassword = document.getElementById('register-confirm-password').value;
-  const msgDiv = document.getElementById('register-message');
+  const name        = document.getElementById('register-name').value.trim();
+  const nicknameRaw = document.getElementById('register-nickname').value.trim();
+  const phone       = document.getElementById('register-phone').value.trim();
+  const education   = document.getElementById('register-education').value;
+  const trackRadio  = document.querySelector('input[name="reg-track"]:checked');
+  const track       = trackRadio ? trackRadio.value : 'english';
+  const level       = document.getElementById('register-level').value;
+  const email       = document.getElementById('register-email').value.trim();
+  const password    = document.getElementById('register-password').value;
+  const confirmPwd  = document.getElementById('register-confirm-password').value;
+  const msgDiv      = document.getElementById('register-message');
   
-  if (!name || !email || !password || !confirmPassword) {
+  if (!name || !nicknameRaw || !phone || !education || !email || !password || !confirmPwd) {
     msgDiv.textContent = 'Пожалуйста, заполните все обязательные поля!';
     msgDiv.className = 'auth-message error';
     return;
   }
   
-  if (password !== confirmPassword) {
+  if (!/^[a-zA-Z0-9_]+$/.test(nicknameRaw)) {
+    msgDiv.textContent = 'Никнейм: только английские буквы, цифры и _';
+    msgDiv.className = 'auth-message error';
+    return;
+  }
+  
+  if (password.length < 6) {
+    msgDiv.textContent = 'Пароль должен быть не менее 6 символов';
+    msgDiv.className = 'auth-message error';
+    return;
+  }
+  
+  if (password !== confirmPwd) {
     msgDiv.textContent = 'Пароли не совпадают!';
     msgDiv.className = 'auth-message error';
     return;
   }
   
-  const result = await registerUser(email, password, name);
+  const result = await registerUser({
+    name, email, password,
+    nickname: nicknameRaw,
+    phone, education, track, level
+  });
   if (result.success) {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message success';
-    setTimeout(() => showPostRegModal(), 800);
+    // После регистрации → в личный кабинет dashboard.html
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 900);
   } else {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message error';
@@ -2591,6 +2654,210 @@ function showLanding() {
 
   // Always init level cards for everyone, so they work without login too
   initLevelCards();
+  // Ensure the video section re-attaches reveal observer if needed
+  const vsec = document.getElementById('one-level-videos-section');
+  if (vsec && typeof 'IntersectionObserver' !== 'undefined') {
+    vsec.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+  }
+}
+
+/* ═══════════════════════════════════════════
+   16 ВИДЕО — ОДИН УРОВЕНЬ (toggle + render)
+   ═══════════════════════════════════════════ */
+let currentVideoLevel = 'A1';
+const VIDEO_LESSONS_META = {
+  A1: [
+    { t: 'Приветствия и знакомство', d: '5 мин', icon: '👋' },
+    { t: 'Числа 1–100',              d: '7 мин', icon: '🔢' },
+    { t: 'Глагол to be (am/is/are)', d: '10 мин', icon: '✅' },
+    { t: 'Семья и местоимения',     d: '8 мин', icon: '👨‍👩‍👧' },
+    { t: 'Цвета и прилагательные',  d: '6 мин', icon: '🎨' },
+    { t: 'Артикли a / an / the',    d: '9 мин', icon: '📝' },
+    { t: 'Present Simple',          d: '12 мин', icon: '⏰' },
+    { t: 'Present Continuous',      d: '11 мин', icon: '🔄' },
+    { t: 'Еда и напитки',           d: '7 мин', icon: '🍎' },
+    { t: 'Мой дом / комнаты',       d: '8 мин', icon: '🏠' },
+    { t: 'Одежда',                  d: '6 мин', icon: '👕' },
+    { t: 'Предлоги места (in/on/at)', d: '9 мин', icon: '📍' },
+    { t: 'В городе / транспорт',    d: '10 мин', icon: '🚌' },
+    { t: 'Путешествия',             d: '8 мин', icon: '✈️' },
+    { t: 'Работа и профессии',      d: '7 мин', icon: '💼' },
+    { t: 'Повторение уровня A1',    d: '15 мин', icon: '🏁' }
+  ],
+  A2: [
+    { t: 'Past Simple (was/were)',   d: '10 мин', icon: '⏳' },
+    { t: 'Past Simple regular',      d: '11 мин', icon: '📜' },
+    { t: 'Past Simple irregular',    d: '13 мин', icon: '🧩' },
+    { t: 'Future (will / be going to)', d: '12 мин', icon: '🔮' },
+    { t: 'Магазины и покупки',       d: '8 мин', icon: '🛍️' },
+    { t: 'Транспорт в городе',       d: '7 мин', icon: '🚆' },
+    { t: 'Отель / заселение',        d: '9 мин', icon: '🏨' },
+    { t: 'В аэропорту',              d: '10 мин', icon: '🛫' },
+    { t: 'Еда — ресторан',           d: '8 мин', icon: '🍽️' },
+    { t: 'Здоровье и болезни',       d: '9 мин', icon: '🩺' },
+    { t: 'Внешность и характер',     d: '10 мин', icon: '😊' },
+    { t: 'Сравнительные степени',    d: '11 мин', icon: '⚖️' },
+    { t: 'Модальные can / must',     d: '10 мин', icon: '🔑' },
+    { t: 'Present Perfect (основы)', d: '12 мин', icon: '✨' },
+    { t: 'Рассказ о себе',           d: '8 мин', icon: '🗣️' },
+    { t: 'Повторение уровня A2',     d: '15 мин', icon: '🏁' }
+  ],
+  B1: [
+    { t: 'Present Perfect — опыт',   d: '12 мин', icon: '🏅' },
+    { t: 'Past Continuous',          d: '11 мин', icon: '🎬' },
+    { t: 'Past Simple vs Continuous', d: '13 мин', icon: '🔀' },
+    { t: 'Условные 0 и 1 тип',       d: '12 мин', icon: '❓' },
+    { t: 'Модальные could / should', d: '11 мин', icon: '💡' },
+    { t: 'Пассивный залог (основы)', d: '12 мин', icon: '🔁' },
+    { t: 'Работа и карьера',         d: '10 мин', icon: '💼' },
+    { t: 'Собеседование',            d: '11 мин', icon: '🎯' },
+    { t: 'Путешествия и приключения', d: '9 мин', icon: '🗺️' },
+    { t: 'Технологии и гаджеты',     d: '10 мин', icon: '📱' },
+    { t: 'Образование и учёба',      d: '10 мин', icon: '🎓' },
+    { t: 'Деньги и финансы',         d: '9 мин', icon: '💰' },
+    { t: 'СМИ и новости',            d: '10 мин', icon: '📰' },
+    { t: 'Окружающая среда',         d: '11 мин', icon: '🌱' },
+    { t: 'Истории и анекдоты',       d: '10 мин', icon: '📖' },
+    { t: 'Повторение уровня B1',     d: '15 мин', icon: '🏁' }
+  ],
+  B2: [
+    { t: 'Условные 2 / 3 тип',      d: '14 мин', icon: '🌌' },
+    { t: 'Смешанные условные',       d: '15 мин', icon: '🌀' },
+    { t: 'Passive Voice — все времена', d: '14 мин', icon: '⚙️' },
+    { t: 'Reported Speech',          d: '15 мин', icon: '💬' },
+    { t: 'Герундий и инфинитив',     d: '14 мин', icon: '🪄' },
+    { t: 'Phrasal Verbs (часть 1)',  d: '13 мин', icon: '🧱' },
+    { t: 'Phrasal Verbs (часть 2)',  d: '13 мин', icon: '🧱' },
+    { t: 'Идиомы (часть 1)',         d: '12 мин', icon: '🎭' },
+    { t: 'Идиомы (часть 2)',         d: '12 мин', icon: '🎭' },
+    { t: 'Эссе: структура и клише',  d: '15 мин', icon: '✍️' },
+    { t: 'Дебаты и мнения',          d: '13 мин', icon: '⚔️' },
+    { t: 'Бизнес-переговоры',        d: '14 мин', icon: '🤝' },
+    { t: 'Презентации (speaking)',   d: '14 мин', icon: '🎤' },
+    { t: 'Listening: сложные темы',  d: '12 мин', icon: '🎧' },
+    { t: 'Writing: formal letter',   d: '15 мин', icon: '📨' },
+    { t: 'Повторение уровня B2',     d: '18 мин', icon: '🏁' }
+  ],
+  C1: [
+    { t: 'Инверсия (стилистика)',    d: '16 мин', icon: '🔺' },
+    { t: 'Разделительные вопросы',   d: '14 мин', icon: '❔' },
+    { t: 'Сложноподчинённые (все типы)', d: '17 мин', icon: '🌲' },
+    { t: 'Использование времён — нюансы', d: '16 мин', icon: '⏱️' },
+    { t: 'Advanced Phrasal Verbs',   d: '15 мин', icon: '💎' },
+    { t: 'Идиомы: эмоции/характер',  d: '14 мин', icon: '🔥' },
+    { t: 'Идиомы: работа/успех',     d: '14 мин', icon: '🚀' },
+    { t: 'Коллокации: глаголы',      d: '15 мин', icon: '🔗' },
+    { t: 'Коллокации: существительные', d: '15 мин', icon: '🔗' },
+    { t: 'Academic Writing',         d: '17 мин', icon: '📚' },
+    { t: 'IELTS Writing Task 2',     d: '18 мин', icon: '📝' },
+    { t: 'IELTS Speaking Part 2',    d: '16 мин', icon: '🎙️' },
+    { t: 'TED Talk / аутентика',     d: '15 мин', icon: '💫' },
+    { t: 'Нюансы: British vs American', d: '14 мин', icon: '🇬🇧' },
+    { t: 'Аргументация и риторика',  d: '16 мин', icon: '🧠' },
+    { t: 'Повторение уровня C1',     d: '20 мин', icon: '🏁' }
+  ],
+  C2: [
+    { t: 'Стилистика: регистры речи', d: '18 мин', icon: '🎚️' },
+    { t: 'Литературные приёмы',      d: '17 мин', icon: '📜' },
+    { t: 'Идиомы и фразеологизмы (pro)', d: '18 мин', icon: '🗿' },
+    { t: 'Сленг и неформальная речь', d: '16 мин', icon: '🎧' },
+    { t: 'Древние/устаревшие слова', d: '15 мин', icon: '🏛️' },
+    { t: 'Слова-исключения и нюансы', d: '17 мин', icon: '🧩' },
+    { t: 'Euphemism и двусмысленность', d: '16 мин', icon: '🎭' },
+    { t: 'Публичные выступления',    d: '18 мин', icon: '🎪' },
+    { t: 'Академический стиль',      d: '19 мин', icon: '🎓' },
+    { t: 'Legal / Business English', d: '18 мин', icon: '⚖️' },
+    { t: 'Journalism style',         d: '17 мин', icon: '🗞️' },
+    { t: 'Writing: story / novel',   d: '18 мин', icon: '✒️' },
+    { t: 'Simultaneous interpreting basics', d: '20 мин', icon: '🎧' },
+    { t: 'Поэзия и рифма',           d: '16 мин', icon: '🎼' },
+    { t: 'Юмор и wordplay',          d: '15 мин', icon: '😄' },
+    { t: 'Повторение уровня C2',     d: '22 мин', icon: '🏁' }
+  ]
+};
+
+window.toggleOneLevelSection = function() {
+  const sec = document.getElementById('one-level-videos-section');
+  if (!sec) return;
+  const btn = document.getElementById('oneLevelToggleBtn');
+  if (sec.style.display === 'none' || sec.style.display === '') {
+    sec.style.display = 'block';
+    renderVideoGrid();
+    if (typeof runLandingReveal === 'function') runLandingReveal('#one-level-videos-section');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (btn) {
+      btn.innerHTML = '<i class="fas fa-times-circle" style="margin-right:10px"></i> Скрыть 16 видео';
+    }
+  } else {
+    sec.style.display = 'none';
+    if (btn) {
+      btn.innerHTML = '<i class="fas fa-play-circle" style="margin-right:10px"></i> Один уровень — 16 видео уроков';
+    }
+  }
+};
+
+window.switchVideoLevel = function(level) {
+  currentVideoLevel = level;
+  document.querySelectorAll('.level-video-pill').forEach(p => {
+    if (p.dataset.vlvl === level) {
+      p.classList.add('active');
+      p.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+      p.style.color = '#fff';
+      p.style.borderColor = 'transparent';
+    } else {
+      p.classList.remove('active');
+      p.style.background = '';
+      p.style.color = '';
+      p.style.borderColor = '';
+    }
+  });
+  renderVideoGrid();
+};
+
+function renderVideoGrid() {
+  const grid = document.getElementById('videoGrid');
+  if (!grid) return;
+  const lessons = VIDEO_LESSONS_META[currentVideoLevel] || VIDEO_LESSONS_META.A1;
+  // Ensure 16 lessons
+  while (lessons.length < 16) lessons.push({ t: `Урок ${lessons.length + 1}`, d: '5 мин', icon: '▶️' });
+  const colorForLevel = {
+    A1: '#22d37a', A2: '#22d3c8', B1: '#5b8dee',
+    B2: '#9d6ef5', C1: '#f0b429', C2: '#ef4444'
+  };
+  const accent = colorForLevel[currentVideoLevel] || '#ef4444';
+  grid.innerHTML = lessons.map((l, i) => `
+    <div class="video-card reveal-card" data-idx="${i + 1}" style="--vc-accent:${accent}">
+      <div class="video-thumb">
+        <div class="video-thumb-bg"></div>
+        <div class="video-play">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="video-number">${String(i + 1).padStart(2, '0')}</div>
+        <div class="video-duration">${l.d}</div>
+        <div class="video-icon">${l.icon}</div>
+      </div>
+      <div class="video-info">
+        <div class="video-lesson">Урок ${i + 1}</div>
+        <div class="video-title">${l.t}</div>
+        <div class="video-meta">
+          <span class="video-lvl-pill" style="color:${accent};border-color:${accent}22;background:${accent}12;">Уровень ${currentVideoLevel}</span>
+          <button class="video-watch-btn" onclick="alert('Видео «${l.t}» открывается в плеере.')">Смотреть</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // animate reveal
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  grid.querySelectorAll('.video-card').forEach((el, i) => {
+    if (prefersReduced) {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+      return;
+    }
+    el.style.animation = `vcIn 0.55s cubic-bezier(.2,.7,.2,1) both`;
+    el.style.animationDelay = (i * 35) + 'ms';
+  });
 }
 
 window.updateAvatarDisplay = function() {

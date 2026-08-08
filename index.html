@@ -14,25 +14,6 @@
 </head>
 <body>
 
-<!-- Friendly site mascot: a little original spider that drops in on a thread -->
-<div class="site-spider" id="siteSpider" onclick="siteSpiderRetract()">
-  <div class="spider-thread"></div>
-  <svg class="spider-body" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="30" cy="34" rx="12" ry="10" fill="var(--accent)"/>
-    <circle cx="30" cy="20" r="8" fill="var(--accent)"/>
-    <circle cx="27" cy="19" r="1.6" fill="#fff"/>
-    <circle cx="33" cy="19" r="1.6" fill="#fff"/>
-    <g stroke="var(--accent2)" stroke-width="2.4" stroke-linecap="round" fill="none">
-      <path d="M20 30 C10 26, 6 20, 4 14"/>
-      <path d="M20 34 C8 34, 4 34, 2 34"/>
-      <path d="M20 38 C10 42, 6 46, 4 52"/>
-      <path d="M40 30 C50 26, 54 20, 56 14"/>
-      <path d="M40 34 C52 34, 56 34, 58 34"/>
-      <path d="M40 38 C50 42, 54 46, 56 52"/>
-    </g>
-  </svg>
-</div>
-
 <!-- ═════════════ AUTH SCREEN ═════════════ -->
 <div id="auth-screen" class="hidden">
   <!-- Header with burger menu -->
@@ -43,10 +24,8 @@
       </a>
       <nav class="auth-header-nav">
         <a href="#about" onclick="hideAuthScreen()">Возможности</a>
-        <a href="#courses" onclick="hideAuthScreen()">Уровни</a>
         <a href="#coding" onclick="hideAuthScreen()">Программирование</a>
         <a href="#reviews" onclick="hideAuthScreen()">Отзывы</a>
-        <a href="#contact" onclick="hideAuthScreen()">Контакты</a>
       </nav>
       <button class="auth-header-burger" id="authBurger" aria-label="Открыть меню" onclick="toggleAuthMenu()">
         <span></span><span></span><span></span>
@@ -55,17 +34,16 @@
     <!-- Mobile nav -->
     <nav class="auth-mobile-nav" id="authMobileNav">
       <a href="#about" onclick="hideAuthScreen(); toggleAuthMenu();">Возможности</a>
-      <a href="#courses" onclick="hideAuthScreen(); toggleAuthMenu();">Уровни</a>
       <a href="#coding" onclick="hideAuthScreen(); toggleAuthMenu();">Программирование</a>
       <a href="#reviews" onclick="hideAuthScreen(); toggleAuthMenu();">Отзывы</a>
-      <a href="#contact" onclick="hideAuthScreen(); toggleAuthMenu();">Контакты</a>
     </nav>
   </header>
 
   <!-- Main split content -->
   <div class="auth-main">
     <!-- Left visual section -->
-    <div class="auth-visual-section">
+    <div class="auth-visual-section" id="authVisualSection" style="background: linear-gradient(135deg, rgba(239,68,68,0.78), rgba(220,38,38,0.78));">
+      <div id="authGalaxy" style="position:absolute;inset:0;z-index:0;pointer-events:none;"></div>
       <div class="auth-visual-inner">
         <img src="assets/icon/logo/logo-horizontal.png" alt="JASS" class="auth-visual-logo">
         <h1 class="auth-visual-title">Добро пожаловать!</h1>
@@ -144,12 +122,60 @@
               <input type="text" id="register-name" placeholder="Ваше имя" autocomplete="given-name">
             </div>
             <div class="field-group">
+              <label class="field-label">Никнейм</label>
+              <div class="nickname-input-wrapper" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+                <span class="nickname-prefix" style="padding:14px 12px 14px 18px;color:#ef4444;font-size:18px;font-weight:700;background:rgba(91,141,238,0.08);">@</span>
+                <input type="text" id="register-nickname" placeholder="username (English only)" style="flex:1;border:none;background:transparent;padding:14px 18px;color:#111827;font-size:15px;outline:none;font-family:'Inter',sans-serif;box-sizing:border-box;width:100%;">
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Телефон</label>
+              <input type="tel" id="register-phone" placeholder="+998 (__) ___-__-__" autocomplete="tel">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Уровень образования</label>
+              <select id="register-education" style="width:100%;padding:14px 16px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;color:#111827;font-size:15px;outline:none;transition:all 0.2s;font-family:'Inter',sans-serif;box-sizing:border-box;">
+                <option value="">Выберите уровень...</option>
+                <option value="school">Школа (9–11 класс)</option>
+                <option value="college">Колледж / лицей</option>
+                <option value="student">Студент вуза</option>
+                <option value="bachelor">Бакалавр</option>
+                <option value="master">Магистр / аспирант</option>
+                <option value="specialist">Специалист (высшее)</option>
+                <option value="phd">PhD / доктор наук</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Направление обучения</label>
+              <div id="register-track-group" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:all 0.2s;background:#f3f4f6;font-size:14px;color:#111827;font-weight:600;">
+                  <input type="radio" name="reg-track" value="english" checked onchange="updateRegLevelOptions()">
+                  <span>🇬🇧 Английский</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:all 0.2s;background:#f3f4f6;font-size:14px;color:#111827;font-weight:600;">
+                  <input type="radio" name="reg-track" value="coding" onchange="updateRegLevelOptions()">
+                  <span>💻 Программирование</span>
+                </label>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Ваш уровень (CEFR / Курс)</label>
+              <select id="register-level" style="width:100%;padding:14px 16px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;color:#111827;font-size:15px;outline:none;transition:all 0.2s;font-family:'Inter',sans-serif;box-sizing:border-box;">
+                <option value="A1">A1 — Beginner (Начинающий)</option>
+                <option value="A2">A2 — Elementary (Элементарный)</option>
+                <option value="B1">B1 — Intermediate (Средний)</option>
+                <option value="B2">B2 — Upper-Intermediate (Выше среднего)</option>
+                <option value="C1">C1 — Advanced (Продвинутый)</option>
+                <option value="C2">C2 — Mastery (Носитель)</option>
+              </select>
+            </div>
+            <div class="field-group">
               <label class="field-label">Email</label>
               <input type="email" id="register-email" placeholder="email@example.com" autocomplete="email">
             </div>
             <div class="field-group">
               <label class="field-label">Пароль</label>
-              <input type="password" id="register-password" placeholder="Придумайте пароль" autocomplete="new-password">
+              <input type="password" id="register-password" placeholder="Придумайте пароль (мин. 6 символов)" autocomplete="new-password">
             </div>
             <div class="field-group">
               <label class="field-label">Подтвердите пароль</label>
@@ -221,28 +247,41 @@
       </a>
       <nav class="header-nav">
         <a href="#about" class="nav-link">Возможности</a>
-        <a href="#courses" class="nav-link">Уровни</a>
+        <a href="#how-it-works" class="nav-link">Как мы учим</a>
+        <a href="#features-unique" class="nav-link">Преимущества</a>
         <a href="#coding" class="nav-link">Программирование<span class="nav-soon">скоро</span></a>
         <a href="#reviews" class="nav-link">Отзывы</a>
-        <a href="#contact" class="nav-link">Контакты</a>
       </nav>
       <div class="header-actions">
-        <button class="btn btn-secondary btn-header" onclick="showAuthScreen('login')">Войти</button>
-        <button class="btn btn-header" onclick="showAuthScreen('register')">Начать бесплатно</button>
+        <button class="btn btn-header" onclick="showAuthScreen('login')">Войти</button>
       </div>
       <button class="lp-burger" id="lpBurger" aria-label="Открыть меню" onclick="toggleLandingNav()">
         <span></span><span></span><span></span>
       </button>
     </div>
+    <div class="lp-nav-overlay" id="lpNavOverlay" onclick="closeLandingNav()"></div>
     <nav class="lp-mobile-nav" id="lpMobileNav">
-      <a href="#about" onclick="closeLandingNav()">Возможности</a>
-      <a href="#courses" onclick="closeLandingNav()">Уровни</a>
-      <a href="#coding" onclick="closeLandingNav()">Программирование</a>
-      <a href="#reviews" onclick="closeLandingNav()">Отзывы</a>
-      <a href="#contact" onclick="closeLandingNav()">Контакты</a>
+      <div class="lp-mobile-nav-header">
+        <a href="#top" class="lp-mobile-nav-brand" onclick="closeLandingNav()">
+          <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH">
+        </a>
+        <button class="lp-mobile-nav-close" onclick="closeLandingNav()" aria-label="Закрыть меню">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <a href="#about" onclick="closeLandingNav()"><i class="fas fa-star"></i> Возможности</a>
+      <a href="#how-it-works" onclick="closeLandingNav()"><i class="fas fa-route"></i> Как мы учим</a>
+      <a href="#features-unique" onclick="closeLandingNav()"><i class="fas fa-gem"></i> Преимущества</a>
+      <a href="#coding" onclick="closeLandingNav()"><i class="fas fa-code"></i> Программирование</a>
+      <a href="#reviews" onclick="closeLandingNav()"><i class="fas fa-comments"></i> Отзывы</a>
+      <a href="#reviews" onclick="closeLandingNav()" style="border-bottom:none;"><i class="fas fa-envelope"></i> Контакты</a>
       <div class="lp-mobile-actions">
-        <button class="btn btn-secondary" onclick="showAuthScreen('login'); closeLandingNav();">Войти</button>
-        <button class="btn" onclick="showAuthScreen('register'); closeLandingNav();">Начать</button>
+        <button class="btn" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 10px 26px rgba(239,68,68,0.32);" onclick="showAuthScreen('register'); closeLandingNav();">
+          <i class="fas fa-gift" style="margin-right:8px;"></i> Начать бесплатно
+        </button>
+        <button class="btn btn-secondary" onclick="showAuthScreen('login'); closeLandingNav();">
+          <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i> Войти
+        </button>
       </div>
     </nav>
   </header>
@@ -339,53 +378,416 @@
     </div>
   </section>
 
-  <!-- ── УРОВНИ ── -->
-  <section class="section section-gray" id="courses">
+  <!-- ══════════ НОВЫЙ БЛОК 1: 4 ШАГА ДО ЦЕЛИ ══════════ -->
+  <section class="section steps-section" id="how-it-works" style="position:relative;overflow:hidden;">
     <div class="container">
-      <div class="section-eyebrow reveal">Уровни</div>
-      <h2 class="section-title reveal">Выбери свой уровень</h2>
-      <p class="section-desc reveal">Каждый уровень — отдельный набор слов, тем и упражнений. Прогресс сохраняется — можно вернуться в любой момент.</p>
-      <div class="level-grid">
-        <div class="level-card lc-a1 reveal reveal-stagger" onclick="openLevel('A1')">
-          <div class="lc-badge" style="color:#22d37a">A1</div>
-          <div class="lc-name">Beginner</div>
-          <div class="lc-desc">Начинающий. Базовые слова, приветствия, числа, семья</div>
-          <div class="lc-words">250+ слов</div>
+      <div class="section-eyebrow reveal">Как мы учим</div>
+      <h2 class="section-title reveal">4 шага до <span style="background:linear-gradient(135deg,#ef4444,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent;">свободного английского</span></h2>
+      <p class="section-desc reveal">Чёткая структура, без хаоса. Каждый шаг — 15–30 минут в день, результат виден уже с первой недели.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative;margin-top:36px;">
+        <div class="reveal reveal-stagger step-card" style="background:linear-gradient(180deg,rgba(239,68,68,0.14),rgba(239,68,68,0.02));border:1px solid rgba(239,68,68,0.22);border-radius:24px;padding:28px 24px;position:relative;transition:transform .25s;">
+          <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#ef4444,#fb923c);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900;font-family:'Space Grotesk',sans-serif;box-shadow:0 10px 24px rgba(239,68,68,0.35);margin-bottom:18px;">1</div>
+          <h3 style="font-size:19px;margin:0 0 8px;color:var(--text);font-weight:800;">Регистрация</h3>
+          <p style="margin:0;color:var(--text2);font-size:14px;line-height:1.55;">Заполняете форму — выбираете направление и уровень. Уходит меньше минуты.</p>
         </div>
-        <div class="level-card lc-a2 reveal reveal-stagger" onclick="openLevel('A2')">
-          <div class="lc-badge" style="color:#22d3c8">A2</div>
-          <div class="lc-name">Elementary</div>
-          <div class="lc-desc">Элементарный. Прошедшее время, быт, покупки, путешествия</div>
-          <div class="lc-words">350+ слов</div>
+        <div class="reveal reveal-stagger step-card" style="background:linear-gradient(180deg,rgba(91,141,238,0.14),rgba(91,141,238,0.02));border:1px solid rgba(91,141,238,0.22);border-radius:24px;padding:28px 24px;position:relative;transition:transform .25s;">
+          <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#3b82f6,#60a5fa);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900;font-family:'Space Grotesk',sans-serif;box-shadow:0 10px 24px rgba(59,130,246,0.35);margin-bottom:18px;">2</div>
+          <h3 style="font-size:19px;margin:0 0 8px;color:var(--text);font-weight:800;">Выбираете курс</h3>
+          <p style="margin:0;color:var(--text2);font-size:14px;line-height:1.55;">Заходите в личный кабинет — 6 уровней, видео-уроки, темы, тесты.</p>
         </div>
-        <div class="level-card lc-b1 reveal reveal-stagger" onclick="openLevel('B1')">
-          <div class="lc-badge" style="color:#5b8dee">B1</div>
-          <div class="lc-name">Intermediate</div>
-          <div class="lc-desc">Средний. Разговорная речь, работа, мнения, будущее время</div>
-          <div class="lc-words">500+ слов</div>
+        <div class="reveal reveal-stagger step-card" style="background:linear-gradient(180deg,rgba(34,211,200,0.14),rgba(34,211,200,0.02));border:1px solid rgba(34,211,200,0.22);border-radius:24px;padding:28px 24px;position:relative;transition:transform .25s;">
+          <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#14b8a6,#22d3ee);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900;font-family:'Space Grotesk',sans-serif;box-shadow:0 10px 24px rgba(20,184,166,0.35);margin-bottom:18px;">3</div>
+          <h3 style="font-size:19px;margin:0 0 8px;color:var(--text);font-weight:800;">Занимаетесь 15 мин/день</h3>
+          <p style="margin:0;color:var(--text2);font-size:14px;line-height:1.55;">Словарь, Speaking, Listening, глаголы, грамматика — всё по расписанию.</p>
         </div>
-        <div class="level-card lc-b2 reveal reveal-stagger" onclick="openLevel('B2')">
-          <div class="lc-badge" style="color:#9d6ef5">B2</div>
-          <div class="lc-name">Upper-Intermediate</div>
-          <div class="lc-desc">Выше среднего. Условные предложения, пассив, сложные темы</div>
-          <div class="lc-words">700+ слов</div>
-        </div>
-        <div class="level-card lc-c1 reveal reveal-stagger" onclick="openLevel('C1')">
-          <div class="lc-badge" style="color:#f0b429">C1</div>
-          <div class="lc-name">Advanced</div>
-          <div class="lc-desc">Продвинутый. Идиомы, академический язык, сложные структуры</div>
-          <div class="lc-words">900+ слов</div>
-        </div>
-        <div class="level-card lc-c2 reveal reveal-stagger" onclick="openLevel('C2')">
-          <div class="lc-badge" style="color:#f05252">C2</div>
-          <div class="lc-name">Mastery</div>
-          <div class="lc-desc">Мастерство. Носитель языка. Фразеологизмы, нюансы</div>
-          <div class="lc-words">1000+ слов</div>
+        <div class="reveal reveal-stagger step-card" style="background:linear-gradient(180deg,rgba(157,110,245,0.14),rgba(157,110,245,0.02));border:1px solid rgba(157,110,245,0.22);border-radius:24px;padding:28px 24px;position:relative;transition:transform .25s;">
+          <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#c084fc);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:900;font-family:'Space Grotesk',sans-serif;box-shadow:0 10px 24px rgba(139,92,246,0.35);margin-bottom:18px;">4</div>
+          <h3 style="font-size:19px;margin:0 0 8px;color:var(--text);font-weight:800;">Получаете результат</h3>
+          <p style="margin:0;color:var(--text2);font-size:14px;line-height:1.55;">Через 3 месяца — разговорная речь, через 6 — уверенный B2, работа и путешествия.</p>
         </div>
       </div>
-      <p class="levels-note reveal">Нажми на уровень — не нужно ничего скачивать, всё открывается прямо в браузере.</p>
+
+      <style>
+        .step-card:hover{ transform: translateY(-6px); box-shadow: 0 22px 50px rgba(15,23,42,0.12); }
+        @media (max-width: 960px){
+          .steps-section > div > div:nth-child(4){ grid-template-columns: repeat(2,1fr); }
+        }
+        @media (max-width: 520px){
+          .steps-section > div > div:nth-child(4){ grid-template-columns: 1fr; }
+        }
+      </style>
     </div>
   </section>
+
+  <!-- ══════════ НОВЫЙ БЛОК 2: ПОЧЕМУ JASS — УНИКАЛЬНО ══════════ -->
+  <section class="section" id="features-unique" style="position:relative;overflow:hidden;background:linear-gradient(180deg, rgba(239,68,68,0.04) 0%, rgba(139,92,246,0.04) 50%, rgba(59,130,246,0.03) 100%);">
+    <!-- Decorative background elements -->
+    <div aria-hidden="true" style="position:absolute;top:-60px;left:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle, rgba(239,68,68,0.16), transparent 68%);filter:blur(10px);pointer-events:none;"></div>
+    <div aria-hidden="true" style="position:absolute;top:240px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle, rgba(139,92,246,0.14), transparent 68%);filter:blur(12px);pointer-events:none;"></div>
+    <div aria-hidden="true" style="position:absolute;bottom:-40px;left:30%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle, rgba(59,130,246,0.12), transparent 68%);filter:blur(8px);pointer-events:none;"></div>
+    <!-- Diagonal grid lines -->
+    <svg aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;opacity:.18;pointer-events:none;" viewBox="0 0 800 600" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="lineGrad1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#ef4444" stop-opacity="0"/>
+          <stop offset=".5" stop-color="#ef4444" stop-opacity=".8"/>
+          <stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="120" x2="800" y2="260" stroke="url(#lineGrad1)" stroke-width="1" fill="none"/>
+      <line x1="0" y1="300" x2="800" y2="440" stroke="url(#lineGrad1)" stroke-width="1" fill="none"/>
+      <line x1="0" y1="480" x2="800" y2="620" stroke="url(#lineGrad1)" stroke-width="1" fill="none"/>
+    </svg>
+
+    <div class="container" style="position:relative;z-index:2;">
+      <div class="section-eyebrow reveal" style="position:relative;display:inline-block;left:50%;transform:translateX(-50%);">
+        <span style="position:absolute;left:-22px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#8b5cf6);box-shadow:0 0 0 4px rgba(239,68,68,0.14);"></span>
+        Преимущества
+        <span style="position:absolute;right:-22px;top:50%;transform:translateY(-50%);width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);box-shadow:0 0 0 4px rgba(139,92,246,0.14);"></span>
+      </div>
+      <h2 class="section-title reveal" style="text-align:center;font-family:'Space Grotesk',sans-serif;">
+        Почему <span style="background:linear-gradient(100deg,#ef4444 0%,#f97316 45%,#8b5cf6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;position:relative;">
+          JASS
+        </span>
+        — не как все
+        <div style="height:6px;width:180px;margin:14px auto 0;border-radius:99px;background:linear-gradient(90deg,transparent,rgba(239,68,68,0.6),rgba(139,92,246,0.6),transparent);"></div>
+      </h2>
+      <p class="section-desc reveal" style="max-width:680px;">
+        Мы делаем платформу, в которую хочется заходить каждый день. Без скуки, без зубрёжки, с живой практикой и ИИ-помощником рядом.
+      </p>
+
+      <div class="uf-grid reveal">
+        <!-- ═══ MAIN HERO CARD (left, spans 2 rows) ═══ -->
+        <div class="uf-card uf-big reveal">
+          <!-- Animated glow -->
+          <div class="uf-big-glow"></div>
+          <div class="uf-big-pattern"></div>
+          <!-- Floating badges -->
+          <div class="uf-float uf-float-1">
+            <i class="fas fa-infinity"></i>
+          </div>
+          <div class="uf-float uf-float-2">
+            <i class="fas fa-euro-sign"></i> 0€
+          </div>
+          <div class="uf-float uf-float-3">
+            <i class="fas fa-clock"></i> 24/7
+          </div>
+
+          <div style="position:relative;z-index:2;">
+            <div class="uf-status-pill">
+              <span class="uf-status-dot"></span>
+              СЕЙЧАС ОТКРЫТО
+            </div>
+            <h3 class="uf-big-title">Первый уровень — <span style="text-decoration:underline;text-decoration-color:rgba(255,255,255,0.35);text-underline-offset:6px;">бесплатно</span> навсегда</h3>
+            <p class="uf-big-desc">
+              Регистрируйтесь и учите <strong>A1</strong> целиком — без пробного периода, без ввода карты, без ограничений по времени.
+            </p>
+            <ul class="uf-big-list">
+              <li><i class="fas fa-check-circle"></i> Все уроки и темы уровня открыты</li>
+              <li><i class="fas fa-check-circle"></i> Speaking + Listening доступны сразу</li>
+              <li><i class="fas fa-check-circle"></i> Прогресс сохраняется навсегда</li>
+            </ul>
+          </div>
+          <div style="position:relative;z-index:2;">
+            <button class="btn btn-large uf-cta-btn" onclick="showAuthScreen('register')">
+              <i class="fas fa-gift"></i> Начать бесплатно
+            </button>
+          </div>
+        </div>
+
+        <!-- ═══ CARD 2: Speaking ═══ -->
+        <div class="uf-card uf-md reveal">
+          <div class="uf-md-accent uf-md-teal"></div>
+          <div class="uf-md-icon uf-md-teal-bg">
+            <i class="fas fa-microphone-lines"></i>
+            <div class="uf-md-icon-ring"></div>
+          </div>
+          <h4 class="uf-md-title">Живой Speaking</h4>
+          <p class="uf-md-desc">Говорите вслух — ИИ-распознавание проверяет каждое слово, подсвечивает ошибки и даёт подсказки по произношению, как личный репетитор.</p>
+          <div class="uf-md-pills">
+            <span class="uf-pill uf-pill-teal"><i class="fas fa-wave-square"></i> Speech-to-Text</span>
+            <span class="uf-pill uf-pill-blue"><i class="fas fa-comment-check"></i> Фидбэк</span>
+            <span class="uf-pill uf-pill-red"><i class="fas fa-brain"></i> ИИ-помощь</span>
+          </div>
+        </div>
+
+        <!-- ═══ CARD 3: English + Code ═══ -->
+        <div class="uf-card uf-md reveal">
+          <div class="uf-md-accent uf-md-purple"></div>
+          <div class="uf-md-icon uf-md-purple-bg">
+            <i class="fas fa-code"></i>
+            <div class="uf-md-icon-ring"></div>
+          </div>
+          <h4 class="uf-md-title">Английский + Программирование</h4>
+          <p class="uf-md-desc">Первым в Узбекистане объединяем два навыка в одной платформе: учите слова + термины IT сразу на английском — готовьтесь к работе в глобальной индустрии.</p>
+          <div class="uf-md-pills">
+            <span class="uf-pill uf-pill-purple"><i class="fab fa-python"></i> Python</span>
+            <span class="uf-pill uf-pill-red"><i class="fab fa-js"></i> JS</span>
+            <span class="uf-pill uf-pill-green"><i class="fas fa-hourglass-half"></i> Скоро</span>
+          </div>
+        </div>
+
+        <!-- ═══ CARD 4: Community (NEW — bottom right wide) ═══ -->
+        <div class="uf-card uf-sm reveal">
+          <div class="uf-md-accent uf-md-orange"></div>
+          <div class="uf-md-icon uf-md-orange-bg">
+            <i class="fas fa-users-rays"></i>
+          </div>
+          <div style="margin-left:14px;flex:1;">
+            <h4 class="uf-md-title" style="margin-bottom:6px;">Сообщество</h4>
+            <p class="uf-md-desc" style="margin:0;">Чат с учениками, разборы задач, совместное speaking-club каждый месяц.</p>
+          </div>
+        </div>
+
+        <!-- ═══ CARD 5: Progress (NEW — bottom right wide 2) ═══ -->
+        <div class="uf-card uf-sm reveal">
+          <div class="uf-md-accent uf-md-blue"></div>
+          <div class="uf-md-icon uf-md-blue-bg">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div style="margin-left:14px;flex:1;">
+            <h4 class="uf-md-title" style="margin-bottom:6px;">Прогресс в реальном времени</h4>
+            <p class="uf-md-desc" style="margin:0;">Статистика по дням недели, streak, награды и достижения за регулярность.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <style>
+    /* ===== Unique Features Grid ===== */
+    .uf-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 22px;
+      margin-top: 40px;
+    }
+    .uf-card {
+      position: relative;
+      border-radius: 28px;
+      padding: 32px 28px;
+      transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s, border-color .3s;
+      overflow: hidden;
+      will-change: transform;
+    }
+    .uf-card:hover {
+      transform: translateY(-8px);
+    }
+
+    /* ---------- BIG CARD ---------- */
+    .uf-big {
+      grid-row: span 2;
+      background: linear-gradient(145deg, #ef4444 0%, #dc2626 45%, #991b1b 100%);
+      color: #fff;
+      padding: 42px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+      box-shadow: 0 30px 70px rgba(239,68,68,0.22), inset 0 1px 0 rgba(255,255,255,0.15);
+      min-height: 560px;
+    }
+    .uf-big::before{
+      content:"";position:absolute;inset:0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(251,146,60,0.5) 0%, transparent 55%);
+      pointer-events:none;
+    }
+    .uf-big::after{
+      content:"";position:absolute;right:-80px;top:-60px;width:280px;height:280px;border-radius:50%;
+      background:conic-gradient(from 220deg, rgba(255,255,255,0.14), rgba(251,146,60,0.22), rgba(255,255,255,0.05));
+      filter:blur(4px);animation:ufSlowSpin 18s linear infinite;pointer-events:none;
+    }
+    @keyframes ufSlowSpin{ to{ transform: rotate(360deg); } }
+    .uf-big-glow {
+      position:absolute;left:-60px;bottom:-80px;width:300px;height:300px;border-radius:50%;
+      background:radial-gradient(circle, rgba(251,146,60,0.45), transparent 65%);
+      filter:blur(12px);pointer-events:none;
+    }
+    .uf-big-pattern {
+      position:absolute;inset:0;opacity:.1;pointer-events:none;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1.5px);
+      background-size: 22px 22px;
+      mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 75%);
+    }
+    /* Floating badges */
+    .uf-float{
+      position:absolute;z-index:3;display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:99px;
+      background:rgba(255,255,255,0.17);border:1px solid rgba(255,255,255,0.28);
+      backdrop-filter:blur(8px);font-weight:800;font-size:12.5px;color:#fff;
+      box-shadow:0 10px 28px rgba(0,0,0,0.18);
+      animation: ufFloatY 5s ease-in-out infinite;
+    }
+    .uf-float i{ color:#fde047; }
+    .uf-float-1{ top:30px; right:28px; animation-delay: 0s; font-size:14px; }
+    .uf-float-2{ top:110px; right:42px; animation-delay: -1.4s; background:rgba(255,255,255,0.22); }
+    .uf-float-3{ top:190px; right:24px; animation-delay: -2.8s; background:rgba(255,255,255,0.20); }
+    @keyframes ufFloatY {
+      0%,100%{ transform: translateY(0); }
+      50%    { transform: translateY(-10px); }
+    }
+    .uf-status-pill{
+      display:inline-flex;align-items:center;gap:9px;padding:7px 15px;border-radius:99px;
+      background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);
+      font-weight:800;font-size:12px;letter-spacing:.6px;margin-bottom:22px;
+      backdrop-filter:blur(6px);
+    }
+    .uf-status-dot{
+      width:8px;height:8px;border-radius:50%;background:#fde047;
+      box-shadow:0 0 0 4px rgba(253,224,71,0.28);
+      animation: ufPulse 1.8s ease-out infinite;
+    }
+    @keyframes ufPulse{
+      0%  { box-shadow:0 0 0 0 rgba(253,224,71,.5); }
+      100%{ box-shadow:0 0 0 14px rgba(253,224,71,0); }
+    }
+    .uf-big-title{
+      margin:0 0 14px;font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,3vw,38px);
+      line-height:1.08;font-weight:900;letter-spacing:-.5px;
+    }
+    .uf-big-desc{
+      margin:0 0 22px;font-size:15.5px;line-height:1.65;opacity:.94;max-width:420px;
+    }
+    .uf-big-list{
+      list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;
+    }
+    .uf-big-list li{
+      display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;opacity:.96;
+    }
+    .uf-big-list li i{
+      width:22px;height:22px;flex:none;border-radius:50%;
+      background:rgba(255,255,255,0.2);color:#fff;
+      display:flex;align-items:center;justify-content:center;font-size:11px;
+      border:1px solid rgba(255,255,255,0.25);
+    }
+    .uf-cta-btn{
+      background:#fff !important;color:#ef4444 !important;font-weight:800 !important;
+      box-shadow:0 22px 48px rgba(0,0,0,0.28) !important;border:2px solid #fff !important;
+      transition: transform .25s !important;
+    }
+    .uf-cta-btn:hover{ transform: scale(1.03); }
+
+    /* ---------- MEDIUM CARDS ---------- */
+    .uf-md{
+      grid-row: span 1;
+      background: linear-gradient(180deg, #ffffff 0%, #fefefe 100%);
+      border: 1px solid rgba(15,23,42,0.07);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+      display: flex;
+      flex-direction: column;
+    }
+    .uf-md:hover{
+      box-shadow: 0 30px 66px rgba(15,23,42,0.14);
+      border-color: transparent;
+    }
+    .uf-md-accent{
+      position:absolute;left:0;top:0;width:100%;height:4px;border-radius:28px 28px 0 0;
+    }
+    .uf-md-teal  { background:linear-gradient(90deg,#14b8a6,#22d3ee); }
+    .uf-md-purple{ background:linear-gradient(90deg,#8b5cf6,#ec4899); }
+    .uf-md-orange{ background:linear-gradient(90deg,#f97316,#ef4444); }
+    .uf-md-blue  { background:linear-gradient(90deg,#3b82f6,#06b6d4); }
+
+    .uf-md-icon{
+      position:relative;width:58px;height:58px;border-radius:18px;
+      display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;
+    }
+    .uf-md-icon-ring{
+      position:absolute;inset:-6px;border-radius:22px;border:2px dashed currentColor;opacity:.22;
+      animation: ufRing 14s linear infinite;
+    }
+    @keyframes ufRing{ to{ transform: rotate(360deg); } }
+    .uf-md-teal-bg  { background:linear-gradient(135deg,rgba(20,184,166,.18),rgba(34,211,238,.14));color:#0d9488; }
+    .uf-md-purple-bg{ background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(239,68,68,.14));color:#7c3aed; }
+    .uf-md-orange-bg{ background:linear-gradient(135deg,rgba(249,115,22,.2),rgba(239,68,68,.14));color:#ea580c; }
+    .uf-md-blue-bg  { background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(6,182,212,.14));color:#2563eb; }
+
+    .uf-md-title{
+      margin:0 0 10px;font-size:19.5px;font-weight:800;color:var(--text);
+      font-family:'Space Grotesk',sans-serif;
+    }
+    .uf-md-desc{
+      margin:0 0 16px;color:var(--text2);font-size:14.5px;line-height:1.62;
+    }
+    .uf-md-pills{
+      display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;
+    }
+    .uf-pill{
+      display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;
+      font-size:12px;font-weight:700;border:1px solid;
+    }
+    .uf-pill i{ font-size:10.5px; }
+    .uf-pill-teal  { background:rgba(20,184,166,.10);color:#0d9488;border-color:rgba(20,184,166,.25); }
+    .uf-pill-blue  { background:rgba(59,130,246,.10);color:#2563eb;border-color:rgba(59,130,246,.25); }
+    .uf-pill-red   { background:rgba(239,68,68,.10);color:#dc2626;border-color:rgba(239,68,68,.25); }
+    .uf-pill-purple{ background:rgba(139,92,246,.10);color:#7c3aed;border-color:rgba(139,92,246,.25); }
+    .uf-pill-green { background:rgba(34,211,122,.10);color:#059669;border-color:rgba(34,211,122,.25); }
+    .uf-pill-orange{ background:rgba(249,115,22,.10);color:#ea580c;border-color:rgba(249,115,22,.25); }
+
+    /* ---------- SMALL CARDS (bottom wide) ---------- */
+    .uf-sm{
+      background: linear-gradient(180deg, #ffffff 0%, #fefefe 100%);
+      border: 1px solid rgba(15,23,42,0.07);
+      box-shadow: 0 16px 40px rgba(15,23,42,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      border-radius: 24px;
+    }
+    .uf-sm:hover{
+      box-shadow: 0 26px 54px rgba(15,23,42,0.12);
+      border-color: transparent;
+    }
+    .uf-sm .uf-md-icon{ width:46px;height:46px;border-radius:14px;font-size:18px;margin-bottom:0;flex:none; }
+    .uf-sm .uf-md-title{ font-size:16.5px; }
+    .uf-sm .uf-md-desc { font-size:13.5px;line-height:1.5; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1100px){
+      .uf-grid{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .uf-big{
+        grid-column: span 2;
+        grid-row: span 1;
+        min-height: auto;
+        padding: 36px 30px;
+      }
+      .uf-float-1{ top:24px; right:24px; }
+      .uf-float-2{ top:70px; right:32px; }
+      .uf-float-3{ top:120px; right:20px; }
+    }
+    @media (max-width: 680px){
+      .uf-grid{
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .uf-big{
+        grid-column: span 1;
+        padding: 32px 24px 28px;
+        gap: 22px;
+      }
+      .uf-big-title{ font-size:26px; }
+      .uf-float-1, .uf-float-2, .uf-float-3{
+        position: static;
+        margin-top: 4px;
+        align-self: flex-start;
+        animation: none;
+      }
+      .uf-float-wrap{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+      .uf-card{ padding: 26px 22px; }
+      .uf-sm{ flex-direction: column; align-items: flex-start; gap:14px; }
+      .uf-sm .uf-md-icon{ margin-bottom: 0; }
+      .uf-md-pills{ gap: 6px; }
+      .uf-pill{ padding: 5px 10px; font-size: 11.5px; }
+    }
+  </style>
 
   <!-- ── ПРОГРАММИРОВАНИЕ (скоро) ── -->
   <section class="coding-teaser" id="coding">
@@ -405,35 +807,43 @@
   </section>
 
   <!-- ── ОТЗЫВЫ ── -->
-  <section class="section" id="reviews">
+  <section class="section section-bg-soft" id="reviews">
     <div class="container">
       <div class="section-eyebrow reveal">Отзывы</div>
-      <h2 class="section-title reveal">Что говорят ученики</h2>
-      <p class="section-desc reveal">Реальные впечатления от занятий на платформе.</p>
+      <h2 class="section-title reveal">Что говорят <span style="background:linear-gradient(135deg,#ef4444,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent;">ученики</span></h2>
+      <p class="section-desc reveal">Реальные впечатления от занятий на платформе. За 3 месяца — разговорная речь, за 6 — уверенный B2.</p>
       <div class="reviews-grid">
         <div class="review-card reveal reveal-stagger">
-          <div class="review-avatar">И.И</div>
-          <div class="review-name">И. Исфандиёр<span class="review-level">B2</span></div>
+          <div class="review-quote-mark"><i class="fas fa-quote-left"></i></div>
+          <div class="review-avatar avt-red">И.И</div>
+          <div class="review-name">И. Исфандиёр<span class="review-level lv-b2">B2</span></div>
           <div class="review-stars">★★★★★</div>
-          <p class="review-text">Прошёл путь до B2 без скучной зубрёжки — карточки и тесты держат в тонусе каждый день.</p>
+          <p class="review-text">Прошёл путь до B2 без скучной зубрёжки — карточки и тесты держат в тонусе каждый день. Говорить начал уже на втором месяце!</p>
+          <div class="review-foot"><i class="fas fa-check-circle"></i> Учился 5 месяцев</div>
         </div>
         <div class="review-card reveal reveal-stagger">
-          <div class="review-avatar">Ф.К</div>
-          <div class="review-name">Ф. Кирилл<span class="review-level">B2</span></div>
+          <div class="review-quote-mark"><i class="fas fa-quote-left"></i></div>
+          <div class="review-avatar avt-blue">Ф.К</div>
+          <div class="review-name">Ф. Кирилл<span class="review-level lv-b2">B2</span></div>
           <div class="review-stars">★★★★★</div>
-          <p class="review-text">Больше всего понравился Speaking — сразу слышно, где я произношу слова неправильно.</p>
+          <p class="review-text">Больше всего понравился Speaking — сразу слышно, где я произношу слова неправильно. Как будто репетитор сидит рядом.</p>
+          <div class="review-foot"><i class="fas fa-check-circle"></i> Учился 4 месяца</div>
         </div>
         <div class="review-card reveal reveal-stagger">
-          <div class="review-avatar">Х.И</div>
-          <div class="review-name">Х. Исрофил<span class="review-level">B2</span></div>
+          <div class="review-quote-mark"><i class="fas fa-quote-left"></i></div>
+          <div class="review-avatar avt-teal">Х.И</div>
+          <div class="review-name">Х. Исрофил<span class="review-level lv-b2">B2</span></div>
           <div class="review-stars">★★★★★</div>
-          <p class="review-text">Удобно, что прогресс сохраняется — можно заниматься по 15 минут в день и видеть результат.</p>
+          <p class="review-text">Удобно, что прогресс сохраняется — можно заниматься по 15 минут в день и видеть результат. Слушать песни на английском теперь в pleasure.</p>
+          <div class="review-foot"><i class="fas fa-check-circle"></i> Учился 3 месяца</div>
         </div>
         <div class="review-card reveal reveal-stagger">
-          <div class="review-avatar">Х.Р</div>
-          <div class="review-name">Х. Рустам<span class="review-level review-level-c1">C1</span></div>
+          <div class="review-quote-mark"><i class="fas fa-quote-left"></i></div>
+          <div class="review-avatar avt-purple">Х.Р</div>
+          <div class="review-name">Х. Рустам<span class="review-level lv-c1">C1</span></div>
           <div class="review-stars">★★★★★</div>
-          <p class="review-text">Жду курс программирования — идея объединить английский и код с самого начала звучит очень сильно.</p>
+          <p class="review-text">Жду курс программирования — идея объединить английский и код с самого начала звучит очень сильно. Сейчас подтягиваю термины IT.</p>
+          <div class="review-foot"><i class="fas fa-check-circle"></i> Учился 7 месяцев</div>
         </div>
       </div>
     </div>
@@ -444,53 +854,7 @@
     <div class="container">
       <h2 class="reveal">Готов начать говорить по-английски?</h2>
       <p class="reveal">Регистрация занимает меньше минуты. Первый уровень — бесплатно, прямо сейчас.</p>
-      <button class="btn btn-large reveal" onclick="openPlacementModal()">Начать бесплатно</button>
-    </div>
-  </section>
-
-  <!-- ── КОНТАКТЫ ── -->
-  <section class="section section-gray" id="contact">
-    <div class="container">
-      <div class="section-eyebrow reveal">Контакты</div>
-      <h2 class="section-title reveal">Мы на связи</h2>
-      <p class="section-desc reveal">Остались вопросы о курсах или регистрации — напишите нам.</p>
-      <div class="contact-grid" style="grid-template-columns: 1fr 1fr; gap: 40px;">
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-          <div class="contact-card reveal reveal-stagger">
-            <div class="contact-icon"><i class="fas fa-envelope" style="color:var(--accent)"></i></div>
-            <h4>Email</h4>
-            <p><a href="mailto:jasss.school773@gmail.com" style="color:var(--text2)">jasss.school773@gmail.com</a></p>
-          </div>
-          <div class="contact-card reveal reveal-stagger">
-            <div class="contact-icon"><i class="fas fa-phone" style="color:var(--teal)"></i></div>
-            <h4>Телефон</h4>
-            <p><a href="tel:+998880301773" style="color:var(--text2)">+998 (88) 030 17-73</a></p>
-          </div>
-          <div class="contact-card reveal reveal-stagger">
-            <div class="contact-icon"><i class="fas fa-location-dot" style="color:var(--purple)"></i></div>
-            <h4>Адрес</h4>
-            <p>Узбекистан, Самарканд</p>
-          </div>
-        </div>
-        <div class="reveal reveal-stagger">
-          <form id="contact-form" style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 30px; display: flex; flex-direction: column; gap: 20px;">
-            <div class="field-group">
-              <label class="field-label">Ваше имя</label>
-              <input type="text" id="contact-name" placeholder="Введите ваше имя" required style="width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; outline: none; transition: all 0.2s; box-sizing: border-box;">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Ваш email</label>
-              <input type="email" id="contact-email" placeholder="Введите ваш email" required style="width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; outline: none; transition: all 0.2s; box-sizing: border-box;">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Сообщение</label>
-              <textarea id="contact-message" placeholder="Введите ваше сообщение" rows="5" required style="width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 15px; outline: none; transition: all 0.2s; box-sizing: border-box; resize: vertical;"></textarea>
-            </div>
-            <div id="contact-message-status" style="min-height: 20px; text-align: center;"></div>
-            <button type="submit" class="btn btn-large btn-block" style="width: 100%;">Отправить сообщение</button>
-          </form>
-        </div>
-      </div>
+      <button class="btn btn-large reveal" onclick="showAuthScreen('register')">Начать бесплатно</button>
     </div>
   </section>
 
@@ -511,10 +875,10 @@
           <h4 class="footer-title">Навигация</h4>
           <ul class="footer-links">
             <li><a href="#about">О нас</a></li>
-            <li><a href="#courses">Уровни</a></li>
+            <li><a href="#how-it-works">Как учиться</a></li>
+            <li><a href="#features-unique">Преимущества</a></li>
             <li><a href="#coding">Программирование</a></li>
             <li><a href="#reviews">Отзывы</a></li>
-            <li><a href="#contact">Контакты</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -527,7 +891,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p class="footer-text">© 2024 JASS. Все права защищены.</p>
+        <p class="footer-text">© 2026-2030 JASS. Все права защищены.</p>
       </div>
     </div>
   </footer>
@@ -655,17 +1019,17 @@
       <div class="page" id="page-listening">
         <div class="page-header">
           <div class="page-title"><img src="assets/icon/listen.png" alt="Listening" class="page-icon"> Listening — Task 5</div>
-          <div class="page-sub">Прослушай текст и ответь на 5 вопросов. Выбери уровень:</div>
+          <div class="page-sub">Прослушай текст и ответь на 5 вопросов (по твоему уровню).</div>
         </div>
-        <div class="pills" id="listenLevelPills"></div>
+        <div class="pills" id="listenLevelPills" style="display:none"></div>
         <div id="listeningWrap"></div>
       </div>
       <div class="page" id="page-speaking">
         <div class="page-header">
           <div class="page-title"><i class="fas fa-microphone" style="margin-right: 8px; width: 24px; text-align: center;"></i> Speaking — Task 3</div>
-          <div class="page-sub">Произнеси фразу вслух — микрофон проверит произношение. Выбери уровень:</div>
+          <div class="page-sub">Произнеси фразу вслух — микрофон проверит произношение (по твоему уровню).</div>
         </div>
-        <div class="pills" id="speakLevelPills"></div>
+        <div class="pills" id="speakLevelPills" style="display:none"></div>
         <div id="speakingWrap"></div>
       </div>
       <div class="page" id="page-grammar">
@@ -902,6 +1266,7 @@
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="galaxy.js"></script>
 <script src="emailjs-service.js"></script>
 <script src="email.js"></script>
 <script src="script.js"></script>
@@ -1010,6 +1375,286 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   
   animate();
+});
+</script>
+
+<!-- ── IMPROVED BURGER BACKDROPS ── -->
+<div class="idx-burger-backdrop idx-backdrop-landing" id="idxBackdropLanding" onclick="closeLandingNavV2()" style="position:fixed;inset:0;background:rgba(11,7,22,0.55);backdrop-filter:blur(4px);z-index:149;opacity:0;pointer-events:none;transition:opacity .3s ease;"></div>
+<div class="idx-burger-backdrop idx-backdrop-auth" id="idxBackdropAuth" onclick="closeAuthMenuV2()" style="position:fixed;inset:0;background:rgba(11,7,22,0.55);backdrop-filter:blur(4px);z-index:249;opacity:0;pointer-events:none;transition:opacity .3s ease;"></div>
+
+<style>
+  /* Landing mobile nav — slide from RIGHT */
+  @media (max-width: 1100px){
+    .landing-header{ position: relative; }
+    .header-nav{ display: none !important; }
+    .header-actions{ display: none !important; }
+    .lp-burger{ display: flex !important; }
+    .lp-mobile-nav{
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      left: auto !important;
+      width: min(86vw, 340px) !important;
+      height: 100vh !important;
+      border-radius: 22px 0 0 22px !important;
+      padding: 20px 0 0 0 !important;
+      z-index: 150 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+      transform: translateX(105%) !important;
+      transition: transform .38s cubic-bezier(.2,.9,.25,1), opacity .25s !important;
+      opacity: 0;
+      background: linear-gradient(180deg, #ffffff 0%, #fef2f2 100%) !important;
+      border-left: 1px solid rgba(239,68,68,0.12) !important;
+      box-shadow: -24px 0 60px rgba(15,23,42,0.35) !important;
+    }
+    .lp-mobile-nav.lp-open{
+      transform: translateX(0) !important;
+      opacity: 1 !important;
+    }
+    .lp-mobile-nav::before{
+      content:"";
+      position:absolute;
+      top:-80px;right:-60px;
+      width:220px;height:220px;border-radius:50%;
+      background:radial-gradient(circle, rgba(239,68,68,0.2), transparent 68%);
+      pointer-events:none;
+    }
+    .lp-mobile-nav::after{
+      content:"";
+      position:absolute;
+      bottom:40px;left:-40px;
+      width:180px;height:180px;border-radius:50%;
+      background:radial-gradient(circle, rgba(139,92,246,0.16), transparent 68%);
+      pointer-events:none;
+    }
+    .lp-mobile-nav-header{
+      padding: 14px 22px 14px !important;
+      border-bottom: 1px solid rgba(15,23,42,0.06) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      position: relative !important;
+      z-index: 1 !important;
+    }
+    .lp-mobile-nav-close{
+      width:36px;height:36px;border-radius:10px;
+      background:rgba(239,68,68,0.08);
+      border:1px solid rgba(239,68,68,0.18);
+      color:#ef4444;font-size:18px;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition: all .2s;
+    }
+    .lp-mobile-nav a{
+      padding: 15px 26px 15px 22px !important;
+      border-bottom: 1px solid rgba(15,23,42,0.05) !important;
+      border-radius: 0 !important;
+      font-size: 15.5px !important;
+      font-weight: 700 !important;
+      position: relative !important;
+      z-index: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      transition: all .2s !important;
+    }
+    .lp-mobile-nav a i{
+      width: 20px;text-align:center;font-size:14px;opacity:.7;
+    }
+    .lp-mobile-nav a::before{
+      content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+      width:3px;height:0;
+      background:linear-gradient(180deg,#ef4444,#8b5cf6);
+      border-radius:0 3px 3px 0;
+      transition: height .25s;
+    }
+    .lp-mobile-nav a:hover{
+      background: rgba(239,68,68,0.04) !important;
+      color: #ef4444 !important;
+      padding-left: 28px !important;
+    }
+    .lp-mobile-nav a:hover::before{
+      height: 24px !important;
+    }
+    .lp-mobile-actions{
+      margin-top: auto !important;
+      padding: 22px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      border-top: 1px solid rgba(15,23,42,0.06) !important;
+      position: relative !important;
+      z-index: 1 !important;
+    }
+    .lp-mobile-actions .btn{
+      width: 100% !important;
+      justify-content: center !important;
+    }
+
+    /* Auth mobile nav — slide from RIGHT */
+    .auth-mobile-nav{
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      left: auto !important;
+      width: min(86vw, 340px) !important;
+      height: 100vh !important;
+      border-radius: 22px 0 0 22px !important;
+      padding: 96px 28px 32px 28px !important;
+      z-index: 250 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+      transform: translateX(105%) !important;
+      transition: transform .35s cubic-bezier(.2,.9,.25,1), opacity .25s !important;
+      opacity: 0;
+      box-shadow: -24px 0 60px rgba(15,23,42,0.35) !important;
+    }
+    .auth-mobile-nav.auth-open{
+      transform: translateX(0) !important;
+      opacity: 1 !important;
+    }
+    .auth-mobile-nav a{
+      padding: 14px 16px !important;
+      border-radius: 14px !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+    }
+    .auth-mobile-nav a:hover{
+      background: rgba(255,255,255,0.1) !important;
+    }
+
+    /* Burger buttons — bigger touch + pulse */
+    .lp-burger, .auth-header-burger{
+      width: 46px !important;
+      height: 46px !important;
+      border-radius: 14px !important;
+      transition: all .2s ease !important;
+    }
+    .lp-burger:hover{
+      background: rgba(239,68,68,0.12) !important;
+      transform: scale(1.04);
+    }
+    .auth-header-burger:hover{
+      background: rgba(255,255,255,0.15) !important;
+      transform: scale(1.04);
+    }
+  }
+
+  .idx-burger-backdrop.is-open{
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+</style>
+
+<script>
+/* ── Galaxy init for auth-screen ── */
+let authGalaxyInstance = null;
+function ensureAuthGalaxy(){
+  if (authGalaxyInstance) return;
+  const container = document.getElementById('authGalaxy');
+  if (!container || !window.initGalaxy) return;
+  authGalaxyInstance = window.initGalaxy('#authGalaxy', {
+    starSpeed: 0.5,
+    density: 1,
+    hueShift: 350,
+    speed: 0.8,
+    glowIntensity: 0.15,
+    saturation: 0,
+    mouseRepulsion: true,
+    repulsionStrength: 0.5,
+    twinkleIntensity: 0.2,
+    rotationSpeed: 0.15,
+    transparent: true
+  });
+}
+/* Wrap original showAuthScreen to fire galaxy */
+const _origShowAuthScreen = window.showAuthScreen;
+window.showAuthScreen = function(mode){
+  setTimeout(ensureAuthGalaxy, 0);
+  return _origShowAuthScreen.call(this, mode);
+};
+
+/* ── V2 burger toggles — landing + auth (backdrop + slide) ── */
+const _origToggleLandingNav = window.toggleLandingNav;
+window.toggleLandingNav = function(){
+  const panel = document.getElementById('lpMobileNav');
+  const bd = document.getElementById('idxBackdropLanding');
+  const burger = document.getElementById('lpBurger');
+  const isOpen = panel && panel.classList.contains('lp-open');
+  if (!panel) return _origToggleLandingNav ? _origToggleLandingNav() : null;
+  if (isOpen) closeLandingNavV2(); else {
+    panel.classList.add('lp-open');
+    bd.classList.add('is-open');
+    if (burger) burger.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+};
+window.closeLandingNavV2 = function(){
+  const panel = document.getElementById('lpMobileNav');
+  const bd = document.getElementById('idxBackdropLanding');
+  const burger = document.getElementById('lpBurger');
+  if (panel) panel.classList.remove('lp-open');
+  if (bd) bd.classList.remove('is-open');
+  if (burger) burger.classList.remove('open');
+  document.body.style.overflow = '';
+};
+/* keep legacy closeLandingNav working */
+const _origCloseLandingNav = window.closeLandingNav;
+window.closeLandingNav = function(){
+  closeLandingNavV2();
+  if (_origCloseLandingNav) _origCloseLandingNav();
+};
+
+/* ── Auth burger V2 ── */
+const _origToggleAuthMenu = window.toggleAuthMenu;
+window.toggleAuthMenu = function(){
+  const panel = document.getElementById('authMobileNav');
+  const bd = document.getElementById('idxBackdropAuth');
+  const burger = document.getElementById('authBurger');
+  const isOpen = panel && panel.classList.contains('auth-open');
+  if (!panel) return _origToggleAuthMenu ? _origToggleAuthMenu() : null;
+  if (isOpen) closeAuthMenuV2(); else {
+    panel.classList.add('auth-open');
+    bd.classList.add('is-open');
+    if (burger) burger.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+};
+window.closeAuthMenuV2 = function(){
+  const panel = document.getElementById('authMobileNav');
+  const bd = document.getElementById('idxBackdropAuth');
+  const burger = document.getElementById('authBurger');
+  if (panel) panel.classList.remove('auth-open');
+  if (bd) bd.classList.remove('is-open');
+  if (burger) burger.classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+/* ── Esc closes any open burger ── */
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape'){
+    closeLandingNavV2();
+    closeAuthMenuV2();
+  }
+});
+
+/* ── Приход с dashboard.html?openLevel=A1 → сразу открыть урок ──
+   script.js уже вызвал showLanding() на DOMContentLoaded (регистрируется
+   раньше этого обработчика), так что здесь мы просто переключаем на урок
+   поверх лендинга, если пользователь залогинен и уровень передан в URL. */
+document.addEventListener('DOMContentLoaded', function(){
+  const params = new URLSearchParams(window.location.search);
+  const lvl = params.get('openLevel');
+  if (!lvl) return;
+  const cu = localStorage.getItem('currentUser');
+  if (cu && typeof window.openLevel === 'function'){
+    window.openLevel(lvl);
+  }
+  // Убираем параметр из адресной строки, чтобы обновление страницы
+  // не открывало урок принудительно повторно
+  history.replaceState(null, '', window.location.pathname);
 });
 </script>
 </body>
