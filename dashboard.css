@@ -713,43 +713,50 @@ body { position: relative; min-height: 100vh; }
 /* Burger (improved, non-intrusive) */
 .dash-burger{
   position: fixed;
-  top: 18px; right: 18px;
-  z-index: 9999;
-  width: 46px; height: 46px;
-  border-radius: 14px;
-  background: rgba(15,23,42,0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.08);
+  top: 14px; right: 14px;
+  z-index: 99999;
+  width: 50px; height: 50px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(239,68,68,0.85), rgba(220,38,38,0.85));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1.5px solid rgba(255,255,255,0.22);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   transition: all .25s cubic-bezier(.2,.7,.2,1);
+  box-shadow:
+    0 10px 28px rgba(239,68,68,0.35),
+    0 4px 12px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.25);
 }
-.dash-burger:hover{ background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.45); transform: translateY(-1.5px); }
-.dash-burger svg{ width: 20px; height: 20px; color:#fff; transition: transform .3s; }
+.dash-burger:hover{ background: linear-gradient(135deg, rgba(239,68,68,0.95), rgba(220,38,38,0.95)); border-color: rgba(255,255,255,0.4); transform: translateY(-1.5px) scale(1.03); }
+.dash-burger:active{ transform: translateY(0) scale(0.98); }
+.dash-burger svg{ width: 22px; height: 22px; color:#fff; transition: transform .3s; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25)); }
 .dash-burger.open svg{ transform: rotate(90deg); }
 
 .dash-menu-backdrop{
-  position: fixed; inset: 0; z-index: 9997;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(4px);
+  position: fixed; inset: 0; z-index: 99997;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0; pointer-events: none;
-  transition: opacity .25s;
+  transition: opacity .3s;
 }
 .dash-menu-backdrop.show{ opacity:1; pointer-events:auto; }
 
 .dash-menu-panel{
   position: fixed;
   top: 0; right: 0;
-  width: min(340px, 86vw);
+  width: min(340px, 88vw);
   height: 100vh;
-  z-index: 9998;
+  z-index: 99998;
   background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(11,7,22,0.98));
-  border-left: 1px solid rgba(255,255,255,0.07);
+  border-left: 1px solid rgba(255,255,255,0.08);
   padding: 90px 26px 30px;
   transform: translateX(100%);
-  transition: transform .35s cubic-bezier(.2,.7,.2,1);
+  transition: transform .38s cubic-bezier(.2,.7,.2,1);
   overflow-y: auto;
+  box-shadow: -30px 0 80px rgba(0,0,0,0.4);
 }
 .dash-menu-panel.show{ transform: translateX(0); }
 .dash-menu-section{ margin-bottom: 26px; }
@@ -795,6 +802,8 @@ body { position: relative; min-height: 100vh; }
 }
 @media(max-width: 960px){
   .dash-header-nav{ display:none !important; }
+  .dash-actions{ display:none !important; }
+  .dash-header-inner{ padding-right: 72px !important; }
 }
 
 .dash-welcome .hero-buttons{
@@ -1145,32 +1154,40 @@ body { position: relative; min-height: 100vh; }
 /* Burger (improved, non-intrusive) */
 .dash-burger {
   position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 9999;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: rgba(15, 23, 42, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  top: 14px;
+  right: 14px;
+  z-index: 99999;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(239,68,68,0.85), rgba(220,38,38,0.85));
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+  box-shadow:
+    0 10px 28px rgba(239,68,68,0.35),
+    0 4px 12px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.25);
 }
 .dash-burger:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: rgba(239, 68, 68, 0.45);
-  transform: translateY(-1.5px);
+  background: linear-gradient(135deg, rgba(239,68,68,0.95), rgba(220,38,38,0.95));
+  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-1.5px) scale(1.03);
+}
+.dash-burger:active {
+  transform: translateY(0) scale(0.98);
 }
 .dash-burger svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   color: #fff;
   transition: transform 0.3s;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
 }
 .dash-burger.open svg {
   transform: rotate(90deg);
@@ -1179,12 +1196,13 @@ body { position: relative; min-height: 100vh; }
 .dash-menu-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 9997;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
+  z-index: 99997;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s;
+  transition: opacity 0.3s;
 }
 .dash-menu-backdrop.show {
   opacity: 1;
@@ -1195,19 +1213,20 @@ body { position: relative; min-height: 100vh; }
   position: fixed;
   top: 0;
   right: 0;
-  width: min(340px, 86vw);
+  width: min(340px, 88vw);
   height: 100vh;
-  z-index: 9998;
+  z-index: 99998;
   background: linear-gradient(
     180deg,
     rgba(15, 23, 42, 0.98),
     rgba(11, 7, 22, 0.98)
   );
-  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   padding: 90px 26px 30px;
   transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: transform 0.38s cubic-bezier(0.2, 0.7, 0.2, 1);
   overflow-y: auto;
+  box-shadow: -30px 0 80px rgba(0,0,0,0.4);
 }
 .dash-menu-panel.show {
   transform: translateX(0);
@@ -1299,6 +1318,12 @@ body { position: relative; min-height: 100vh; }
 @media (max-width: 960px) {
   .dash-header-nav {
     display: none !important;
+  }
+  .dash-actions {
+    display: none !important;
+  }
+  .dash-header-inner {
+    padding-right: 72px !important;
   }
 }
 

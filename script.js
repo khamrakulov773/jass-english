@@ -2445,6 +2445,9 @@ function switchAuthTab(tab) {
     btn.classList.toggle('active', btn.dataset.tab === tab);
   });
 
+  const welcomeText = document.getElementById('authWelcomeText');
+  const badgesWrap = document.getElementById('authBadges');
+
   if (authHeading && authSubtitle) {
     if (tab === 'login') {
       authHeading.textContent = 'Вход в аккаунт';
@@ -2453,6 +2456,20 @@ function switchAuthTab(tab) {
       authHeading.textContent = 'Создать аккаунт';
       authSubtitle.textContent = 'Регистрация занимает меньше минуты — начните учиться прямо сейчас.';
     }
+  }
+
+  if (welcomeText) {
+    welcomeText.innerHTML = tab === 'login'
+      ? '<span class="afw-dot"></span>WELCOME BACK'
+      : '<span class="afw-dot"></span>CREATE ACCOUNT';
+  }
+
+  if (badgesWrap) {
+    badgesWrap.innerHTML = tab === 'login'
+      ? `<span class="auth-form-badge"><i class="fas fa-bolt"></i> Быстрый вход</span>
+         <span class="auth-form-badge"><i class="fas fa-chart-line"></i> Ваш прогресс</span>`
+      : `<span class="auth-form-badge"><i class="fas fa-check-circle"></i> Сохранение прогресса</span>
+         <span class="auth-form-badge"><i class="fas fa-user"></i> Личный профиль</span>`;
   }
 
   const loginMsg = document.getElementById('login-message');
@@ -2484,20 +2501,11 @@ function initTrackSelection() {
 function selectTrack(track) {
   currentTrack = track;
   const trackBtns = document.querySelectorAll('.auth-track-btn');
-  const welcomeText = document.getElementById('authWelcomeText');
-  
+
   trackBtns.forEach(btn => {
     btn.classList.remove('active');
   });
   document.querySelector(`.auth-track-btn[data-track="${track}"]`).classList.add('active');
-  
-  if (welcomeText) {
-    if (track === 'english') {
-      welcomeText.textContent = 'Добро пожаловать в JASS-ENGLISH';
-    } else {
-      welcomeText.textContent = 'Добро пожаловать в JASS-CODING';
-    }
-  }
 }
 
 // Helper: swap level select options based on track
@@ -2557,25 +2565,18 @@ function handleLogin() {
 
 async function handleRegister() {
   const name        = document.getElementById('register-name').value.trim();
-  const nicknameRaw = document.getElementById('register-nickname').value.trim();
   const phone       = document.getElementById('register-phone').value.trim();
-  const education   = document.getElementById('register-education').value;
-  const trackRadio  = document.querySelector('input[name="reg-track"]:checked');
-  const track       = trackRadio ? trackRadio.value : 'english';
-  const level       = document.getElementById('register-level').value;
   const email       = document.getElementById('register-email').value.trim();
   const password    = document.getElementById('register-password').value;
   const confirmPwd  = document.getElementById('register-confirm-password').value;
   const msgDiv      = document.getElementById('register-message');
-  
-  if (!name || !nicknameRaw || !phone || !education || !email || !password || !confirmPwd) {
+  // Направление (English/Coding) выбирается кнопками в левом блоке
+  // (auth-track-btn), которые пишут в глобальную переменную currentTrack
+  const track       = (typeof currentTrack !== 'undefined' && currentTrack) ? currentTrack : 'english';
+  const level       = track === 'coding' ? 'starter' : 'A1';
+
+  if (!name || !phone || !email || !password || !confirmPwd) {
     msgDiv.textContent = 'Пожалуйста, заполните все обязательные поля!';
-    msgDiv.className = 'auth-message error';
-    return;
-  }
-  
-  if (!/^[a-zA-Z0-9_]+$/.test(nicknameRaw)) {
-    msgDiv.textContent = 'Никнейм: только английские буквы, цифры и _';
     msgDiv.className = 'auth-message error';
     return;
   }
@@ -2594,16 +2595,20 @@ async function handleRegister() {
   
   const result = await registerUser({
     name, email, password,
-    nickname: nicknameRaw,
-    phone, education, track, level
+    phone, track, level
   });
   if (result.success) {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message success';
-    // После регистрации → в личный кабинет dashboard.html
+    // После регистрации → спрашиваем направление, никнейм и фото,
+    // и уже потом отправляем в личный кабинет dashboard.html
     setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 900);
+      if (typeof window.showPostRegModal === 'function') {
+        window.showPostRegModal();
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }, 700);
   } else {
     msgDiv.textContent = result.message;
     msgDiv.className = 'auth-message error';

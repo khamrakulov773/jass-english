@@ -592,21 +592,6 @@ window.validateAndSaveNickname = function() {
   document.getElementById('post-reg-step2').style.display = 'block';
 }
 
-// Обновленная функция открытия модалки после регистрации
-window.showPostRegModal = function() {
-  window.postRegAvatar = null;
-  const preview = document.getElementById('post-reg-avatar-preview');
-  if (preview) preview.innerHTML = '👤';
-  updateDeleteButton('post-reg-avatar-preview', 'post-reg-delete-btn', window.postRegAvatar);
-  // Reset steps
-  document.getElementById('post-reg-step1').style.display = 'block';
-  document.getElementById('post-reg-step2').style.display = 'none';
-  document.getElementById('post-reg-nickname').value = '';
-  document.getElementById('post-reg-nickname-message').textContent = '';
-  document.getElementById('post-reg-nickname-message').className = 'auth-message';
-  document.getElementById('post-registration-modal').classList.remove('hidden');
-}
-
 // Вход существующего пользователя  ← НЕ async, чтобы result.success работал сразу
 function loginUser(loginInput, password) {
   // Try to find user by email
@@ -771,18 +756,58 @@ window.saveProfile      = saveProfile;
 //  ПОСЛЕ РЕГИСТРАЦИИ
 // ═══════════════════════════════════════════════════════════
 
+// Шаг 0: направление обучения (English / Coding)
+let postRegTrack = 'english';
+
+function selectPostRegTrack(track) {
+  postRegTrack = track;
+  document.querySelectorAll('.post-reg-track-btn').forEach(function (btn) {
+    btn.classList.toggle('active', btn.dataset.track === track);
+  });
+}
+
+function continuePostRegTrack() {
+  if (currentUser) {
+    currentUser.regInfo = currentUser.regInfo || {};
+    currentUser.regInfo.track = postRegTrack;
+    currentUser.regInfo.level = postRegTrack === 'coding' ? 'starter' : 'A1';
+    window.currentUser = currentUser;
+    saveUsers();
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  }
+  document.getElementById('post-reg-step0').style.display = 'none';
+  document.getElementById('post-reg-step1').style.display = 'block';
+}
+
+// Открыть модалку после регистрации: направление → никнейм → фото
 function showPostRegModal() {
   window.postRegAvatar = null;
+
+  // По умолчанию — то направление, что выбрали на экране приветствия
+  postRegTrack = (typeof currentTrack !== 'undefined' && currentTrack) ? currentTrack : 'english';
+  document.querySelectorAll('.post-reg-track-btn').forEach(function (btn) {
+    btn.classList.toggle('active', btn.dataset.track === postRegTrack);
+  });
+
   const preview = document.getElementById('post-reg-avatar-preview');
   if (preview) preview.innerHTML = '👤';
   updateDeleteButton('post-reg-avatar-preview', 'post-reg-delete-btn', window.postRegAvatar);
+
+  const nickInput = document.getElementById('post-reg-nickname');
+  const nickMsg = document.getElementById('post-reg-nickname-message');
+  if (nickInput) nickInput.value = '';
+  if (nickMsg) { nickMsg.textContent = ''; nickMsg.className = 'auth-message'; }
+
+  document.getElementById('post-reg-step0').style.display = 'block';
+  document.getElementById('post-reg-step1').style.display = 'none';
+  document.getElementById('post-reg-step2').style.display = 'none';
   document.getElementById('post-registration-modal').classList.remove('hidden');
 }
 
 function skipPostRegPhoto() {
   document.getElementById('post-registration-modal').classList.add('hidden');
   window.postRegAvatar = null;
-  showLanding();
+  window.location.href = 'dashboard.html';
 }
 
 function continuePostReg() {
@@ -793,9 +818,11 @@ function continuePostReg() {
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
   }
   document.getElementById('post-registration-modal').classList.add('hidden');
-  showLanding();
+  window.location.href = 'dashboard.html';
 }
 
+window.selectPostRegTrack = selectPostRegTrack;
+window.continuePostRegTrack = continuePostRegTrack;
 window.showPostRegModal = showPostRegModal;
 window.skipPostRegPhoto = skipPostRegPhoto;
 window.continuePostReg = continuePostReg;

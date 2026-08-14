@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="landing.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="theme-milk.css">
-  <link rel="icon" href="assets/icon/faviction/favicon-32.png" type="image/png">
-  <link rel="shortcut icon" href="assets/icon/faviction/favicon-32.png" type="image/png">
+  <link rel="icon" href="assets/faviction/favicon-school.png" type="image/png">
+  <link rel="shortcut icon" href="assets/faviction/favicon-school.png" type="image/png">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
   <header class="auth-header">
     <div class="auth-header-inner">
       <a href="#top" class="auth-header-brand" onclick="hideAuthScreen()">
-        <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="auth-header-logo">
+        <img src="assets/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="auth-header-logo">
       </a>
       <nav class="auth-header-nav">
         <a href="#about" onclick="hideAuthScreen()">Возможности</a>
@@ -45,7 +45,7 @@
     <div class="auth-visual-section" id="authVisualSection" style="background: linear-gradient(135deg, rgba(239,68,68,0.78), rgba(220,38,38,0.78));">
       <div id="authGalaxy" style="position:absolute;inset:0;z-index:0;pointer-events:none;"></div>
       <div class="auth-visual-inner">
-        <img src="assets/icon/logo/logo-horizontal.png" alt="JASS" class="auth-visual-logo">
+        <img src="assets/logo/logo-horizontal.png" alt="JASS" class="auth-visual-logo">
         <h1 class="auth-visual-title">Добро пожаловать!</h1>
         <p class="auth-visual-subtitle">Выберите направление, чтобы начать обучение</p>
         <div class="auth-track-selector">
@@ -71,9 +71,13 @@
     <!-- Right form section -->
     <div class="auth-form-section">
       <div class="auth-form-container">
+        <div class="auth-form-badges" id="authBadges">
+          <span class="auth-form-badge"><i class="fas fa-bolt"></i> Быстрый вход</span>
+          <span class="auth-form-badge"><i class="fas fa-chart-line"></i> Ваш прогресс</span>
+        </div>
+
         <div class="auth-form-welcome">
-          <div class="auth-form-welcome-line"></div>
-          <span class="auth-form-welcome-text" id="authWelcomeText">Добро пожаловать в JASS-ENGLISH</span>
+          <span class="auth-form-welcome-text" id="authWelcomeText"><span class="afw-dot"></span>WELCOME BACK</span>
         </div>
         
         <h1 class="auth-form-heading" id="authHeading">Вход в аккаунт</h1>
@@ -122,52 +126,8 @@
               <input type="text" id="register-name" placeholder="Ваше имя" autocomplete="given-name">
             </div>
             <div class="field-group">
-              <label class="field-label">Никнейм</label>
-              <div class="nickname-input-wrapper" style="background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
-                <span class="nickname-prefix" style="padding:14px 12px 14px 18px;color:#ef4444;font-size:18px;font-weight:700;background:rgba(91,141,238,0.08);">@</span>
-                <input type="text" id="register-nickname" placeholder="username (English only)" style="flex:1;border:none;background:transparent;padding:14px 18px;color:#111827;font-size:15px;outline:none;font-family:'Inter',sans-serif;box-sizing:border-box;width:100%;">
-              </div>
-            </div>
-            <div class="field-group">
               <label class="field-label">Телефон</label>
               <input type="tel" id="register-phone" placeholder="+998 (__) ___-__-__" autocomplete="tel">
-            </div>
-            <div class="field-group">
-              <label class="field-label">Уровень образования</label>
-              <select id="register-education" style="width:100%;padding:14px 16px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;color:#111827;font-size:15px;outline:none;transition:all 0.2s;font-family:'Inter',sans-serif;box-sizing:border-box;">
-                <option value="">Выберите уровень...</option>
-                <option value="school">Школа (9–11 класс)</option>
-                <option value="college">Колледж / лицей</option>
-                <option value="student">Студент вуза</option>
-                <option value="bachelor">Бакалавр</option>
-                <option value="master">Магистр / аспирант</option>
-                <option value="specialist">Специалист (высшее)</option>
-                <option value="phd">PhD / доктор наук</option>
-              </select>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Направление обучения</label>
-              <div id="register-track-group" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:all 0.2s;background:#f3f4f6;font-size:14px;color:#111827;font-weight:600;">
-                  <input type="radio" name="reg-track" value="english" checked onchange="updateRegLevelOptions()">
-                  <span>🇬🇧 Английский</span>
-                </label>
-                <label style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:all 0.2s;background:#f3f4f6;font-size:14px;color:#111827;font-weight:600;">
-                  <input type="radio" name="reg-track" value="coding" onchange="updateRegLevelOptions()">
-                  <span>💻 Программирование</span>
-                </label>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Ваш уровень (CEFR / Курс)</label>
-              <select id="register-level" style="width:100%;padding:14px 16px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:12px;color:#111827;font-size:15px;outline:none;transition:all 0.2s;font-family:'Inter',sans-serif;box-sizing:border-box;">
-                <option value="A1">A1 — Beginner (Начинающий)</option>
-                <option value="A2">A2 — Elementary (Элементарный)</option>
-                <option value="B1">B1 — Intermediate (Средний)</option>
-                <option value="B2">B2 — Upper-Intermediate (Выше среднего)</option>
-                <option value="C1">C1 — Advanced (Продвинутый)</option>
-                <option value="C2">C2 — Mastery (Носитель)</option>
-              </select>
             </div>
             <div class="field-group">
               <label class="field-label">Email</label>
@@ -243,7 +203,7 @@
   <header class="landing-header" id="landingHeader">
     <div class="container header-content">
       <a href="#top" class="header-brand">
-        <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="header-logo">
+        <img src="assets/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="header-logo">
       </a>
       <nav class="header-nav">
         <a href="#about" class="nav-link">Возможности</a>
@@ -263,7 +223,7 @@
     <nav class="lp-mobile-nav" id="lpMobileNav">
       <div class="lp-mobile-nav-header">
         <a href="#top" class="lp-mobile-nav-brand" onclick="closeLandingNav()">
-          <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH">
+          <img src="assets/logo/logo-horizontal.png" alt="JASS-ENGLISH">
         </a>
         <button class="lp-mobile-nav-close" onclick="closeLandingNav()" aria-label="Закрыть меню">
           <i class="fas fa-times"></i>
@@ -302,12 +262,6 @@
         <div class="hero-buttons">
           <button class="btn btn-large" onclick="openPlacementModal()">Начать бесплатно</button>
           <button class="btn btn-large btn-secondary" onclick="showAuthScreen('login')">Войти</button>
-        </div>
-        <div class="user-info" id="user-info" style="display:none">
-          <div class="user-avatar" id="landing-user-avatar">👤</div>
-          <span id="user-name"></span>
-          <button class="btn" style="background: var(--accent);" onclick="openEditProfile()"><i class="fas fa-edit" style="margin-right: 8px;"></i> Редактировать</button>
-          <button class="btn" style="background:var(--text2);" onclick="logoutUser()"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Выйти</button>
         </div>
         <div class="hero-stats" id="heroStats">
           <div class="hero-stat"><span class="hero-stat-num" data-count="6">0</span><span class="hero-stat-label">уровней CEFR</span></div>
@@ -510,7 +464,7 @@
             <span class="uf-pill uf-pill-blue"><i class="fas fa-comment-check"></i> Фидбэк</span>
             <span class="uf-pill uf-pill-red"><i class="fas fa-brain"></i> ИИ-помощь</span>
           </div>
-        </div>
+        </div>  
 
         <!-- ═══ CARD 3: English + Code ═══ -->
         <div class="uf-card uf-md reveal">
@@ -863,7 +817,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="footer-logo">
+          <img src="assets/logo/logo-horizontal.png" alt="JASS-ENGLISH" class="footer-logo">
           <p class="footer-desc">Обучение английскому и программированию с удовольствием!</p>
           <div class="footer-social">
             <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
@@ -903,7 +857,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top" id="sidebar-top">
         <div class="sidebar-logo-section" style="display: flex; align-items: center; gap: 8px; padding: 8px 10px;">
-          <img src="assets/icon/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 120px; height: auto;">
+          <img src="assets/logo/logo-horizontal.png" alt="JASS-ENGLISH" style="max-width: 120px; height: auto;">
           <div class="level-badge-sm" id="sb-badge">A1</div>
         </div>
         <div class="sidebar-user-section" style="display: flex; align-items: center; gap: 10px; padding: 0 10px 8px;">
@@ -970,8 +924,7 @@
         <div class="stat-row"><span class="stat-name">Тестов</span><span class="stat-val" id="s-tests" style="color:var(--yellow)">0</span></div>
       </div>
       <div style="padding: 0 10px 16px;">
-        <button class="btn" style="width: 100%; background: var(--text2);" onclick="logoutToLanding()"><i class="fas fa-arrow-left" style="margin-right: 8px;"></i> На выбор уровней</button>
-        <button class="btn" style="width: 100%; margin-top: 8px; background: #dc2626;" onclick="logoutUser()"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Выйти из аккаунта</button>
+        <a href="dashboard.html" class="btn" style="width: 100%; background: var(--text2); display:flex; align-items:center; justify-content:center; text-decoration:none;"><i class="fas fa-layer-group" style="margin-right: 8px;"></i> Выбрать уровень</a>
       </div>
     </aside>
     <main class="main">
@@ -1161,8 +1114,25 @@
       <h3>Добро пожаловать! 🎉</h3>
     </div>
     <div class="modal-body">
+      <!-- Step 0: Track (направление обучения) -->
+      <div id="post-reg-step0" style="text-align: center;">
+        <p style="margin-bottom: 20px; font-size: 18px;">Выберите направление обучения</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 22px;">
+          <button type="button" class="post-reg-track-btn" data-track="english" onclick="selectPostRegTrack('english')">
+            <span class="prt-icon">🇬🇧</span>
+            <span class="prt-name">JASS-ENGLISH</span>
+            <span class="prt-desc">Изучайте английский от A1 до C2</span>
+          </button>
+          <button type="button" class="post-reg-track-btn" data-track="coding" onclick="selectPostRegTrack('coding')">
+            <span class="prt-icon">💻</span>
+            <span class="prt-name">JASS-CODING</span>
+            <span class="prt-desc">Изучайте программирование (скоро)</span>
+          </button>
+        </div>
+        <button class="btn save-btn" onclick="continuePostRegTrack()" style="width: 100%;">Продолжить</button>
+      </div>
       <!-- Step 1: Nickname -->
-      <div id="post-reg-step1" style="text-align: center;">
+      <div id="post-reg-step1" style="text-align: center; display: none;">
         <p style="margin-bottom: 20px; font-size: 18px;">Выберите никнейм (только английские буквы)</p>
         <div style="margin-bottom: 20px;">
           <div class="nickname-input-wrapper" style="display: flex; align-items: center; background: var(--bg3); border: 2px solid var(--border); border-radius: 12px; overflow: hidden;">
@@ -1546,6 +1516,140 @@ document.addEventListener('DOMContentLoaded', () => {
     opacity: 1 !important;
     pointer-events: auto !important;
   }
+
+  /* ══════════════════════════════════════════════════════════════
+     FIX: адаптивный экран регистрации/входа на телефоне.
+     theme-milk.css скрывал .auth-visual-section целиком на <1024px
+     (display:none) — из-за этого пропадал блок "выберите направление"
+     и форма выглядела "пустой"/обрезанной. Здесь возвращаем блок,
+     но в компактном, мобильном виде + центрируем форму.
+     ══════════════════════════════════════════════════════════════ */
+  @media (max-width: 1024px){
+    /* сама форма/экран должны скроллиться как обычная страница,
+       а не через вложенный overflow-контейнер фиксированной высоты —
+       на части мобильных браузеров это и давало ощущение "прозрачности" */
+    .auth-screen{
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+    .auth-main{
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    .auth-visual-section{
+      display: flex !important;
+      width: 100% !important;
+      min-height: 0 !important;
+      padding: 26px 20px 22px !important;
+    }
+    .auth-visual-card,
+    .auth-visual-inner{
+      max-width: 460px;
+      width: 100%;
+    }
+    .auth-visual-logo{
+      max-width: 130px !important;
+      margin-bottom: 12px !important;
+    }
+    .auth-visual-title{
+      font-size: 24px !important;
+      margin-bottom: 6px !important;
+    }
+    .auth-visual-subtitle{
+      font-size: 14px !important;
+      margin-bottom: 18px !important;
+    }
+    .auth-track-selector{
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      gap: 10px !important;
+      margin-bottom: 16px !important;
+    }
+    .auth-track-btn{
+      flex: 1 1 0 !important;
+      width: auto !important;
+      max-width: none !important;
+      padding: 12px 10px !important;
+      text-align: center !important;
+      align-items: center !important;
+      gap: 2px !important;
+    }
+    .auth-track-icon{ font-size: 20px !important; }
+    .auth-track-name{ font-size: 12.5px !important; line-height: 1.25 !important; }
+    .auth-track-desc{ font-size: 10.5px !important; line-height: 1.25 !important; }
+    .auth-visual-badge{ padding: 7px 14px !important; }
+    .auth-visual-text{ font-size: 12px !important; }
+
+    /* форма — по центру, с аккуратными отступами */
+    .auth-form-section{
+      padding: 30px 18px 40px !important;
+    }
+    .auth-form-container{
+      max-width: 440px !important;
+      width: 100% !important;
+      margin: 0 auto !important;
+    }
+  }
+
+  @media (max-width: 480px){
+    .auth-track-selector{
+      flex-direction: column !important;
+    }
+    .auth-track-btn{
+      max-width: none !important;
+    }
+    .auth-visual-title{ font-size: 21px !important; }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     На телефоне (как в референсе) красный визуальный блок с выбором
+     направления не показываем — сразу после шапки идёт форма
+     входа/регистрации на светлом фоне. Планшет (769–1024px)
+     по-прежнему видит компактный визуальный блок сверху.
+     ══════════════════════════════════════════════════════════════ */
+  @media (max-width: 768px){
+    .auth-visual-section{
+      display: none !important;
+    }
+    .auth-form-section{
+      padding: 22px 16px 40px !important;
+    }
+  }
+
+  /* ══════ Пост-регистрация: выбор направления (шаг 0 модалки) ══════ */
+  .post-reg-track-btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 18px 16px;
+    border-radius: 16px;
+    border: 2px solid var(--border2, #e5e7eb);
+    background: var(--bg3, #f8fafc);
+    cursor: pointer;
+    transition: all .2s;
+    font-family: inherit;
+    text-align: center;
+  }
+  .post-reg-track-btn:hover{
+    border-color: var(--accent, #ef4444);
+  }
+  .post-reg-track-btn.active{
+    border-color: var(--accent, #ef4444);
+    background: rgba(239,68,68,0.06);
+    box-shadow: 0 6px 20px rgba(239,68,68,0.12);
+  }
+  .post-reg-track-btn .prt-icon{ font-size: 26px; }
+  .post-reg-track-btn .prt-name{ font-weight: 700; font-size: 16px; color: var(--text); }
+  .post-reg-track-btn .prt-desc{ font-size: 13px; color: var(--text2); }
+
+  /* модалка — не должна обрезаться на невысоких мобильных экранах */
+  @media (max-width: 600px){
+    .modal{ align-items: flex-start !important; padding: 24px 0 !important; overflow-y: auto !important; }
+    .modal-content{ max-height: none !important; }
+  }
 </style>
 
 <script>
@@ -1639,6 +1743,27 @@ document.addEventListener('keydown', function(e){
     closeAuthMenuV2();
   }
 });
+
+/* ── Enter в полях входа/регистрации → сразу отправить форму ──
+   (handleLogin/handleRegister сами проверяют, что все поля заполнены,
+   и покажут ошибку, если нет — так что просто вызываем их по Enter) */
+(function(){
+  function bindEnterSubmit(formId, handlerName){
+    const form = document.getElementById(formId);
+    if (!form) return;
+    form.querySelectorAll('input').forEach(function(input){
+      input.addEventListener('keydown', function(e){
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        if (typeof window[handlerName] === 'function') window[handlerName]();
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    bindEnterSubmit('login-form', 'handleLogin');
+    bindEnterSubmit('register-form', 'handleRegister');
+  });
+})();
 
 /* ── Приход с dashboard.html?openLevel=A1 → сразу открыть урок ──
    script.js уже вызвал showLanding() на DOMContentLoaded (регистрируется
